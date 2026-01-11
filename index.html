@@ -1,0 +1,3882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genfeel - Digital Made Human | Tech with a Heartbeat</title>
+    <meta name="description" content="We create digital experiences that people enjoy using. Websites, mobile apps, and conversational AI that feel natural and human.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React & Dependencies -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <style>
+        /* ===== COMPLETE CSS - ALL STYLES ===== */
+        :root {
+            --color-primary: #6366f1;
+            --color-primary-light: #818cf8;
+            --color-secondary: #ec4899;
+            --color-accent: #06b6d4;
+            --color-background: #0a0a0f;
+            --color-surface: #1a1a24;
+            --color-surface-light: #252532;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #a1a1aa;
+            --color-text-tertiary: #71717a;
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
+            --gradient-mesh: radial-gradient(at 40% 20%, rgba(99, 102, 241, 0.3) 0px, transparent 50%),
+                           radial-gradient(at 80% 0%, rgba(236, 72, 153, 0.3) 0px, transparent 50%),
+                           radial-gradient(at 0% 50%, rgba(6, 182, 212, 0.3) 0px, transparent 50%);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-heading: 'Space Grotesk', var(--font-primary);
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-2xl: 4rem;
+            --spacing-3xl: 6rem;
+            --radius-sm: 0.5rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.5rem;
+            --radius-xl: 2rem;
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: clamp(2.5rem, 6vw, 5rem); }
+        h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--color-background); }
+        ::-webkit-scrollbar-thumb { background: var(--color-surface-light); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+        ::selection { background: var(--color-primary); color: white; }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        .gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: var(--spacing-md) 0;
+            transition: all var(--transition-base);
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: var(--spacing-sm) 0;
+        }
+
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            transition: transform var(--transition-base);
+            cursor: pointer;
+        }
+
+        .navbar-logo:hover { transform: scale(1.05); }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            transition: color var(--transition-base);
+            padding: var(--spacing-xs) 0;
+            cursor: pointer;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width var(--transition-base);
+        }
+
+        .nav-link:hover, .nav-link.active { color: var(--color-text-primary); }
+        .nav-link.active::after, .nav-link:hover::after { width: 100%; }
+
+        /* BUTTONS */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            transition: all var(--transition-base);
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+
+        .btn-block { width: 100%; }
+
+        /* MOBILE MENU */
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            padding: var(--spacing-xs);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 25px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--color-text-primary);
+            transition: all var(--transition-base);
+        }
+
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+
+        .mobile-menu {
+            display: none;
+            background: rgba(26, 26, 36, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: var(--spacing-lg);
+        }
+
+        .mobile-menu.open { display: block; }
+
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .mobile-nav-link {
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 1.125rem;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .mobile-nav-link:hover, .mobile-nav-link.active {
+            color: var(--color-text-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: var(--spacing-3xl) 0;
+            margin-top: 80px;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+
+        .gradient-mesh {
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-mesh);
+            opacity: 0.5;
+            animation: meshMove 20s ease-in-out infinite;
+        }
+
+        @keyframes meshMove {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-primary-light);
+        }
+
+        .hero-title {
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.1;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+            line-height: 1.8;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-description em {
+            font-style: italic;
+            color: var(--color-text-primary);
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-bottom: var(--spacing-2xl);
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-lg);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .stat-item { text-align: center; }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--color-text-tertiary);
+        }
+
+        /* SERVICES */
+        .services-section, .detailed-services {
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-title { margin-bottom: var(--spacing-md); }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .service-card {
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .service-description {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+
+        .service-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .service-link {
+            color: var(--color-primary-light);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap var(--transition-base);
+            cursor: pointer;
+        }
+
+        .service-link:hover { gap: 0.75rem; }
+
+        /* DETAILED SERVICES */
+        .detailed-service {
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .service-header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .service-icon-large {
+            font-size: 4rem;
+            line-height: 1;
+        }
+
+        .service-title-large {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .service-tagline {
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+
+        /* WHY SECTION */
+        .why-section {
+            padding: var(--spacing-3xl) 0;
+            background: var(--color-surface);
+        }
+
+        .why-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+            align-items: center;
+        }
+
+        .why-description {
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .why-visual {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .visual-card {
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            transition: transform var(--transition-base);
+        }
+
+        .visual-card:hover { transform: translateX(10px); }
+
+        .visual-content h4 {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .visual-content p { color: var(--color-text-secondary); }
+
+        .pulse-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .cta-content {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-3xl);
+        }
+
+        .cta-title { margin-bottom: var(--spacing-md); }
+
+        .cta-description {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* PRICING */
+        .pricing-section {
+            padding: var(--spacing-3xl) 0;
+            background: var(--color-surface);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .pricing-card {
+            background: var(--color-background);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            position: relative;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .pricing-card.highlighted {
+            border-color: var(--color-primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: var(--spacing-lg);
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.375rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .package-price {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .package-description {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .package-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .package-features li {
+            padding-left: var(--spacing-lg);
+            position: relative;
+            color: var(--color-text-secondary);
+        }
+
+        .package-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        /* CONTACT PAGE */
+        .contact-page, .services-page, .about-page, .get-started-page {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .contact-hero, .services-hero {
+            padding: var(--spacing-3xl) 0;
+            text-align: center;
+        }
+
+        .services-hero {
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        .contact-info-item {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .contact-form, .checkout-form {
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            color: var(--color-text-primary);
+            font-family: var(--font-primary);
+            transition: all var(--transition-base);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        /* GET STARTED PAGE */
+        .get-started-header {
+            text-align: center;
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .package-selection {
+            padding-bottom: var(--spacing-3xl);
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .checkout-section {
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+        }
+
+        .order-summary {
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            height: fit-content;
+        }
+
+        .summary-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .summary-total {
+            padding: 1.5rem 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .form-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .form-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .success-message {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            background: var(--color-surface);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: var(--radius-lg);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto var(--spacing-lg);
+        }
+
+        .payment-notice {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--color-text-tertiary);
+            margin-top: var(--spacing-md);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--color-surface);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: var(--spacing-3xl) 0 var(--spacing-lg);
+            margin-top: var(--spacing-3xl);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .footer-description {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-sm);
+            color: var(--color-text-secondary);
+            transition: all var(--transition-base);
+            text-decoration: none;
+            font-size: 1.25rem;
+        }
+
+        .social-link:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .footer-links a {
+            color: var(--color-text-secondary);
+            transition: color var(--transition-base);
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: var(--spacing-lg);
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .why-content, .checkout-grid, .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-links, .desktop-only {
+                display: none !important;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .service-header {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                min-height: auto;
+                padding: var(--spacing-2xl) 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-description {
+                font-size: 1.125rem;
+            }
+
+            .hero-cta, .cta-buttons {
+                flex-direction: column;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .services-grid, .packages-grid, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-content {
+                padding: var(--spacing-xl);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen (ADD THIS) -->
+    <div id="loading-screen" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #0a0a0f;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    ">
+        <div style="
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        "></div>
+        <p style="
+            color: #a1a1aa;
+            margin-top: 20px;
+            font-family: 'Inter', sans-serif;
+        ">Loading Genfeel...</p>
+    </div>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // API Configuration
+        const API_URL = 'http://localhost:5000';
+
+        // ===== NAVBAR COMPONENT =====
+        const Navbar = ({ currentPage, setCurrentPage }) => {
+            const [isScrolled, setIsScrolled] = useState(false);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setIsScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navLinks = [
+                { id: 'home', label: 'Home' },
+                { id: 'services', label: 'Services' },
+                { id: 'about', label: 'About' },
+                { id: 'contact', label: 'Contact' },
+            ];
+
+            const handleNavClick = (pageId) => {
+                setCurrentPage(pageId);
+                setIsMobileMenuOpen(false);
+                window.scrollTo(0, 0);
+            };
+
+            return (
+                <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+                    <div className="navbar-container container">
+                        <div onClick={() => handleNavClick('home')} className="navbar-logo">
+                            <span className="logo-icon">G</span>
+                            <span className="logo-text">Genfeel</span>
+                        </div>
+
+                        <div className="navbar-links desktop-only">
+                            {navLinks.map((link) => (
+                                <div
+                                    key={link.id}
+                                    onClick={() => handleNavClick(link.id)}
+                                    className={`nav-link ${currentPage === link.id ? 'active' : ''}`}
+                                >
+                                    {link.label}
+                                </div>
+                            ))}
+                        </div>
+
+                        <button onClick={() => handleNavClick('get-started')} className="btn btn-primary desktop-only">
+                            Get Started
+                        </button>
+
+                        <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                            <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+                        <div className="mobile-menu-links">
+                            {navLinks.map((link) => (
+                                <div
+                                    key={link.id}
+                                    onClick={() => handleNavClick(link.id)}
+                                    className={`mobile-nav-link ${currentPage === link.id ? 'active' : ''}`}
+                                >
+                                    {link.label}
+                                </div>
+                            ))}
+                            <button onClick={() => handleNavClick('get-started')} className="btn btn-primary">
+                                Get Started
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            );
+        };
+
+        // ===== HOME PAGE =====
+        const HomePage = ({ setCurrentPage }) => {
+            const services = [
+                {
+                    icon: '🌐',
+                    title: 'Websites',
+                    description: 'Beautiful, fast, and feel like home to your customers',
+                    features: ['Responsive Design', 'Performance Optimized', 'SEO Friendly']
+                },
+                {
+                    icon: '📱',
+                    title: 'Mobile Apps',
+                    description: 'Apps that fit seamlessly into daily life',
+                    features: ['iOS & Android', 'Native Performance', 'Intuitive UX']
+                },
+                {
+                    icon: '💬',
+                    title: 'Conversational AI',
+                    description: 'Like talking to a real person who knows your brand',
+                    features: ['Natural Language', 'Smart Responses', 'Brand Aligned']
+                }
+            ];
+
+            const stats = [
+                { number: '50+', label: 'Projects Delivered' },
+                { number: '30+', label: 'Happy Clients' },
+                { number: '98%', label: 'Satisfaction Rate' },
+                { number: '24/7', label: 'Support Available' }
+            ];
+
+            return (
+                <div className="home fade-in">
+                    <section className="hero">
+                        <div className="hero-background">
+                            <div className="gradient-mesh"></div>
+                        </div>
+                        
+                        <div className="hero-content container">
+                            <div className="hero-badge"> Digital Made Human</div>
+                            <h1 className="hero-title">
+                                Tech with a{' '}
+                                <span className="gradient-text">heartbeat</span>
+                            </h1>
+                            <p className="hero-description">
+                                We create digital experiences that people <em>enjoy</em> using. 
+                                Beautiful websites, intuitive mobile apps, and conversational AI 
+                                that feels like talking to a real person.
+                            </p>
+                            <div className="hero-cta">
+                                <button onClick={() => setCurrentPage('get-started')} className="btn btn-primary btn-lg">
+                                    Start Your Project
+                                </button>
+                                <button onClick={() => setCurrentPage('services')} className="btn btn-secondary btn-lg">
+                                    View Services
+                                </button>
+                            </div>
+                            <div className="hero-stats">
+                                {stats.map((stat, index) => (
+                                    <div key={index} className="stat-item">
+                                        <div className="stat-number">{stat.number}</div>
+                                        <div className="stat-label">{stat.label}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="services-section">
+                        <div className="container">
+                            <div className="section-header">
+                                <h2 className="section-title">What We Build</h2>
+                                <p className="section-description">
+                                    Digital solutions designed for humans, not robots
+                                </p>
+                            </div>
+                            <div className="services-grid">
+                                {services.map((service, index) => (
+                                    <div key={index} className="service-card">
+                                        <div className="service-icon">{service.icon}</div>
+                                        <h3 className="service-title">{service.title}</h3>
+                                        <p className="service-description">{service.description}</p>
+                                        <ul className="service-features">
+                                            {service.features.map((feature, i) => (
+                                                <li key={i}>
+                                                    <span style={{color: 'var(--color-primary)'}}>✓</span>
+                                                    {feature}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div onClick={() => setCurrentPage('services')} className="service-link">
+                                            Learn More →
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="why-section">
+                        <div className="container">
+                            <div className="why-content">
+                                <div className="why-text">
+                                    <h2 className="section-title">
+                                        Building connections, <br/>not just code
+                                    </h2>
+                                    <p className="why-description">
+                                        Instead of cold technology, we build warm connections. 
+                                        Our work is about making every tap, scroll, and conversation 
+                                        feel intentional, intuitive, and human.
+                                    </p>
+                                    <p className="why-description">
+                                        Whether you're launching something new or refreshing what you have, 
+                                        we're here to make sure your digital presence feels as good as it looks.
+                                    </p>
+                                    <button onClick={() => setCurrentPage('about')} className="btn btn-primary">
+                                        Learn About Us
+                                    </button>
+                                </div>
+                                
+                                <div className="why-visual">
+                                    <div className="visual-card glass">
+                                        <div className="visual-content">
+                                            <h4><div className="pulse-dot"></div>Human-Centered Design</h4>
+                                            <p>Every decision driven by user experience</p>
+                                        </div>
+                                    </div>
+                                    <div className="visual-card glass">
+                                        <div className="visual-content">
+                                            <h4><div className="pulse-dot"></div>Modern Technology</h4>
+                                            <p>Built with the latest tools and frameworks</p>
+                                        </div>
+                                    </div>
+                                    <div className="visual-card glass">
+                                        <div className="visual-content">
+                                            <h4><div className="pulse-dot"></div>Ongoing Support</h4>
+                                            <p>We're with you every step of the way</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="cta-section">
+                        <div className="container">
+                            <div className="cta-content">
+                                <h2 className="cta-title">Ready to build something amazing?</h2>
+                                <p className="cta-description">
+                                    Let's create a digital experience that your users will love
+                                </p>
+                                <div className="cta-buttons">
+                                    <button onClick={() => setCurrentPage('get-started')} className="btn btn-primary btn-lg">
+                                        Get Started Today
+                                    </button>
+                                    <button onClick={() => setCurrentPage('contact')} className="btn btn-secondary btn-lg">
+                                        Schedule a Call
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            );
+        };
+
+        // ===== SERVICES PAGE =====
+        const ServicesPage = ({ setCurrentPage }) => {
+            const services = [
+                {
+                    icon: '🌐',
+                    title: 'Website Development',
+                    tagline: 'Beautiful, fast, and feel like home',
+                    description: 'We create websites that don\'t just look good—they perform exceptionally and provide experiences your customers will love returning to.',
+                    features: [
+                        'Responsive Design',
+                        'Performance Optimization',
+                        'SEO & Accessibility',
+                        'Content Management',
+                        'E-commerce Solutions',
+                        'Progressive Web Apps'
+                    ]
+                },
+                {
+                    icon: '📱',
+                    title: 'Mobile App Development',
+                    tagline: 'Apps that fit seamlessly into daily life',
+                    description: 'Native and cross-platform mobile applications designed with your users in mind. Intuitive, fast, and delightful to use.',
+                    features: [
+                        'iOS & Android Development',
+                        'Cross-Platform Solutions',
+                        'Native Performance',
+                        'Offline Functionality',
+                        'Push Notifications',
+                        'App Store Optimization'
+                    ]
+                },
+                {
+                    icon: '💬',
+                    title: 'Conversational AI',
+                    tagline: 'Like talking to a real person',
+                    description: 'AI-powered chatbots and virtual assistants that understand context, speak naturally, and truly represent your brand.',
+                    features: [
+                        'Natural Language Processing',
+                        'Multi-Channel Support',
+                        'Brand Voice Training',
+                        'Context Awareness',
+                        '24/7 Availability',
+                        'Analytics & Insights'
+                    ]
+                }
+            ];
+
+            const packages = [
+                {
+                    id: 'starter',
+                    name: 'Starter',
+                    badge: '🟩',
+                    price: '£299',
+                    description: 'For small local brands taking their first digital step',
+                    features: [
+                        '1–3 page modern website',
+                        'Responsive design for mobile & tablet',
+                        'Free domain setup & secure hosting (1 year)',
+                        'Basic SEO (titles, descriptions)',
+                        'Contact form & social links',
+                        'Email support (Mon–Fri)'
+                    ],
+                    upgrades: [
+                        '🛍️ Online store (+£149)',
+                        '📅 Booking system (+£99)'
+                    ],
+                    highlighted: false
+                },
+                {
+                    id: 'professional',
+                    name: 'Professional',
+                    badge: '🟦',
+                    price: '£749',
+                    description: 'For businesses ready to attract and convert',
+                    features: [
+                        'Everything in Starter, plus:',
+                        '5–8 custom pages',
+                        'High-definition visuals & animations',
+                        'Built-in CMS for easy editing',
+                        'Blog or portfolio section',
+                        'Local SEO optimization',
+                        'Google Analytics setup',
+                        '1-hour strategy consultation',
+                        'Two design revisions'
+                    ],
+                    addons: [
+                        '📱 Mobile app version (+£499)',
+                        '🗣️ Voice agent (+£249)',
+                        '💬 Chatbot assistant (+£199)'
+                    ],
+                    highlighted: true
+                },
+                {
+                    id: 'business',
+                    name: 'Business',
+                    badge: '🟨',
+                    price: '£1,499',
+                    description: 'For growing brands that want automation and performance',
+                    features: [
+                        'Everything in Professional, plus:',
+                        'Backend system with dashboard & database',
+                        'Secure payment & order processing',
+                        'Member/client portal',
+                        'Advanced SEO (speed + schema)',
+                        'Monthly website health checks (3 months)',
+                        'Priority support (24-hour response)'
+                    ],
+                    enhancements: [
+                        '📱 Custom mobile app (+£699)',
+                        '🗣️ Voice agent (+£299)',
+                        '🤖 AI chatbot (+£349)'
+                    ],
+                    highlighted: false
+                }
+            ];
+
+            const maintenancePlans = [
+                {
+                    name: 'Essential Care',
+                    price: '£49/mo',
+                    icon: '⚡',
+                    description: 'Hosting, backups, & security updates'
+                },
+                {
+                    name: 'Growth Care',
+                    price: '£99/mo',
+                    icon: '📈',
+                    description: 'Essential + SEO tracking & content updates',
+                    highlighted: true
+                },
+                {
+                    name: 'Enterprise Care',
+                    price: '£199/mo',
+                    icon: '🚀',
+                    description: 'Growth + chatbot & voice agent optimization'
+                }
+            ];
+
+            return (
+                <div className="services-page fade-in">
+                    <section className="services-hero">
+                        <div className="container">
+                            <h1 className="hero-title">
+                                Digital Experiences, <span className="gradient-text">Humanly Crafted</span>
+                            </h1>
+                            <p className="hero-description">
+                                We design technology that feels human — crafted for businesses 
+                                that want to look, sound, and perform like the future.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section className="detailed-services">
+                        <div className="container">
+                            {services.map((service, index) => (
+                                <div key={index} className="detailed-service">
+                                    <div className="service-header">
+                                        <span className="service-icon-large">{service.icon}</span>
+                                        <div>
+                                            <h2 className="service-title-large">{service.title}</h2>
+                                            <p className="service-tagline">{service.tagline}</p>
+                                        </div>
+                                    </div>
+                                    <p className="why-description">{service.description}</p>
+                                    <div style={{marginTop: '2rem'}}>
+                                        <h4 style={{marginBottom: '1rem', color: 'var(--color-primary-light)'}}>What's Included</h4>
+                                        <ul className="service-features">
+                                            {service.features.map((feature, i) => (
+                                                <li key={i}>
+                                                    <span style={{color: 'var(--color-primary)'}}>✓</span>
+                                                    {feature}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section className="pricing-section">
+                        <div className="container">
+                            <div className="section-header">
+                                <h2 className="section-title">Choose a plan that fits your ambition</h2>
+                                <p className="section-description">
+                                    Flexible pricing for projects of all sizes
+                                </p>
+                            </div>
+                            <div className="pricing-grid">
+                                {packages.map((pkg, index) => (
+                                    <div
+                                        key={index}
+                                        className={`pricing-card ${pkg.highlighted ? 'highlighted' : ''}`}
+                                    >
+                                        {pkg.highlighted && <div className="popular-badge">Most Popular</div>}
+                                        <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>{pkg.badge}</div>
+                                        <h3 className="package-name">{pkg.name}</h3>
+                                        <div className="package-price">{pkg.price}</div>
+                                        <p className="package-description">{pkg.description}</p>
+                                        
+                                        <div style={{marginBottom: '1rem'}}>
+                                            <h4 style={{fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--color-primary-light)'}}>Includes:</h4>
+                                            <ul className="package-features">
+                                                {pkg.features.map((feature, i) => (
+                                                    <li key={i}>{feature}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+
+                                        {pkg.upgrades && (
+                                            <div style={{marginBottom: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
+                                                <h4 style={{fontSize: '0.875rem', marginBottom: '0.75rem', color: 'var(--color-accent)'}}>Upgrade Options:</h4>
+                                                <ul className="package-features">
+                                                    {pkg.upgrades.map((upgrade, i) => (
+                                                        <li key={i} style={{fontSize: '0.875rem'}}>{upgrade}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                        {pkg.addons && (
+                                            <div style={{marginBottom: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
+                                                <h4 style={{fontSize: '0.875rem', marginBottom: '0.75rem', color: 'var(--color-accent)'}}>Add-ons:</h4>
+                                                <ul className="package-features">
+                                                    {pkg.addons.map((addon, i) => (
+                                                        <li key={i} style={{fontSize: '0.875rem'}}>{addon}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                        {pkg.enhancements && (
+                                            <div style={{marginBottom: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
+                                                <h4 style={{fontSize: '0.875rem', marginBottom: '0.75rem', color: 'var(--color-accent)'}}>Optional Enhancements:</h4>
+                                                <ul className="package-features">
+                                                    {pkg.enhancements.map((enhancement, i) => (
+                                                        <li key={i} style={{fontSize: '0.875rem'}}>{enhancement}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                        <button onClick={() => setCurrentPage('contact')} className="btn btn-primary btn-block">
+                                            Get a Quote
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Maintenance Plans Section */}
+                    <section className="services-section" style={{background: 'var(--color-background)'}}>
+                        <div className="container">
+                            <div className="section-header">
+                                <h2 className="section-title">⚙️ Monthly Maintenance Plans</h2>
+                                <p className="section-description">
+                                    Keep your digital presence running smoothly
+                                </p>
+                            </div>
+
+                            <div className="services-grid">
+                                {maintenancePlans.map((plan, index) => (
+                                    <div key={index} className={`service-card ${plan.highlighted ? 'pricing-card highlighted' : ''}`}>
+                                        {plan.highlighted && <div className="popular-badge">Best Value</div>}
+                                        <div className="service-icon">{plan.icon}</div>
+                                        <h3 className="service-title">{plan.name}</h3>
+                                        <div className="package-price" style={{fontSize: '2rem', margin: '1rem 0'}}>
+                                            {plan.price}
+                                        </div>
+                                        <p className="service-description">
+                                            {plan.description}
+                                        </p>
+                                        <button 
+                                            onClick={() => setCurrentPage('contact')} 
+                                            className={`btn ${plan.highlighted ? 'btn-primary' : 'btn-secondary'} btn-block`}
+                                        >
+                                            Learn More
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            );
+        };
+
+        // ===== ABOUT PAGE =====
+        const AboutPage = () => {
+            return (
+                <div className="about-page fade-in">
+                    <section className="services-hero">
+                        <div className="container">
+                            <h1 className="hero-title">
+                                We're <span className="gradient-text">Genfeel</span>
+                            </h1>
+                            <p className="hero-description">
+                                A team of designers, developers, and strategists who believe 
+                                technology should feel human.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section className="why-section">
+                        <div className="container">
+                            <div className="why-content">
+                                <div className="why-text">
+                                    <h2 className="section-title">Our Mission</h2>
+                                    <p className="why-description">
+                                        We exist to bridge the gap between technology and humanity. 
+                                        Every project we take on is an opportunity to create something 
+                                        that doesn't just work—it delights.
+                                    </p>
+                                    <p className="why-description">
+                                        We believe the best digital experiences are invisible. They feel 
+                                        natural, intuitive, and effortless. That's what we build.
+                                    </p>
+                                </div>
+                                
+                                <div className="why-visual">
+                                    <div className="visual-card glass">
+                                        <div className="visual-content">
+                                            <h4>🎨 Design First</h4>
+                                            <p>Every pixel matters. We obsess over the details.</p>
+                                        </div>
+                                    </div>
+                                    <div className="visual-card glass">
+                                        <div className="visual-content">
+                                            <h4>⚡ Performance Driven</h4>
+                                            <p>Fast, efficient, and optimized for all devices.</p>
+                                        </div>
+                                    </div>
+                                    <div className="visual-card glass">
+                                        <div className="visual-content">
+                                            <h4>🤝 Client Partnership</h4>
+                                            <p>Your success is our success. We're in this together.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="services-section">
+                        <div className="container">
+                            <div className="section-header">
+                                <h2 className="section-title">Our Values</h2>
+                            </div>
+                            <div className="services-grid">
+                                <div className="service-card">
+                                    <div className="service-icon">💡</div>
+                                    <h3 className="service-title">Innovation</h3>
+                                    <p className="service-description">
+                                        We stay ahead of the curve, always exploring new technologies 
+                                        and methodologies to deliver cutting-edge solutions.
+                                    </p>
+                                </div>
+                                <div className="service-card">
+                                    <div className="service-icon">🎯</div>
+                                    <h3 className="service-title">Quality</h3>
+                                    <p className="service-description">
+                                        We never compromise on quality. Every line of code, every design 
+                                        element is crafted with care and precision.
+                                    </p>
+                                </div>
+                                <div className="service-card">
+                                    <div className="service-icon">❤️</div>
+                                    <h3 className="service-title">Empathy</h3>
+                                    <p className="service-description">
+                                        We put ourselves in your users' shoes. Understanding their needs 
+                                        and pain points guides every decision we make.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            );
+        };
+
+        // ===== CONTACT PAGE =====
+        const ContactPage = () => {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                company: '',
+                phone: '',
+                service: '',
+                message: ''
+            });
+            const [loading, setLoading] = useState(false);
+            const [success, setSuccess] = useState(false);
+            const [error, setError] = useState('');
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                setError('');
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    setSuccess(true);
+                    setFormData({
+                        name: '',
+                        email: '',
+                        company: '',
+                        phone: '',
+                        service: '',
+                        message: ''
+                    });
+                } catch (err) {
+                    setError('Failed to send message. Please try again.');
+                }
+
+                setLoading(false);
+            };
+
+            return (
+                <div className="contact-page fade-in">
+                    <section className="contact-hero">
+                        <div className="container">
+                            <h1 className="hero-title">Let's <span className="gradient-text">Connect</span></h1>
+                            <p className="hero-description">
+                                Have a project in mind? We'd love to hear about it.
+                            </p>
+                        </div>
+                    </section>
+
+                    <div className="container">
+                        <div className="contact-container">
+                            <div className="contact-info">
+                                <div>
+                                    <h2>Get in Touch</h2>
+                                    <p className="why-description">
+                                        Whether you're ready to start your project or just want to learn more 
+                                        about what we do, we're here to help.
+                                    </p>
+                                </div>
+
+                                <div className="contact-info-item">
+                                    <div className="contact-icon">📧</div>
+                                    <div>
+                                        <h4>Email</h4>
+                                        <p className="why-description">hello@genfeel.com</p>
+                                    </div>
+                                </div>
+
+                                <div className="contact-info-item">
+                                    <div className="contact-icon">📞</div>
+                                    <div>
+                                        <h4>Phone</h4>
+                                        <p className="why-description">+44 7383027802</p>
+                                    </div>
+                                </div>
+
+                                <div className="contact-info-item">
+                                    <div className="contact-icon">📍</div>
+                                    <div>
+                                        <h4>Location</h4>
+                                        <p className="why-description">London, UK</p>
+                                    </div>
+                                </div>
+
+                                <div className="contact-info-item">
+                                    <div className="contact-icon">⏰</div>
+                                    <div>
+                                        <h4>Business Hours</h4>
+                                        <p className="why-description">Mon - Fri: 9AM - 6PM PST</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form className="contact-form" onSubmit={handleSubmit}>
+                                <h3>Send us a Message</h3>
+
+                                {success && (
+                                    <div className="success-message" style={{marginBottom: '1rem', padding: '1rem'}}>
+                                        ✅ Thank you! We'll get back to you within 24 hours.
+                                    </div>
+                                )}
+
+                                {error && (
+                                    <div className="error-message">
+                                        {error}
+                                    </div>
+                                )}
+
+                                <div className="form-group">
+                                    <label htmlFor="name">Full Name *</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        required
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                        placeholder="John Doe"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="email">Email *</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        placeholder="john@company.com"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="company">Company</label>
+                                    <input
+                                        type="text"
+                                        id="company"
+                                        value={formData.company}
+                                        onChange={(e) => setFormData({...formData, company: e.target.value})}
+                                        placeholder="Your Company Inc."
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="phone">Phone</label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        value={formData.phone}
+                                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                                        placeholder="+1 (555) 123-4567"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="service">Service Interested In</label>
+                                    <select
+                                        id="service"
+                                        value={formData.service}
+                                        onChange={(e) => setFormData({...formData, service: e.target.value})}
+                                    >
+                                        <option value="">Select a service</option>
+                                        <option value="starter">Starter Package (£299)</option>
+                                        <option value="professional">Professional Package (£749)</option>
+                                        <option value="business">Business Package (£1,499)</option>
+                                        <option value="maintenance">Maintenance Plans</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="message">Message *</label>
+                                    <textarea
+                                        id="message"
+                                        required
+                                        value={formData.message}
+                                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                                        placeholder="Tell us about your project..."
+                                    />
+                                </div>
+
+                                <button type="submit" disabled={loading} className="btn btn-primary btn-block">
+                                    {loading ? 'Sending...' : 'Send Message'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // ===== GET STARTED PAGE =====
+        const GetStartedPage = () => {
+            const [selectedPackage, setSelectedPackage] = useState(null);
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState('');
+            const [success, setSuccess] = useState(false);
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                company: '',
+                phone: '',
+                selectedUpgrades: []
+            });
+
+            const packages = [
+                {
+                    id: 'starter',
+                    name: 'Starter',
+                    badge: '🟩',
+                    price: 299,
+                    description: 'For small local brands taking their first digital step',
+                    features: [
+                        '1–3 page modern website',
+                        'Responsive design for mobile & tablet',
+                        'Free domain setup & secure hosting (1 year)',
+                        'Basic SEO (titles, descriptions)',
+                        'Contact form & social links',
+                        'Email support (Mon–Fri)'
+                    ],
+                    upgrades: [
+                        { id: 'store', name: '🛍️ Online store', price: 149 },
+                        { id: 'booking', name: '📅 Booking system', price: 99 }
+                    ]
+                },
+                {
+                    id: 'professional',
+                    name: 'Professional',
+                    badge: '🟦',
+                    price: 749,
+                    description: 'For businesses ready to attract and convert',
+                    features: [
+                        'Everything in Starter, plus:',
+                        '5–8 custom pages',
+                        'High-definition visuals & animations',
+                        'Built-in CMS for easy editing',
+                        'Blog or portfolio section',
+                        'Local SEO optimization',
+                        'Google Analytics setup',
+                        '1-hour strategy consultation',
+                        'Two design revisions'
+                    ],
+                    addons: [
+                        { id: 'mobileapp', name: '📱 Mobile app version', price: 499 },
+                        { id: 'voiceagent', name: '🗣️ Voice agent', price: 249 },
+                        { id: 'chatbot', name: '💬 Chatbot assistant', price: 199 }
+                    ],
+                    popular: true
+                },
+                {
+                    id: 'business',
+                    name: 'Business',
+                    badge: '🟨',
+                    price: 1499,
+                    description: 'For growing brands that want automation and performance',
+                    features: [
+                        'Everything in Professional, plus:',
+                        'Backend system with dashboard & database',
+                        'Secure payment & order processing',
+                        'Member/client portal',
+                        'Advanced SEO (speed + schema)',
+                        'Monthly website health checks (3 months)',
+                        'Priority support (24-hour response)'
+                    ],
+                    enhancements: [
+                        { id: 'custommobile', name: '📱 Custom mobile app', price: 699 },
+                        { id: 'voiceagentpro', name: '🗣️ Voice agent', price: 299 },
+                        { id: 'aichatbot', name: '🤖 AI chatbot', price: 349 }
+                    ]
+                }
+            ];
+
+            const handleUpgradeToggle = (upgradeId, price) => {
+                setFormData(prev => {
+                    const isSelected = prev.selectedUpgrades.some(u => u.id === upgradeId);
+                    if (isSelected) {
+                        return {
+                            ...prev,
+                            selectedUpgrades: prev.selectedUpgrades.filter(u => u.id !== upgradeId)
+                        };
+                    } else {
+                        return {
+                            ...prev,
+                            selectedUpgrades: [...prev.selectedUpgrades, { id: upgradeId, price }]
+                        };
+                    }
+                });
+            };
+
+            const calculateTotal = () => {
+                const basePrice = selectedPackage?.price || 0;
+                const upgradesTotal = formData.selectedUpgrades.reduce((sum, u) => sum + u.price, 0);
+                return basePrice + upgradesTotal;
+            };
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                setError('');
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    setSuccess(true);
+                } catch (err) {
+                    setError('Failed to process request. Please try again.');
+                }
+
+                setLoading(false);
+            };
+
+            if (success) {
+                return (
+                    <div className="get-started-page fade-in">
+                        <div className="container" style={{paddingTop: '120px', paddingBottom: '120px'}}>
+                            <div className="success-message">
+                                <div className="success-icon">✅</div>
+                                <h3>Request Received!</h3>
+                                <p>Thank you for choosing Genfeel. We'll be in touch within 24 hours to discuss your project and next steps.</p>
+                                <p style={{marginTop: '1rem', color: 'var(--color-text-secondary)'}}>
+                                    A confirmation email has been sent to {formData.email}
+                                </p>
+                                <button 
+                                    onClick={() => {
+                                        setSuccess(false);
+                                        setSelectedPackage(null);
+                                        setFormData({name: '', email: '', company: '', phone: '', selectedUpgrades: []});
+                                    }} 
+                                    className="btn btn-primary"
+                                    style={{marginTop: '2rem'}}
+                                >
+                                    Back to Packages
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="get-started-page fade-in">
+                    <div className="container">
+                        <div className="get-started-header">
+                            <h1>Let's Build Something Amazing</h1>
+                            <p>Choose your package and customize with add-ons</p>
+                        </div>
+
+                        {!selectedPackage ? (
+                            <div className="package-selection">
+                                <div className="packages-grid">
+                                    {packages.map((pkg) => (
+                                        <div
+                                            key={pkg.id}
+                                            className={`pricing-card ${pkg.popular ? 'highlighted' : ''}`}
+                                            onClick={() => setSelectedPackage(pkg)}
+                                        >
+                                            {pkg.popular && <div className="popular-badge">Most Popular</div>}
+                                            <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>{pkg.badge}</div>
+                                            <h3 className="package-name">{pkg.name}</h3>
+                                            <div className="package-price">£{pkg.price}</div>
+                                            <p className="package-description">{pkg.description}</p>
+                                            <ul className="package-features">
+                                                {pkg.features.slice(0, 4).map((feature, i) => (
+                                                    <li key={i}>{feature}</li>
+                                                ))}
+                                            </ul>
+                                            <button className="btn btn-primary btn-block">
+                                                Select Package
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+<div className="checkout-section">
+                                <button
+                                    className="back-button"
+                                    onClick={() => {
+                                        setSelectedPackage(null);
+                                        setFormData({name: '', email: '', company: '', phone: '', selectedUpgrades: []});
+                                    }}
+                                >
+                                    ← Back to packages
+                                </button>
+
+                                <div className="checkout-grid">
+                                    <div className="order-summary">
+                                        <h2>Order Summary</h2>
+                                        <div className="summary-item">
+                                            <h3>{selectedPackage.badge} {selectedPackage.name} Package</h3>
+                                            <p style={{color: 'var(--color-text-secondary)', marginTop: '0.5rem'}}>
+                                                {selectedPackage.description}
+                                            </p>
+                                            <div className="summary-row" style={{marginTop: '1rem'}}>
+                                                <span>Base Package</span>
+                                                <span>£{selectedPackage.price}</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Show available upgrades/addons */}
+                                        {(selectedPackage.upgrades || selectedPackage.addons || selectedPackage.enhancements) && (
+                                            <div className="summary-item">
+                                                <h4 style={{marginBottom: '1rem', color: 'var(--color-primary-light)'}}>
+                                                    Available Add-ons:
+                                                </h4>
+                                                <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem'}}>
+                                                    {(selectedPackage.upgrades || selectedPackage.addons || selectedPackage.enhancements)?.map((addon) => (
+                                                        <label 
+                                                            key={addon.id} 
+                                                            style={{
+                                                                display: 'flex', 
+                                                                alignItems: 'center', 
+                                                                gap: '0.75rem',
+                                                                padding: '0.75rem',
+                                                                background: formData.selectedUpgrades.some(u => u.id === addon.id) 
+                                                                    ? 'rgba(99, 102, 241, 0.1)' 
+                                                                    : 'rgba(255,255,255,0.03)',
+                                                                borderRadius: 'var(--radius-sm)',
+                                                                border: '1px solid ' + (formData.selectedUpgrades.some(u => u.id === addon.id) 
+                                                                    ? 'var(--color-primary)' 
+                                                                    : 'rgba(255,255,255,0.1)'),
+                                                                cursor: 'pointer',
+                                                                transition: 'all 0.2s'
+                                                            }}
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={formData.selectedUpgrades.some(u => u.id === addon.id)}
+                                                                onChange={() => handleUpgradeToggle(addon.id, addon.price)}
+                                                                style={{cursor: 'pointer'}}
+                                                            />
+                                                            <span style={{flex: 1, fontSize: '0.875rem'}}>
+                                                                {addon.name}
+                                                            </span>
+                                                            <span style={{fontWeight: 'bold', color: 'var(--color-primary-light)'}}>
+                                                                +£{addon.price}
+                                                            </span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Show selected upgrades */}
+                                        {formData.selectedUpgrades.length > 0 && (
+                                            <div className="summary-item">
+                                                <h4 style={{marginBottom: '0.75rem'}}>Selected Add-ons:</h4>
+                                                {formData.selectedUpgrades.map((upgrade) => {
+                                                    const upgradeData = [...(selectedPackage.upgrades || []), 
+                                                                         ...(selectedPackage.addons || []), 
+                                                                         ...(selectedPackage.enhancements || [])]
+                                                        .find(u => u.id === upgrade.id);
+                                                    return (
+                                                        <div key={upgrade.id} className="summary-row">
+                                                            <span style={{fontSize: '0.875rem'}}>{upgradeData?.name}</span>
+                                                            <span>£{upgrade.price}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+
+                                        <div className="summary-total">
+                                            <div className="summary-row" style={{fontWeight: 'bold', fontSize: '1.5rem', borderTop: '2px solid rgba(255,255,255,0.2)', paddingTop: '1rem'}}>
+                                                <span>Total</span>
+                                                <span className="gradient-text">£{calculateTotal()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <form onSubmit={handleSubmit} className="checkout-form">
+                                        <div className="form-section">
+                                            <h3>Your Information</h3>
+                                            
+                                            <div className="form-group">
+                                                <label htmlFor="name">Full Name *</label>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    required
+                                                    value={formData.name}
+                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                    placeholder="John Doe"
+                                                />
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label htmlFor="email">Email *</label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    required
+                                                    value={formData.email}
+                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                                    placeholder="john@company.com"
+                                                />
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label htmlFor="company">Company</label>
+                                                <input
+                                                    type="text"
+                                                    id="company"
+                                                    value={formData.company}
+                                                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                                    placeholder="Your Company Inc."
+                                                />
+                                            </div>
+
+                                            <div className="form-group">
+                                                <label htmlFor="phone">Phone *</label>
+                                                <input
+                                                    type="tel"
+                                                    id="phone"
+                                                    required
+                                                    value={formData.phone}
+                                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                                    placeholder="+44 7XXX XXXXXX"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="form-section">
+                                            <h3>Project Details</h3>
+                                            
+                                            <div className="form-group">
+                                                <label htmlFor="projectDetails">Tell us about your project *</label>
+                                                <textarea
+                                                    id="projectDetails"
+                                                    required
+                                                    rows="4"
+                                                    placeholder="What are your goals? Any specific features or requirements?"
+                                                    style={{
+                                                        width: '100%',
+                                                        padding: '0.75rem 1rem',
+                                                        background: 'rgba(255, 255, 255, 0.05)',
+                                                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                                                        borderRadius: 'var(--radius-sm)',
+                                                        color: 'var(--color-text-primary)',
+                                                        fontFamily: 'var(--font-primary)',
+                                                        resize: 'vertical'
+                                                    }}
+                                                />
+                                            </div>
+
+                                            <div style={{
+                                                padding: '1rem', 
+                                                background: 'rgba(99, 102, 241, 0.1)', 
+                                                borderRadius: 'var(--radius-sm)', 
+                                                marginBottom: '1rem',
+                                                fontSize: '0.875rem',
+                                                lineHeight: '1.6'
+                                            }}>
+                                                <strong>📋 Next Steps:</strong>
+                                                <ol style={{marginTop: '0.5rem', marginLeft: '1.25rem'}}>
+                                                    <li>Submit this form</li>
+                                                    <li>We'll review your requirements</li>
+                                                    <li>Schedule a consultation call</li>
+                                                    <li>Receive a detailed proposal</li>
+                                                    <li>Start building!</li>
+                                                </ol>
+                                            </div>
+
+                                            {error && (
+                                                <div className="error-message">
+                                                    {error}
+                                                </div>
+                                            )}
+
+                                            <button
+                                                type="submit"
+                                                disabled={loading}
+                                                className="btn btn-primary btn-lg btn-block"
+                                            >
+                                                {loading ? 'Submitting...' : `Submit Request - £${calculateTotal()}`}
+                                            </button>
+
+                                            <p className="payment-notice">
+                                                💡 No payment required now. We'll discuss payment terms during our consultation.
+                                            </p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        // ===== FOOTER COMPONENT =====
+        const Footer = ({ setCurrentPage }) => {
+            return (
+                <footer className="footer">
+                    <div className="footer-container container">
+                        <div className="footer-grid">
+                            <div className="footer-section">
+                                <div className="footer-logo">
+                                    <span className="logo-icon">G</span>
+                                    <span className="logo-text">Genfeel</span>
+                                </div>
+                                <p className="footer-description">
+                                    Creating digital experiences that people enjoy using. Tech with a heartbeat.
+                                </p>
+                                <div className="social-links">
+                                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Instagram">
+                                        <i className="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="social-link" title="TikTok">
+                                        <i className="fab fa-tiktok"></i>
+                                    </a>
+                                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Facebook">
+                                        <i className="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-link" title="X (Twitter)">
+                                        <i className="fab fa-x-x"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="footer-section">
+                                <h4 className="footer-title">Services</h4>
+                                <ul className="footer-links">
+                                    <li><a onClick={() => setCurrentPage('services')}>Websites</a></li>
+                                    <li><a onClick={() => setCurrentPage('services')}>Mobile Apps</a></li>
+                                    <li><a onClick={() => setCurrentPage('services')}>Conversational AI</a></li>
+                                    <li><a onClick={() => setCurrentPage('services')}>Maintenance Plans</a></li>
+                                </ul>
+                            </div>
+
+                            <div className="footer-section">
+                                <h4 className="footer-title">Company</h4>
+                                <ul className="footer-links">
+                                    <li><a onClick={() => setCurrentPage('about')}>About Us</a></li>
+                                    <li><a onClick={() => setCurrentPage('services')}>Our Services</a></li>
+                                    <li><a onClick={() => setCurrentPage('contact')}>Contact</a></li>
+                                    <li><a onClick={() => setCurrentPage('get-started')}>Get Started</a></li>
+                                </ul>
+                            </div>
+
+                            <div className="footer-section">
+                                <h4 className="footer-title">Stay Updated</h4>
+                                <p className="footer-description">
+                                    Get the latest updates on digital trends and our work.
+                                </p>
+                                <div className="social-links" style={{marginTop: '1rem'}}>
+                                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Follow us on Instagram">
+                                        <i className="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Follow us on TikTok">
+                                        <i className="fab fa-tiktok"></i>
+                                    </a>
+                                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Like us on Facebook">
+                                        <i className="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Follow us on X">
+                                        <i className="fab fa-x-x"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="footer-bottom">
+                            <p>&copy; 2026 Genfeel. All rights reserved.</p>
+                            <div className="footer-bottom-links">
+                                <a style={{cursor: 'pointer'}}>Privacy Policy</a>
+                                <a style={{cursor: 'pointer'}}>Terms of Service</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        // ===== MAIN APP COMPONENT =====
+        const App = () => {
+            const [currentPage, setCurrentPage] = useState('home');
+
+            return (
+                <div className="app">
+                    <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                    
+                    {currentPage === 'home' && <HomePage setCurrentPage={setCurrentPage} />}
+                    {currentPage === 'services' && <ServicesPage setCurrentPage={setCurrentPage} />}
+                    {currentPage === 'about' && <AboutPage />}
+                    {currentPage === 'contact' && <ContactPage />}
+                    {currentPage === 'get-started' && <GetStartedPage />}
+                    
+                    <Footer setCurrentPage={setCurrentPage} />
+                </div>
+            );
+        };
+
+        // ===== RENDER APP =====
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+<!-- Hide loading screen after React loads (ADD THIS) -->
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'none';
+                }
+            }, 500);
+        });
+</script>
+<!-- ===== GENFEEL CHATBOT - SELF CONTAINED ===== -->
+<!-- ===== GENFEEL CHATBOT WITH FULL BOOKING SYSTEM ===== -->
+<div id="genfeel-chatbot">
+    <style>
+        #genfeel-chatbot * {
+            box-sizing: border-box;
+        }
+
+        #genfeel-chatbot #chat-container {
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            width: 380px;
+            z-index: 99999 !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        #genfeel-chatbot #chat-toggle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            color: white;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.5);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        #genfeel-chatbot #chat-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        #genfeel-chatbot #chat-window {
+            display: none;
+            background: #1a1a24;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        #genfeel-chatbot #chat-window.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #genfeel-chatbot #chat-header {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        #genfeel-chatbot #chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #genfeel-chatbot #chat-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        #genfeel-chatbot #chat-header h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        #genfeel-chatbot #chat-status {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #genfeel-chatbot #chat-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse-status 2s infinite;
+        }
+
+        @keyframes pulse-status {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        #genfeel-chatbot #close-chat {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        #genfeel-chatbot #close-chat:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        #genfeel-chatbot #chatbox {
+            height: 350px;
+            overflow-y: auto;
+            padding: 16px;
+            background: #0a0a0f;
+            scroll-behavior: smooth;
+        }
+
+        #genfeel-chatbot #chatbox::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #genfeel-chatbot #chatbox::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #genfeel-chatbot #chatbox::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        #genfeel-chatbot .chat-message {
+            margin: 12px 0;
+            padding: 14px 18px;
+            border-radius: 16px;
+            max-width: 85%;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #genfeel-chatbot .chat-message.user {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        #genfeel-chatbot .chat-message.bot {
+            background: #1e1e2d;
+            color: #ffffff;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        #genfeel-chatbot .chat-message.system {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            text-align: center;
+            max-width: 100%;
+            font-size: 0.8rem;
+        }
+
+        #genfeel-chatbot .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 14px 18px;
+            background: #1e1e2d;
+            border-radius: 16px;
+            width: fit-content;
+            margin: 12px 0;
+        }
+
+        #genfeel-chatbot .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #6366f1;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        #genfeel-chatbot .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        #genfeel-chatbot .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        #genfeel-chatbot #chat-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            background: #1a1a24;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #genfeel-chatbot #userInput {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0a0a0f;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        #genfeel-chatbot #userInput:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        #genfeel-chatbot #userInput::placeholder {
+            color: #71717a;
+        }
+
+        #genfeel-chatbot .chat-btn {
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        #genfeel-chatbot #sendBtn {
+            background: #6366f1;
+            color: white;
+        }
+
+        #genfeel-chatbot #sendBtn:hover {
+            background: #818cf8;
+            transform: translateY(-1px);
+        }
+
+        #genfeel-chatbot #voiceBtn {
+            background: #252532;
+            color: white;
+            font-size: 18px;
+            min-width: 50px;
+        }
+
+        #genfeel-chatbot #voiceBtn:hover {
+            background: #06b6d4;
+        }
+
+        #genfeel-chatbot #voiceBtn.listening {
+            background: #ec4899;
+            animation: voicePulse 1s infinite;
+        }
+
+        @keyframes voicePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
+        }
+
+        /* Quick Reply Buttons */
+        #genfeel-chatbot .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        #genfeel-chatbot .quick-reply-btn {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            color: #a5b4fc;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        #genfeel-chatbot .quick-reply-btn:hover {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: #6366f1;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Service Cards */
+        #genfeel-chatbot .service-card {
+            background: #1e1e2d;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #genfeel-chatbot .service-card:hover {
+            border-color: #6366f1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        #genfeel-chatbot .service-card.selected {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        #genfeel-chatbot .service-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        #genfeel-chatbot .service-card-icon {
+            font-size: 24px;
+        }
+
+        #genfeel-chatbot .service-card-title {
+            font-weight: 600;
+            color: white;
+        }
+
+        #genfeel-chatbot .service-card-price {
+            color: #a5b4fc;
+            font-size: 0.85rem;
+        }
+
+        #genfeel-chatbot .service-card-desc {
+            color: #a1a1aa;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* Time Slots Grid */
+        #genfeel-chatbot .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        #genfeel-chatbot .time-slot {
+            background: #1e1e2d;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+
+        #genfeel-chatbot .time-slot:hover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        #genfeel-chatbot .time-slot.unavailable {
+            opacity: 0.4;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        /* Date Picker Buttons */
+        #genfeel-chatbot .date-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        #genfeel-chatbot .date-btn {
+            background: #1e1e2d;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 14px 16px;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #genfeel-chatbot .date-btn:hover {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        #genfeel-chatbot .date-btn-day {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        #genfeel-chatbot .date-btn-date {
+            color: #a1a1aa;
+            font-size: 0.85rem;
+        }
+
+        /* Booking Summary */
+        #genfeel-chatbot .booking-summary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 8px 0;
+        }
+
+        #genfeel-chatbot .booking-summary-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        #genfeel-chatbot .booking-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+        }
+
+        #genfeel-chatbot .booking-summary-row:last-child {
+            border-bottom: none;
+        }
+
+        #genfeel-chatbot .booking-summary-label {
+            color: #a1a1aa;
+        }
+
+        #genfeel-chatbot .booking-summary-value {
+            color: white;
+            font-weight: 500;
+        }
+
+        #genfeel-chatbot .booking-ref {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: #4ade80;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        /* Progress Indicator */
+        #genfeel-chatbot .booking-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        #genfeel-chatbot .progress-step {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            transition: all 0.3s;
+        }
+
+        #genfeel-chatbot .progress-step.active {
+            background: #6366f1;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        #genfeel-chatbot .progress-step.completed {
+            background: #4ade80;
+        }
+
+        /* Cancel Button */
+        #genfeel-chatbot .cancel-booking-btn {
+            background: transparent;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        #genfeel-chatbot .cancel-booking-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            #genfeel-chatbot #chat-container {
+                width: calc(100% - 20px);
+                right: 10px !important;
+                bottom: 10px !important;
+            }
+
+            #genfeel-chatbot .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+
+    <div id="chat-container">
+        <div id="chat-window">
+            <div id="chat-header">
+                <div id="chat-header-info">
+                    <div id="chat-avatar">G</div>
+                    <div>
+                        <h4>Genfeel Assistant</h4>
+                        <div id="chat-status">Online</div>
+                    </div>
+                </div>
+                <button id="close-chat">✕</button>
+            </div>
+            <div id="booking-progress" style="display: none;">
+                <div class="booking-progress">
+                    <div class="progress-step" data-step="1"></div>
+                    <div class="progress-step" data-step="2"></div>
+                    <div class="progress-step" data-step="3"></div>
+                    <div class="progress-step" data-step="4"></div>
+                    <div class="progress-step" data-step="5"></div>
+                    <div class="progress-step" data-step="6"></div>
+                </div>
+            </div>
+            <div id="chatbox"></div>
+            <div id="chat-input-area">
+                <input type="text" id="userInput" placeholder="Type your message...">
+                <button id="sendBtn" class="chat-btn">Send</button>
+                <button id="voiceBtn" class="chat-btn">🎤</button>
+            </div>
+        </div>
+        <button id="chat-toggle">💬</button>
+    </div>
+</div>
+
+<script>
+(function() {
+    // ============ DOM ELEMENTS ============
+    const chatWindow = document.getElementById('chat-window');
+    const chatToggle = document.getElementById('chat-toggle');
+    const closeChat = document.getElementById('close-chat');
+    const chatbox = document.getElementById('chatbox');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const voiceBtn = document.getElementById('voiceBtn');
+    const bookingProgress = document.getElementById('booking-progress');
+
+    // ============ BOOKING STATE ============
+    let bookingMode = false;
+    let bookingStep = 0;
+    let bookingData = {
+        service: '',
+        serviceDetails: null,
+        name: '',
+        email: '',
+        phone: '',
+        date: '',
+        dateDisplay: '',
+        time: '',
+        notes: '',
+        referenceNumber: ''
+    };
+
+    // ============ SERVICES DATA ============
+    const services = [
+        {
+            id: 'website-starter',
+            name: 'Website - Starter',
+            icon: '🌐',
+            price: '£299',
+            description: 'Perfect for small local brands. 1-3 pages, responsive design, domain & hosting.',
+            duration: '30 min consultation'
+        },
+        {
+            id: 'website-professional',
+            name: 'Website - Professional',
+            icon: '🌐',
+            price: '£749',
+            description: 'For businesses ready to grow. 5-8 pages, CMS, blog, SEO optimization.',
+            duration: '45 min consultation',
+            popular: true
+        },
+        {
+            id: 'website-business',
+            name: 'Website - Business',
+            icon: '🌐',
+            price: '£1,499',
+            description: 'Full automation & performance. Backend dashboard, payments, portal.',
+            duration: '60 min consultation'
+        },
+        {
+            id: 'mobile-app',
+            name: 'Mobile App Development',
+            icon: '📱',
+            price: 'From £499',
+            description: 'iOS & Android apps with native performance and intuitive UX.',
+            duration: '60 min consultation'
+        },
+        {
+            id: 'chatbot',
+            name: 'AI Chatbot',
+            icon: '💬',
+            price: 'From £199',
+            description: 'Smart chatbot that understands context and represents your brand.',
+            duration: '30 min consultation'
+        },
+        {
+            id: 'voice-agent',
+            name: 'Voice Agent',
+            icon: '🗣️',
+            price: 'From £249',
+            description: 'Voice-powered assistant for phone or web with natural conversation.',
+            duration: '30 min consultation'
+        },
+        {
+            id: 'general',
+            name: 'General Consultation',
+            icon: '💡',
+            price: 'Free',
+            description: 'Not sure what you need? Let\'s discuss your project and find the best solution.',
+            duration: '30 min consultation'
+        }
+    ];
+
+    // ============ TIME SLOTS ============
+    const timeSlots = [
+        { time: '09:00', display: '9:00 AM', available: true },
+        { time: '10:00', display: '10:00 AM', available: true },
+        { time: '11:00', display: '11:00 AM', available: true },
+        { time: '12:00', display: '12:00 PM', available: false },
+        { time: '14:00', display: '2:00 PM', available: true },
+        { time: '15:00', display: '3:00 PM', available: true },
+        { time: '16:00', display: '4:00 PM', available: true },
+        { time: '17:00', display: '5:00 PM', available: true }
+    ];
+
+    // ============ TOGGLE CHAT ============
+    chatToggle.onclick = function() {
+        chatWindow.classList.add('open');
+        chatToggle.style.display = 'none';
+    };
+
+    closeChat.onclick = function() {
+        chatWindow.classList.remove('open');
+        chatToggle.style.display = 'flex';
+    };
+
+    // ============ MESSAGE FUNCTIONS ============
+    function addMessage(text, sender) {
+        removeTypingIndicator();
+        const div = document.createElement('div');
+        div.className = 'chat-message ' + sender;
+        div.innerHTML = text.replace(/\n/g, '<br>');
+        chatbox.appendChild(div);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        const div = document.createElement('div');
+        div.className = 'typing-indicator';
+        div.id = 'typing-indicator';
+        div.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chatbox.appendChild(div);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+    }
+
+    function addQuickReplies(options) {
+        const container = document.createElement('div');
+        container.className = 'quick-replies';
+        
+        options.forEach(option => {
+            const btn = document.createElement('button');
+            btn.className = 'quick-reply-btn';
+            btn.textContent = option;
+            btn.onclick = function() {
+                userInput.value = option;
+                sendMessage();
+                container.remove();
+            };
+            container.appendChild(btn);
+        });
+        
+        chatbox.appendChild(container);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function addCancelButton() {
+        const btn = document.createElement('button');
+        btn.className = 'cancel-booking-btn';
+        btn.textContent = '✕ Cancel Booking';
+        btn.onclick = function() {
+            cancelBooking();
+            btn.remove();
+        };
+        chatbox.appendChild(btn);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    // ============ SERVICE CARDS ============
+    function showServiceCards() {
+        services.forEach(service => {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            if (service.popular) card.classList.add('popular');
+            
+            card.innerHTML = `
+                <div class="service-card-header">
+                    <span class="service-card-icon">${service.icon}</span>
+                    <div>
+                        <div class="service-card-title">${service.name}</div>
+                        <div class="service-card-price">${service.price} • ${service.duration}</div>
+                    </div>
+                </div>
+                <div class="service-card-desc">${service.description}</div>
+            `;
+            
+            card.onclick = function() {
+                document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                userInput.value = service.name;
+                setTimeout(() => sendMessage(), 300);
+            };
+            
+            chatbox.appendChild(card);
+        });
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    // ============ DATE PICKER ============
+    function showDatePicker() {
+        const container = document.createElement('div');
+        container.className = 'date-options';
+        
+        const today = new Date();
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        // Generate next 5 business days
+        let daysAdded = 0;
+        let currentDate = new Date(today);
+        
+        while (daysAdded < 5) {
+            currentDate.setDate(currentDate.getDate() + 1);
+            const dayOfWeek = currentDate.getDay();
+            
+            // Skip weekends
+            if (dayOfWeek === 0 || dayOfWeek === 6) continue;
+            
+            const dateStr = currentDate.toISOString().split('T')[0];
+            const dayName = days[dayOfWeek];
+            const dateDisplay = `${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
+            
+            const btn = document.createElement('button');
+            btn.className = 'date-btn';
+            btn.innerHTML = `
+                <span class="date-btn-day">${dayName}</span>
+                <span class="date-btn-date">${dateDisplay}</span>
+            `;
+            
+            btn.onclick = function() {
+                bookingData.date = dateStr;
+                bookingData.dateDisplay = `${dayName}, ${dateDisplay}`;
+                userInput.value = `${dayName}, ${dateDisplay}`;
+                container.remove();
+                sendMessage();
+            };
+            
+            container.appendChild(btn);
+            daysAdded++;
+        }
+        
+        // Add "Other date" option
+        const otherBtn = document.createElement('button');
+        otherBtn.className = 'date-btn';
+        otherBtn.innerHTML = `
+            <span class="date-btn-day">📅 Choose Another Date</span>
+            <span class="date-btn-date">Type your preferred date</span>
+        `;
+        otherBtn.onclick = function() {
+            container.remove();
+            addMessage("Please type your preferred date (e.g., 'January 20th' or 'next Monday')", 'bot');
+        };
+        container.appendChild(otherBtn);
+        
+        chatbox.appendChild(container);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    // ============ TIME SLOTS ============
+    function showTimeSlots() {
+        const container = document.createElement('div');
+        container.className = 'time-slots';
+        
+        timeSlots.forEach(slot => {
+            const btn = document.createElement('button');
+            btn.className = 'time-slot' + (slot.available ? '' : ' unavailable');
+            btn.textContent = slot.display;
+            
+            if (slot.available) {
+                btn.onclick = function() {
+                    bookingData.time = slot.display;
+                    userInput.value = slot.display;
+                    container.remove();
+                    sendMessage();
+                };
+            }
+            
+            container.appendChild(btn);
+        });
+        
+        chatbox.appendChild(container);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    // ============ BOOKING SUMMARY ============
+    function showBookingSummary() {
+        const summary = document.createElement('div');
+        summary.className = 'booking-summary';
+        
+        summary.innerHTML = `
+            <div class="booking-summary-title">📋 Booking Summary</div>
+            <div class="booking-summary-row">
+                <span class="booking-summary-label">Service</span>
+                <span class="booking-summary-value">${bookingData.service}</span>
+            </div>
+            <div class="booking-summary-row">
+                <span class="booking-summary-label">Name</span>
+                <span class="booking-summary-value">${bookingData.name}</span>
+            </div>
+            <div class="booking-summary-row">
+                <span class="booking-summary-label">Email</span>
+                <span class="booking-summary-value">${bookingData.email}</span>
+            </div>
+            <div class="booking-summary-row">
+                <span class="booking-summary-label">Phone</span>
+                <span class="booking-summary-value">${bookingData.phone}</span>
+            </div>
+            <div class="booking-summary-row">
+                <span class="booking-summary-label">Date</span>
+                <span class="booking-summary-value">${bookingData.dateDisplay || bookingData.date}</span>
+            </div>
+            <div class="booking-summary-row">
+                <span class="booking-summary-label">Time</span>
+                <span class="booking-summary-value">${bookingData.time} (UK)</span>
+            </div>
+            ${bookingData.notes && bookingData.notes !== 'skip' ? `
+            <div class="booking-summary-row">
+                <span class="booking-summary-label">Notes</span>
+                <span class="booking-summary-value">${bookingData.notes}</span>
+            </div>
+            ` : ''}
+            <div class="booking-ref">Reference: ${bookingData.referenceNumber}</div>
+        `;
+        
+        chatbox.appendChild(summary);
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    // ============ PROGRESS UPDATE ============
+    function updateProgress(step) {
+        bookingProgress.style.display = step > 0 ? 'block' : 'none';
+        
+        document.querySelectorAll('.progress-step').forEach((el, index) => {
+            el.classList.remove('active', 'completed');
+            if (index + 1 < step) {
+                el.classList.add('completed');
+            } else if (index + 1 === step) {
+                el.classList.add('active');
+            }
+        });
+    }
+
+    // ============ GENERATE REFERENCE ============
+    function generateReference() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let ref = 'GF-';
+        for (let i = 0; i < 6; i++) {
+            ref += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return ref;
+    }
+
+    // ============ VALIDATE EMAIL ============
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // ============ VALIDATE PHONE ============
+    function isValidPhone(phone) {
+        return phone.replace(/\D/g, '').length >= 10;
+    }
+
+    // ============ START BOOKING ============
+    function startBooking() {
+        bookingMode = true;
+        bookingStep = 1;
+        bookingData = {
+            service: '',
+            serviceDetails: null,
+            name: '',
+            email: '',
+            phone: '',
+            date: '',
+            dateDisplay: '',
+            time: '',
+            notes: '',
+            referenceNumber: ''
+        };
+        
+        updateProgress(1);
+        
+        setTimeout(() => {
+            addMessage("Great! Let's book your consultation. 📅\n\nFirst, which service are you interested in?", 'bot');
+            speakText("Great! Let's book your consultation. Which service are you interested in?");
+            showServiceCards();
+            addCancelButton();
+        }, 500);
+    }
+
+    // ============ CANCEL BOOKING ============
+    function cancelBooking() {
+        bookingMode = false;
+        bookingStep = 0;
+        updateProgress(0);
+        
+        addMessage("Booking cancelled. No worries! 👍\n\nIs there anything else I can help you with?", 'bot');
+        speakText("Booking cancelled. Is there anything else I can help you with?");
+        addQuickReplies(['View Services', 'Pricing', 'Contact Info', 'Start New Booking']);
+    }
+
+    // ============ HANDLE BOOKING STEPS ============
+    function handleBookingStep(userMessage) {
+        const msg = userMessage.toLowerCase().trim();
+        
+        switch(bookingStep) {
+            case 1: // Service Selection
+                const selectedService = services.find(s => 
+                    s.name.toLowerCase() === msg || 
+                    userMessage === s.name ||
+                    msg.includes(s.id.replace('-', ' '))
+                );
+                
+                if (selectedService || userMessage.length > 2) {
+                    bookingData.service = selectedService ? selectedService.name : userMessage;
+                    bookingData.serviceDetails = selectedService || null;
+                    bookingStep = 2;
+                    updateProgress(2);
+                    
+                    setTimeout(() => {
+                        showTypingIndicator();
+                    }, 300);
+                    
+                    setTimeout(() => {
+                        addMessage(`Excellent choice! ${selectedService ? selectedService.icon : '✨'}\n\nNow, what's your full name?`, 'bot');
+                        speakText("Excellent choice! What's your full name?");
+                    }, 800);
+                } else {
+                    addMessage("Please select a service from the options above, or type what you're looking for.", 'bot');
+                    showServiceCards();
+                }
+                break;
+
+            case 2: // Name
+                if (userMessage.trim().length < 2) {
+                    addMessage("Please enter your full name (at least 2 characters).", 'bot');
+                    return;
+                }
+                
+                bookingData.name = userMessage.trim();
+                bookingStep = 3;
+                updateProgress(3);
+                
+                setTimeout(() => showTypingIndicator(), 300);
+                setTimeout(() => {
+                    addMessage(`Nice to meet you, ${bookingData.name.split(' ')[0]}! 👋\n\nWhat's your email address?`, 'bot');
+                    speakText(`Nice to meet you, ${bookingData.name.split(' ')[0]}! What's your email address?`);
+                }, 800);
+                break;
+
+            case 3: // Email
+                if (!isValidEmail(userMessage)) {
+                    addMessage("Hmm, that doesn't look like a valid email. Please enter a valid email address (e.g., you@example.com).", 'bot');
+                    return;
+                }
+                
+                bookingData.email = userMessage.trim().toLowerCase();
+                bookingStep = 4;
+                updateProgress(4);
+                
+                setTimeout(() => showTypingIndicator(), 300);
+                setTimeout(() => {
+                    addMessage("Got it! 📧\n\nWhat's your phone number?\n\n(Include country code if outside UK, e.g., +1 for US)", 'bot');
+                    speakText("Got it! What's your phone number?");
+                }, 800);
+                break;
+
+            case 4: // Phone
+                if (!isValidPhone(userMessage)) {
+                    addMessage("Please enter a valid phone number with at least 10 digits.", 'bot');
+                    return;
+                }
+                
+                bookingData.phone = userMessage.trim();
+                bookingStep = 5;
+                updateProgress(5);
+                
+                setTimeout(() => showTypingIndicator(), 300);
+                setTimeout(() => {
+                    addMessage("Perfect! 📱\n\nWhen would you like to schedule your consultation?\n\n(We're available Monday–Friday, 9AM–6PM UK time)", 'bot');
+                    speakText("Perfect! When would you like to schedule your consultation?");
+                    showDatePicker();
+                }, 800);
+                break;
+
+            case 5: // Date
+                if (userMessage.length < 2) {
+                    addMessage("Please select or type a date for your consultation.", 'bot');
+                    showDatePicker();
+                    return;
+                }
+                
+                if (!bookingData.dateDisplay) {
+                    bookingData.dateDisplay = userMessage;
+                    bookingData.date = userMessage;
+                }
+                bookingStep = 6;
+                updateProgress(6);
+                
+                setTimeout(() => showTypingIndicator(), 300);
+                setTimeout(() => {
+                    addMessage(`Great! ${bookingData.dateDisplay} it is! 📅\n\nWhat time works best for you?`, 'bot');
+                    speakText(`Great! ${bookingData.dateDisplay}. What time works best for you?`);
+                    showTimeSlots();
+                }, 800);
+                break;
+
+            case 6: // Time
+                if (userMessage.length < 2) {
+                    addMessage("Please select a time slot from the options above.", 'bot');
+                    showTimeSlots();
+                    return;
+                }
+                
+                bookingData.time = userMessage;
+                bookingStep = 7;
+                
+                setTimeout(() => showTypingIndicator(), 300);
+                setTimeout(() => {
+                    addMessage("Almost done! 📝\n\nAnything specific you'd like to discuss during the consultation?\n\n(Type your notes or say 'skip' to continue)", 'bot');
+                    speakText("Almost done! Anything specific you'd like to discuss? Or say skip to continue.");
+                    addQuickReplies(['Skip', 'New website', 'Redesign existing site', 'E-commerce', 'App idea', 'Just exploring']);
+                }, 800);
+                break;
+
+            case 7: // Notes & Confirmation
+                bookingData.notes = msg === 'skip' ? '' : userMessage;
+                bookingData.referenceNumber = generateReference();
+                
+                bookingStep = 0;
+                bookingMode = false;
+                updateProgress(0);
+                
+                setTimeout(() => showTypingIndicator(), 300);
+                setTimeout(() => {
+                    addMessage("🎉 Booking Confirmed!\n\nHere's your appointment summary:", 'bot');
+                    showBookingSummary();
+                    
+                    setTimeout(() => {
+                        addMessage("We've sent a confirmation email to " + bookingData.email + ".\n\nWe'll also send a reminder 24 hours before your consultation.\n\nThank you for choosing Genfeel! 💜", 'bot');
+                        speakText(`Booking confirmed! Your reference number is ${bookingData.referenceNumber}. We've sent a confirmation to your email.`);
+                        
+                        // Submit booking
+                        submitBooking();
+                        
+                        addQuickReplies(['View Services', 'Pricing', 'Ask a Question']);
+                    }, 500);
+                }, 1000);
+                break;
+        }
+    }
+
+    // ============ SUBMIT BOOKING ============
+    function submitBooking() {
+        // Send via FormSubmit (free email service)
+        // IMPORTANT: Replace with your email address
+        fetch('https://formsubmit.co/ajax/hello@genfeel.com', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: `📅 New Booking: ${bookingData.referenceNumber} - ${bookingData.service}`,
+                reference: bookingData.referenceNumber,
+                service: bookingData.service,
+                name: bookingData.name,
+                email: bookingData.email,
+                phone: bookingData.phone,
+                date: bookingData.dateDisplay || bookingData.date,
+                time: bookingData.time + ' (UK)',
+                notes: bookingData.notes || 'No additional notes',
+                source: 'Chatbot Booking'
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log('✅ Booking submitted:', bookingData.referenceNumber))
+        .catch(error => console.log('Booking submission error:', error));
+
+        // Also log to console for debugging
+        console.log('📅 Booking Data:', bookingData);
+    }
+
+    // ============ MAIN RESPONSE HANDLER ============
+    function getBotResponse(userMessage) {
+        const msg = userMessage.toLowerCase().trim();
+
+        // Handle booking flow
+        if (bookingMode) {
+            handleBookingStep(userMessage);
+            return null;
+        }
+
+        // ============ BOOKING TRIGGERS ============
+        if (msg.includes('book') || msg.includes('appointment') || msg.includes('schedule') || msg.includes('consultation') || msg.includes('meeting') || msg === 'start new booking') {
+            startBooking();
+            return null;
+        }
+
+        // ============ GREETINGS ============
+        if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey') || msg === 'start' || msg.includes('good morning') || msg.includes('good afternoon')) {
+            setTimeout(() => {
+                addQuickReplies(['View Services', 'Pricing', 'Book Consultation', 'Contact Info']);
+            }, 600);
+            return "Hey there! 👋 Welcome to Genfeel — tech with a heartbeat.\n\nI can help you with:\n• Our services & packages\n• Pricing information\n• Booking a free consultation\n\nWhat would you like to know?";
+        }
+
+        // ============ ABOUT ============
+        else if (msg.includes('about') || msg.includes('who are you') || msg.includes('what is genfeel')) {
+            setTimeout(() => {
+                addQuickReplies(['View Services', 'Book Consultation', 'Our Values']);
+            }, 600);
+            return "Genfeel is a team of designers, developers, and strategists who believe technology should feel human.\n\nWe create digital experiences that people actually enjoy:\n🌐 Beautiful websites\n📱 Intuitive mobile apps\n💬 Conversational AI\n\nOur motto: Digital Made Human 💜";
+        }
+
+        // ============ SERVICES ============
+        else if (msg.includes('service') || msg.includes('what do you do') || msg.includes('what do you offer') || msg === 'view services') {
+            setTimeout(() => {
+                addQuickReplies(['Websites', 'Mobile Apps', 'AI Chatbots', 'See Pricing', 'Book Consultation']);
+            }, 600);
+            return "We offer 3 main services:\n\n🌐 Website Development\nBeautiful, fast sites starting at £299\n\n📱 Mobile App Development\niOS & Android apps from £499\n\n💬 Conversational AI\nChatbots (£199) & Voice Agents (£249)\n\nPlus monthly maintenance plans!\n\nWhich interests you?";
+        }
+
+        // ============ WEBSITES ============
+        else if (msg.includes('website')) {
+            setTimeout(() => {
+                addQuickReplies(['Starter £299', 'Professional £749', 'Business £1,499', 'Book Consultation']);
+            }, 600);
+            return "🌐 Website Development\n\nWe have 3 packages:\n\n🟩 Starter — £299\n1-3 pages, responsive, domain & hosting\n\n🟦 Professional — £749 ⭐\n5-8 pages, CMS, blog, SEO, animations\n\n🟨 Business — £1,499\nBackend dashboard, payments, portal\n\nAll include responsive design, SEO, and support!\n\nWant details on a specific package?";
+        }
+
+        // ============ MOBILE APP ============
+        else if (msg.includes('app') || msg.includes('mobile') || msg.includes('ios') || msg.includes('android')) {
+            setTimeout(() => {
+                addQuickReplies(['Book App Consultation', 'See Website Packages', 'Pricing']);
+            }, 600);
+            return "📱 Mobile App Development\n\nNative & cross-platform apps:\n\n✓ iOS & Android Development\n✓ Native Performance\n✓ Offline Functionality\n✓ Push Notifications\n✓ App Store Optimization\n\nPricing:\n• Standard app: from £499\n• Custom app: from £699\n\nWant to discuss your app idea?";
+        }
+
+        // ============ CHATBOT / AI ============
+        else if (msg.includes('chatbot') || msg.includes('ai') || msg.includes('voice')) {
+            setTimeout(() => {
+                addQuickReplies(['Book AI Consultation', 'See Pricing', 'View Services']);
+            }, 600);
+            return "💬 Conversational AI\n\nLike me! We build:\n\n🤖 AI Chatbots — from £199\n• Natural language understanding\n• Brand voice training\n• 24/7 availability\n\n🗣️ Voice Agents — from £249\n• Phone & web integration\n• Natural conversation\n• Smart responses\n\nBoth include analytics & insights!\n\nWant a demo?";
+        }
+
+        // ============ PRICING ============
+        else if (msg.includes('price') || msg.includes('cost') || msg.includes('pricing') || msg.includes('how much') || msg === 'see pricing') {
+            setTimeout(() => {
+                addQuickReplies(['Starter £299', 'Professional £749', 'Business £1,499', 'Maintenance Plans', 'Book Consultation']);
+            }, 600);
+            return "💰 Our Pricing\n\n🌐 Websites:\n• Starter: £299\n• Professional: £749 ⭐\n• Business: £1,499\n\n📱 Apps:\n• Mobile App: from £499\n• Custom App: from £699\n\n💬 AI:\n• Chatbot: from £199\n• Voice Agent: from £249\n\n⚙️ Maintenance:\n• Essential: £49/mo\n• Growth: £99/mo\n• Enterprise: £199/mo\n\nAll consultations are FREE!";
+        }
+
+        // ============ STARTER PACKAGE ============
+        else if (msg.includes('starter')) {
+            setTimeout(() => {
+                addQuickReplies(['Book Starter Consultation', 'Compare Packages', 'Professional Package']);
+            }, 600);
+            return "🟩 STARTER — £299\n\nPerfect for small local brands.\n\nIncludes:\n✓ 1–3 page modern website\n✓ Responsive design\n✓ Free domain & hosting (1 year)\n✓ Basic SEO\n✓ Contact form & social links\n✓ Email support (Mon–Fri)\n\nAdd-ons:\n🛍️ Online store: +£149\n📅 Booking system: +£99\n\nDelivery: 1-2 weeks";
+        }
+
+        // ============ PROFESSIONAL PACKAGE ============
+        else if (msg.includes('professional')) {
+            setTimeout(() => {
+                addQuickReplies(['Book Professional Consultation', 'Compare Packages', 'Business Package']);
+            }, 600);
+            return "🟦 PROFESSIONAL — £749 ⭐\nMost Popular!\n\nFor businesses ready to grow.\n\nEverything in Starter, PLUS:\n✓ 5–8 custom pages\n✓ HD visuals & animations\n✓ Built-in CMS\n✓ Blog/portfolio section\n✓ Local SEO optimization\n✓ Google Analytics\n✓ 1-hour strategy call\n✓ 2 design revisions\n\nAdd-ons:\n📱 Mobile app: +£499\n💬 Chatbot: +£199\n🗣️ Voice agent: +£249\n\nDelivery: 2-4 weeks";
+        }
+
+        // ============ BUSINESS PACKAGE ============
+        else if (msg.includes('business')) {
+            setTimeout(() => {
+                addQuickReplies(['Book Business Consultation', 'Compare Packages', 'Professional Package']);
+            }, 600);
+            return "🟨 BUSINESS — £1,499\n\nFull automation & performance.\n\nEverything in Professional, PLUS:\n✓ Backend dashboard & database\n✓ Secure payment processing\n✓ Member/client portal\n✓ Advanced SEO\n✓ 3 months health checks\n✓ Priority 24-hour support\n\nAdd-ons:\n📱 Custom app: +£699\n🤖 AI chatbot: +£349\n🗣️ Voice agent: +£299\n\nDelivery: 4-6 weeks";
+        }
+
+        // ============ MAINTENANCE ============
+        else if (msg.includes('maintenance') || msg.includes('support') || msg.includes('care')) {
+            setTimeout(() => {
+                addQuickReplies(['Essential £49/mo', 'Growth £99/mo', 'Enterprise £199/mo', 'Book Consultation']);
+            }, 600);
+            return "⚙️ Maintenance Plans\n\n⚡ Essential — £49/mo\nHosting, backups, security updates\n\n📈 Growth — £99/mo (Best Value!)\nEssential + SEO tracking, content updates\n\n🚀 Enterprise — £199/mo\nGrowth + chatbot & voice optimization\n\nAll plans include:\n✓ 24/7 monitoring\n✓ Regular backups\n✓ Security patches\n✓ Technical support";
+        }
+
+        // ============ CONTACT ============
+        else if (msg.includes('contact') || msg.includes('reach') || msg.includes('email') || msg.includes('phone') || msg === 'contact info') {
+            setTimeout(() => {
+                addQuickReplies(['Book Consultation', 'View Services', 'Pricing']);
+            }, 600);
+            return "📞 Contact Us\n\n📧 Email: hello@genfeel.com\n📞 Phone: +44 7383 027802\n📍 Location: London, UK\n⏰ Hours: Mon–Fri, 9AM–6PM\n\nOr I can book a consultation for you right now! Just say 'book appointment' 📅";
+        }
+
+        // ============ COMPARE ============
+        else if (msg.includes('compare') || msg.includes('difference') || msg.includes('which package')) {
+            setTimeout(() => {
+                addQuickReplies(['Starter £299', 'Professional £749', 'Business £1,499', 'Book Consultation']);
+            }, 600);
+            return "📊 Package Comparison\n\n🟩 Starter (£299)\n→ Just starting out\n→ Simple 1-3 page site\n→ Tight budget\n\n🟦 Professional (£749) ⭐\n→ Growing business\n→ Need CMS & blog\n→ Want to rank on Google\n\n🟨 Business (£1,499)\n→ Need payments/login\n→ Want automation\n→ Priority support\n\nNot sure? Book a free consultation!";
+        }
+
+        // ============ HELP ============
+        else if (msg.includes('help') || msg.includes('what can you do') || msg === 'menu') {
+            setTimeout(() => {
+                addQuickReplies(['View Services', 'Pricing', 'Book Consultation', 'Contact Info']);
+            }, 600);
+            return "I can help you with:\n\n📦 Services — Websites, Apps, AI\n💰 Pricing — Packages & costs\n📅 Booking — Schedule a consultation\n📞 Contact — How to reach us\n❓ Questions — Anything about Genfeel!\n\nWhat would you like to know?";
+        }
+
+        // ============ THANKS / BYE ============
+        else if (msg.includes('thank') || msg.includes('bye') || msg.includes('goodbye') || msg.includes('cheers')) {
+            return "You're welcome! 💜\n\nRemember, you can:\n📅 Book anytime: Just say 'book'\n📧 Email: hello@genfeel.com\n📞 Call: +44 7383 027802\n\nHave a wonderful day! 👋";
+        }
+
+        // ============ STATS ============
+        else if (msg.includes('experience') || msg.includes('track record') || msg.includes('portfolio') || msg.includes('clients')) {
+            setTimeout(() => {
+                addQuickReplies(['View Services', 'Book Consultation', 'Pricing']);
+            }, 600);
+            return "📊 Our Track Record\n\n✅ 50+ Projects Delivered\n✅ 30+ Happy Clients\n✅ 98% Satisfaction Rate\n✅ 24/7 Support Available\n\nWant to see examples? Email us at hello@genfeel.com and we'll send relevant portfolio pieces!";
+        }
+
+        // ============ DEFAULT ============
+        else {
+            setTimeout(() => {
+                addQuickReplies(['View Services', 'Pricing', 'Book Consultation', 'Contact Info']);
+            }, 600);
+            return "Thanks for your message! 😊\n\nI can help with:\n• Services & packages\n• Pricing information\n• Booking consultations\n• General questions\n\nOr reach us directly:\n📧 hello@genfeel.com\n📞 +44 7383 027802\n\nWhat would you like to know?";
+        }
+    }
+
+    // ============ SEND MESSAGE ============
+    function sendMessage() {
+        const text = userInput.value.trim();
+        if (text === '') return;
+
+        addMessage(text, 'user');
+        userInput.value = '';
+
+        // Remove any existing quick replies
+        document.querySelectorAll('.quick-replies').forEach(el => el.remove());
+        document.querySelectorAll('.service-card').forEach(el => el.remove());
+        document.querySelectorAll('.date-options').forEach(el => el.remove());
+        document.querySelectorAll('.time-slots').forEach(el => el.remove());
+        document.querySelectorAll('.cancel-booking-btn').forEach(el => el.remove());
+
+        // Show typing indicator
+        setTimeout(() => showTypingIndicator(), 300);
+
+        setTimeout(function() {
+            const response = getBotResponse(text);
+            if (response) {
+                addMessage(response, 'bot');
+                
+                // Speak a shortened version
+                const shortResponse = response.replace(/[•✓✅📧📞📍⏰🎯💡🎨⚡🤝❤️💜👋🎉📅📱💬🌐🟩🟦🟨📦💰🛠️⚙️📋👤💳🛍️📝🔍📊🤖🗣️⭐📈🚀]/g, '').substring(0, 200);
+                speakText(shortResponse);
+            }
+            
+            // Re-add cancel button if still in booking mode
+            if (bookingMode && bookingStep > 0) {
+                addCancelButton();
+            }
+        }, 800);
+    }
+
+    sendBtn.onclick = sendMessage;
+    userInput.onkeypress = function(e) {
+        if (e.key === 'Enter') sendMessage();
+    };
+
+    // ============ VOICE INPUT ============
+    let recognition = null;
+    let isListening = false;
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-GB';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onresult = function(event) {
+            const text = event.results[0][0].transcript;
+            userInput.value = text;
+            sendMessage();
+        };
+
+        recognition.onend = function() {
+            isListening = false;
+            voiceBtn.textContent = '🎤';
+            voiceBtn.classList.remove('listening');
+        };
+
+        recognition.onerror = function(event) {
+            console.log('Speech error:', event.error);
+            isListening = false;
+            voiceBtn.textContent = '🎤';
+            voiceBtn.classList.remove('listening');
+            
+            if (event.error === 'not-allowed') {
+                addMessage("🎤 Microphone access denied. Please enable it in your browser settings.", 'system');
+            }
+        };
+    }
+
+    voiceBtn.onclick = function() {
+        if (!recognition) {
+            addMessage("🎤 Voice input is not supported in your browser. Please use Chrome for the best experience.", 'system');
+            return;
+        }
+
+        if (isListening) {
+            recognition.stop();
+        } else {
+            recognition.start();
+            isListening = true;
+            voiceBtn.textContent = '⏹️';
+            voiceBtn.classList.add('listening');
+        }
+    };
+
+    // ============ VOICE OUTPUT ============
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            
+            const cleanText = text
+                .replace(/\n/g, '. ')
+                .replace(/[✓✅❤️💜👋🎉📅📱💬🌐🟩🟦🟨📦💰🛠️⚙️•📧📞📍⏰🎯💡🎨⚡🤝📋👤💳🛍️📝🔍📊🤖🗣️⭐📈🚀]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+            
+            const utterance = new SpeechSynthesisUtterance(cleanText.substring(0, 250));
+            utterance.lang = 'en-GB';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            utterance.volume = 0.8;
+            
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    // ============ WELCOME MESSAGE ============
+    setTimeout(function() {
+        addMessage("Hi! I'm Genfeel's assistant 👋\n\nI can help you with:\n• Our services & packages\n• Pricing information\n• Book a free consultation\n\nHow can I help you today?", 'bot');
+        
+        setTimeout(() => {
+            addQuickReplies(['View Services', 'Pricing', 'Book Consultation', 'Contact Info']);
+        }, 500);
+    }, 800);
+})();
+</script>
+<!-- ===== END GENFEEL CHATBOT ===== --></body>
+</html>
+```
