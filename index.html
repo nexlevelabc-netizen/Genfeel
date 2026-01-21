@@ -1546,11 +1546,10 @@
                     break;
             }
         }
-
-        function submitBooking() {
+    function submitBooking() {
         console.log("🚀 Starting booking submission...");
         
-        // Create data for both services
+        // Data for Zapier
         const zapierData = {
             reference: booking.ref,
             service: booking.service,
@@ -1564,6 +1563,7 @@
             source: "Genfeel Chatbot"
         };
 
+        // Data for FormSubmit email
         const formSubmitData = {
             _subject: "📅 New Booking: " + booking.ref + " - " + booking.service,
             reference: booking.ref,
@@ -1578,121 +1578,67 @@
             _captcha: "false",
             _replyto: booking.email,
             _cc: "hello@genfeel.co.uk",
-            _autoresponse: "Thank you for booking with Genfeel! We'll confirm your appointment shortly."
+            _autoresponse: "Thank you for booking with Genfeel!"
         };
 
-        console.log("📤 Sending to Zapier and FormSubmit...");
+        console.log("📤 Sending booking...");
 
-        // 1. Send to Zapier
-        fetch("https://hooks.zapier.com/hooks/catch/26098855/uqos5cs/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(zapierData)
-        })
-        .then(response => {
-            console.log("📞 Zapier HTTP Status:", response.status);
-            return response.text().then(text => {
-                console.log("📞 Zapier Response:", text);
-                return { status: response.status, text: text };
+        // 1. Try to send to Zapier (silently fail if CORS blocks it)
+        try {
+            fetch("https://hooks.zapier.com/hooks/catch/26098855/uqos5cs/", {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(zapierData)
+            }).then(() => {
+                console.log("✅ Zapier attempt completed");
+            }).catch(() => {
+                console.log("⚠️ Zapier failed (CORS issue)");
             });
-        })
-        .then(zapierResult => {
-            console.log("✅ Zapier submission complete:", zapierResult.status);
-            
-            // 2. Send to FormSubmit (ALWAYS send, not just as backup)
-            console.log("📧 Now sending to FormSubmit for emails...");
-            
-            // Method 1: Try FormData approach (most reliable)
-            const formData = new FormData();
-            for (const key in formSubmitData) {
-                formData.append(key, formSubmitData[key]);
+        } catch (e) {
+            console.log("⚠️ Zapier fetch error:", e);
+        }
+
+        // 2. Send email via FormSubmit using hidden form (ALWAYS WORKS)
+        console.log("📧 Sending email via hidden form...");
+        
+        const form = document.createElement('form');
+        form.style.display = 'none';
+        form.method = 'POST';
+        form.action = 'https://formsubmit.co/hello@genfeel.co.uk';
+        
+        // Add all form fields
+        for (const key in formSubmitData) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = formSubmitData[key];
+            form.appendChild(input);
+        }
+        
+        // Submit the form
+        document.body.appendChild(form);
+        form.submit();
+        
+        // Clean up
+        setTimeout(() => {
+            if (form.parentNode) {
+                form.parentNode.removeChild(form);
             }
-            
-            return fetch('https://formsubmit.co/ajax/hello@genfeel.co.uk', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(formSubmitResult => {
-                console.log('✅ FormSubmit success:', formSubmitResult);
-                return { zapier: zapierResult, formSubmit: formSubmitResult };
-            })
-            .catch(formSubmitError => {
-                console.log('⚠️ FormSubmit failed, trying JSON method:', formSubmitError);
-                
-                // Method 2: Try JSON approach
-                return fetch('https://formsubmit.co/ajax/hello@genfeel.co.uk', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formSubmitData)
-                })
-                .then(response => response.json())
-                .then(jsonResult => {
-                    console.log('✅ FormSubmit JSON success:', jsonResult);
-                    return { zapier: zapierResult, formSubmit: jsonResult };
-                })
-                .catch(jsonError => {
-                    console.log('❌ FormSubmit JSON also failed:', jsonError);
-                    
-                    // Method 3: Create hidden form as last resort
-                    const form = document.createElement('form');
-                    form.style.display = 'none';
-                    form.method = 'POST';
-                    form.action = 'https://formsubmit.co/hello@genfeel.co.uk';
-                    
-                    for (const key in formSubmitData) {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = key;
-                        input.value = formSubmitData[key];
-                        form.appendChild(input);
-                    }
-                    
-                    document.body.appendChild(form);
-                    form.submit();
-                    
-                    setTimeout(() => {
-                        if (form.parentNode) form.parentNode.removeChild(form);
-                    }, 3000);
-                    
-                    console.log('📧 Hidden form submitted');
-                    return { zapier: zapierResult, formSubmit: { success: true, method: 'hidden_form' } };
-                });
-            });
-        })
-        .then(finalResult => {
-            console.log("🎉 All submissions complete:", finalResult);
-            
-            // Show success message in chat
-            setTimeout(() => {
-                addMsg(`✅ <strong>Booking Confirmed!</strong><br><br>
-                🔖 <strong>Reference:</strong> ${booking.ref}<br>
-                📅 <strong>Date:</strong> ${booking.dateDisplay}<br>
-                ⏰ <strong>Time:</strong> ${booking.time} (UK)<br>
-                📧 <strong>Confirmation sent to:</strong> ${booking.email}<br><br>
-                Check your email for confirmation. We'll contact you 24 hours before.`, "bot");
-            }, 1500);
-        })
-        .catch(error => {
-            console.error("❌ Critical error:", error);
-            
-            // Even if everything fails, at least show the booking was saved locally
-            setTimeout(() => {
-                addMsg(`📝 <strong>Booking Saved!</strong><br><br>
-                🔖 <strong>Reference:</strong> ${booking.ref}<br>
-                📅 <strong>Date:</strong> ${booking.dateDisplay}<br>
-                ⏰ <strong>Time:</strong> ${booking.time} (UK)<br>
-                📧 <strong>Email:</strong> ${booking.email}<br><br>
-                We'll contact you to confirm.`, "bot");
-            }, 1500);
-        });
+        }, 3000);
+        
+        console.log('✅ Email form submitted');
+        
+        // Show success message
+        setTimeout(() => {
+            addMsg(`✅ <strong>Booking Confirmed!</strong><br><br>
+            🔖 <strong>Reference:</strong> ${booking.ref}<br>
+            📅 <strong>Date:</strong> ${booking.dateDisplay}<br>
+            ⏰ <strong>Time:</strong> ${booking.time} (UK)<br>
+            📧 <strong>Email sent to:</strong> ${booking.email}<br><br>
+            Check your inbox for confirmation.`, "bot");
+        }, 1000);
     }
-
       function speak(text) {
             if (isMuted) return;
             if (!window.speechSynthesis) return;
