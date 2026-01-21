@@ -1,11 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genfeel - Digital Made Human | Tech with a Heartbeat</title>
-    <!-- ========== PASTE FAVICON CODE HERE ========== -->
+    
+    <!-- Favicons (temporarily disabled for local testing) -->
+    <!-- 
     <link rel="shortcut icon" href="/images/favicon.ico?v=3" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=3">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=3">
@@ -13,7 +14,8 @@
     <link rel="icon" sizes="192x192" href="/images/android-chrome-192x192.png?v=3">
     <link rel="icon" sizes="512x512" href="/images/android-chrome-512x512.png?v=3">
     <link rel="manifest" href="/images/site.webmanifest?v=3">
-    <!-- ========== END FAVICON ========== -->
+    -->
+    
     <meta name="description" content="We create digital experiences that people enjoy using. Websites, mobile apps, Chatbot and Voice Agent AI that feel natural and human.">
     
     <!-- Fonts -->
@@ -27,7 +29,6 @@
     <!-- React & Dependencies -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
     <style>
@@ -1086,10 +1087,14 @@
                 gap: var(--spacing-sm);
             }
         }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <!-- Loading Screen (ADD THIS) -->
+    <!-- Loading Screen -->
     <div id="loading-screen" style="
         position: fixed;
         top: 0;
@@ -1118,1353 +1123,774 @@
         ">Loading Genfeel...</p>
     </div>
 
-    <style>
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-
     <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        // API Configuration
-        const API_URL = 'http://localhost:5000';
-
-        // ===== NAVBAR COMPONENT =====
-        const Navbar = ({ currentPage, setCurrentPage }) => {
-            const [isScrolled, setIsScrolled] = useState(false);
-            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-            useEffect(() => {
-                const handleScroll = () => setIsScrolled(window.scrollY > 50);
-                window.addEventListener('scroll', handleScroll);
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, []);
-
-            const navLinks = [
-                { id: 'home', label: 'Home' },
-                { id: 'services', label: 'Services' },
-                { id: 'about', label: 'About' },
-                { id: 'contact', label: 'Contact' },
-            ];
-
-            const handleNavClick = (pageId) => {
-                setCurrentPage(pageId);
-                setIsMobileMenuOpen(false);
-                window.scrollTo(0, 0);
-            };
-
-            return (
-                <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-                    <div className="navbar-container container">
-                        <div onClick={() => handleNavClick('home')} className="navbar-logo">
-                            <span className="logo-icon">G</span>
-                            <span className="logo-text">Genfeel</span>
-                        </div>
-
-                        <div className="navbar-links desktop-only">
-                            {navLinks.map((link) => (
-                                <div
-                                    key={link.id}
-                                    onClick={() => handleNavClick(link.id)}
-                                    className={`nav-link ${currentPage === link.id ? 'active' : ''}`}
-                                >
-                                    {link.label}
-                                </div>
-                            ))}
-                        </div>
-
-                        <button onClick={() => handleNavClick('get-started')} className="btn btn-primary desktop-only">
-                            Get Started
-                        </button>
-
-                        <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                            <span className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </span>
-                        </button>
-                    </div>
-
-                    <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-                        <div className="mobile-menu-links">
-                            {navLinks.map((link) => (
-                                <div
-                                    key={link.id}
-                                    onClick={() => handleNavClick(link.id)}
-                                    className={`mobile-nav-link ${currentPage === link.id ? 'active' : ''}`}
-                                >
-                                    {link.label}
-                                </div>
-                            ))}
-                            <button onClick={() => handleNavClick('get-started')} className="btn btn-primary">
-                                Get Started
-                            </button>
-                        </div>
-                    </div>
-                </nav>
-            );
-        };
-
-        // ===== HOME PAGE =====
-        const HomePage = ({ setCurrentPage }) => {
-            const services = [
-                {
-                    icon: '🌐',
-                    title: 'Websites',
-                    description: 'Beautiful, fast, and feel like home to your customers',
-                    features: ['Responsive Design', 'Performance Optimized', 'SEO Friendly']
-                },
-                {
-                    icon: '📱',
-                    title: 'Mobile Apps',
-                    description: 'Apps that fit seamlessly into daily life',
-                    features: ['iOS & Android', 'Native Performance', 'Intuitive UX']
-                },
-                {
-                    icon: '💬',
-                    title: 'Chatbot and Voice Agent AI',
-                    description: 'Like talking to a real person who knows your brand',
-                    features: ['Natural Language', 'Smart Responses', 'Brand Aligned']
-                }
-            ];
-
-            const stats = [
-                { number: '50+', label: 'Projects Delivered' },
-                { number: '30+', label: 'Happy Clients' },
-                { number: '98%', label: 'Satisfaction Rate' },
-                { number: '24/7', label: 'Support Available' }
-            ];
-
-            return (
-                <div className="home fade-in">
-                    <section className="hero">
-                        <div className="hero-background">
-                            <div className="gradient-mesh"></div>
-                        </div>
-                        
-                        <div className="hero-content container">
-                            <div className="hero-badge"> Digital Made Human</div>
-                            <h1 className="hero-title">
-                                Tech with a{' '}
-                                <span className="gradient-text">heartbeat</span>
-                            </h1>
-                            <p className="hero-description">
-                                We create digital experiences that people <em>enjoy</em> using. 
-                                Beautiful websites, intuitive mobile apps, Chatbot and Voice Agent AI 
-                                that feels like talking to a real person.
-                            </p>
-                            <div className="hero-cta">
-                                <button onClick={() => setCurrentPage('get-started')} className="btn btn-primary btn-lg">
-                                    Start Your Project
-                                </button>
-                                <button onClick={() => setCurrentPage('services')} className="btn btn-secondary btn-lg">
-                                    View Services
-                                </button>
-                            </div>
-                            <div className="hero-stats">
-                                {stats.map((stat, index) => (
-                                    <div key={index} className="stat-item">
-                                        <div className="stat-number">{stat.number}</div>
-                                        <div className="stat-label">{stat.label}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="services-section">
-                        <div className="container">
-                            <div className="section-header">
-                                <h2 className="section-title">What We Build</h2>
-                                <p className="section-description">
-                                    Digital solutions designed for humans, not robots
-                                </p>
-                            </div>
-                            <div className="services-grid">
-                                {services.map((service, index) => (
-                                    <div key={index} className="service-card">
-                                        <div className="service-icon">{service.icon}</div>
-                                        <h3 className="service-title">{service.title}</h3>
-                                        <p className="service-description">{service.description}</p>
-                                        <ul className="service-features">
-                                            {service.features.map((feature, i) => (
-                                                <li key={i}>
-                                                    <span style={{color: 'var(--color-primary)'}}>✓</span>
-                                                    {feature}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <div onClick={() => setCurrentPage('services')} className="service-link">
-                                            Learn More →
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="why-section">
-                        <div className="container">
-                            <div className="why-content">
-                                <div className="why-text">
-                                    <h2 className="section-title">
-                                        Building connections, <br/>not just code
-                                    </h2>
-                                    <p className="why-description">
-                                        Instead of cold technology, we build warm connections. 
-                                        Our work is about making every tap, scroll, and conversation 
-                                        feel intentional, intuitive, and human.
-                                    </p>
-                                    <p className="why-description">
-                                        Whether you're launching something new or refreshing what you have, 
-                                        we're here to make sure your digital presence feels as good as it looks.
-                                    </p>
-                                    <button onClick={() => setCurrentPage('about')} className="btn btn-primary">
-                                        Learn About Us
-                                    </button>
-                                </div>
-                                
-                                <div className="why-visual">
-                                    <div className="visual-card glass">
-                                        <div className="visual-content">
-                                            <h4><div className="pulse-dot"></div>Human-Centered Design</h4>
-                                            <p>Every decision driven by user experience</p>
-                                        </div>
-                                    </div>
-                                    <div className="visual-card glass">
-                                        <div className="visual-content">
-                                            <h4><div className="pulse-dot"></div>Modern Technology</h4>
-                                            <p>Built with the latest tools and frameworks</p>
-                                        </div>
-                                    </div>
-                                    <div className="visual-card glass">
-                                        <div className="visual-content">
-                                            <h4><div className="pulse-dot"></div>Ongoing Support</h4>
-                                            <p>We're with you every step of the way</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="cta-section">
-                        <div className="container">
-                            <div className="cta-content">
-                                <h2 className="cta-title">Ready to build something amazing?</h2>
-                                <p className="cta-description">
-                                    Let's create a digital experience that your users will love
-                                </p>
-                                <div className="cta-buttons">
-                                    <button onClick={() => setCurrentPage('get-started')} className="btn btn-primary btn-lg">
-                                        Get Started Today
-                                    </button>
-                                    <button onClick={() => setCurrentPage('contact')} className="btn btn-secondary btn-lg">
-                                        Schedule a Call
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+    
+    <!-- Load React App -->
+    <script src="genfeel-app.js"></script>
+    
+    <!-- Chatbot Widget -->
+    <div id="gc-widget">
+        <div id="gc-window">
+            <div id="gc-header">
+                <span id="gc-header-title">💬 Genfeel Assistant</span>
+                <div id="gc-header-buttons">
+                    <button id="gc-reset" title="New Chat">🔄</button>
+                    <button id="gc-close" title="Close">✕</button>
                 </div>
-            );
-        };
-
-        // ===== SERVICES PAGE =====
-        const ServicesPage = ({ setCurrentPage }) => {
-            const services = [
-                {
-                    icon: '🌐',
-                    title: 'Website Development',
-                    tagline: 'Beautiful, fast, and feel like home',
-                    description: 'We create websites that don\'t just look good—they perform exceptionally and provide experiences your customers will love returning to.',
-                    features: [
-                        'Responsive Design',
-                        'Performance Optimization',
-                        'SEO & Accessibility',
-                        'Content Management',
-                        'E-commerce Solutions',
-                        'Progressive Web Apps'
-                    ]
-                },
-                {
-                    icon: '📱',
-                    title: 'Mobile App Development',
-                    tagline: 'Apps that fit seamlessly into daily life',
-                    description: 'Native and cross-platform mobile applications designed with your users in mind. Intuitive, fast, and delightful to use.',
-                    features: [
-                        'iOS & Android Development',
-                        'Cross-Platform Solutions',
-                        'Native Performance',
-                        'Offline Functionality',
-                        'Push Notifications',
-                        'App Store Optimization'
-                    ]
-                },
-                {
-                    icon: '💬',
-                    title: 'Chatbot and Voice Agent AI',
-                    tagline: 'Like talking to a real person',
-                    description: 'AI-powered chatbots and virtual assistants that understand context, speak naturally, and truly represent your brand.',
-                    features: [
-                        'Natural Language Processing',
-                        'Multi-Channel Support',
-                        'Brand Voice Training',
-                        'Context Awareness',
-                        '24/7 Availability',
-                        'Analytics & Insights'
-                    ]
-                }
-            ];
-
-            const packages = [
-                {
-                    id: 'starter',
-                    name: 'Starter',
-                    badge: '🟩',
-                    price: '£299',
-                    description: 'For small local brands taking their first digital step',
-                    features: [
-                        '1–3 page modern website',
-                        'Responsive design for mobile & tablet',
-                        'Free domain setup & secure hosting (1 year)',
-                        'Basic SEO (titles, descriptions)',
-                        'Contact form & social links',
-                        'Email support (Mon–Fri)'
-                    ],
-                    upgrades: [
-                        '🛍️ Online store (+£149)',
-                        '📅 Booking system (+£99)'
-                    ],
-                    highlighted: false
-                },
-                {
-                    id: 'professional',
-                    name: 'Professional',
-                    badge: '🟦',
-                    price: '£749',
-                    description: 'For businesses ready to attract and convert',
-                    features: [
-                        'Everything in Starter, plus:',
-                        '5–8 custom pages',
-                        'High-definition visuals & animations',
-                        'Built-in CMS for easy editing',
-                        'Blog or portfolio section',
-                        'Local SEO optimization',
-                        'Google Analytics setup',
-                        '1-hour strategy consultation',
-                        'Two design revisions'
-                    ],
-                    addons: [
-                        '📱 Mobile app version (+£499)',
-                        '🗣️ Voice agent (+£249)',
-                        '💬 Chatbot assistant (+£199)'
-                    ],
-                    highlighted: true
-                },
-                {
-                    id: 'business',
-                    name: 'Business',
-                    badge: '🟨',
-                    price: '£1,499',
-                    description: 'For growing brands that want automation and performance',
-                    features: [
-                        'Everything in Professional, plus:',
-                        'Backend system with dashboard & database',
-                        'Secure payment & order processing',
-                        'Member/client portal',
-                        'Advanced SEO (speed + schema)',
-                        'Monthly website health checks (3 months)',
-                        'Priority support (24-hour response)'
-                    ],
-                    enhancements: [
-                        '📱 Custom mobile app (+£699)',
-                        '🗣️ Voice agent (+£299)',
-                        '🤖 AI chatbot (+£349)'
-                    ],
-                    highlighted: false
-                }
-            ];
-
-            const maintenancePlans = [
-                {
-                    name: 'Essential Care',
-                    price: '£49/mo',
-                    icon: '⚡',
-                    description: 'Hosting, backups, & security updates'
-                },
-                {
-                    name: 'Growth Care',
-                    price: '£99/mo',
-                    icon: '📈',
-                    description: 'Essential + SEO tracking & content updates',
-                    highlighted: true
-                },
-                {
-                    name: 'Enterprise Care',
-                    price: '£199/mo',
-                    icon: '🚀',
-                    description: 'Growth + chatbot & voice agent optimization'
-                }
-            ];
-
-            return (
-                <div className="services-page fade-in">
-                    <section className="services-hero">
-                        <div className="container">
-                            <h1 className="hero-title">
-                                Digital Experiences, <span className="gradient-text">Humanly Crafted</span>
-                            </h1>
-                            <p className="hero-description">
-                                We design technology that feels human — crafted for businesses 
-                                that want to look, sound, and perform like the future.
-                            </p>
-                        </div>
-                    </section>
-
-                    <section className="detailed-services">
-                        <div className="container">
-                            {services.map((service, index) => (
-                                <div key={index} className="detailed-service">
-                                    <div className="service-header">
-                                        <span className="service-icon-large">{service.icon}</span>
-                                        <div>
-                                            <h2 className="service-title-large">{service.title}</h2>
-                                            <p className="service-tagline">{service.tagline}</p>
-                                        </div>
-                                    </div>
-                                    <p className="why-description">{service.description}</p>
-                                    <div style={{marginTop: '2rem'}}>
-                                        <h4 style={{marginBottom: '1rem', color: 'var(--color-primary-light)'}}>What's Included</h4>
-                                        <ul className="service-features">
-                                            {service.features.map((feature, i) => (
-                                                <li key={i}>
-                                                    <span style={{color: 'var(--color-primary)'}}>✓</span>
-                                                    {feature}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section className="pricing-section">
-                        <div className="container">
-                            <div className="section-header">
-                                <h2 className="section-title">Choose a plan that fits your ambition</h2>
-                                <p className="section-description">
-                                    Flexible pricing for projects of all sizes
-                                </p>
-                            </div>
-                            <div className="pricing-grid">
-                                {packages.map((pkg, index) => (
-                                    <div
-                                        key={index}
-                                        className={`pricing-card ${pkg.highlighted ? 'highlighted' : ''}`}
-                                    >
-                                        {pkg.highlighted && <div className="popular-badge">Most Popular</div>}
-                                        <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>{pkg.badge}</div>
-                                        <h3 className="package-name">{pkg.name}</h3>
-                                        <div className="package-price">{pkg.price}</div>
-                                        <p className="package-description">{pkg.description}</p>
-                                        
-                                        <div style={{marginBottom: '1rem'}}>
-                                            <h4 style={{fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--color-primary-light)'}}>Includes:</h4>
-                                            <ul className="package-features">
-                                                {pkg.features.map((feature, i) => (
-                                                    <li key={i}>{feature}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-
-                                        {pkg.upgrades && (
-                                            <div style={{marginBottom: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
-                                                <h4 style={{fontSize: '0.875rem', marginBottom: '0.75rem', color: 'var(--color-accent)'}}>Upgrade Options:</h4>
-                                                <ul className="package-features">
-                                                    {pkg.upgrades.map((upgrade, i) => (
-                                                        <li key={i} style={{fontSize: '0.875rem'}}>{upgrade}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-
-                                        {pkg.addons && (
-                                            <div style={{marginBottom: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
-                                                <h4 style={{fontSize: '0.875rem', marginBottom: '0.75rem', color: 'var(--color-accent)'}}>Add-ons:</h4>
-                                                <ul className="package-features">
-                                                    {pkg.addons.map((addon, i) => (
-                                                        <li key={i} style={{fontSize: '0.875rem'}}>{addon}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-
-                                        {pkg.enhancements && (
-                                            <div style={{marginBottom: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)'}}>
-                                                <h4 style={{fontSize: '0.875rem', marginBottom: '0.75rem', color: 'var(--color-accent)'}}>Optional Enhancements:</h4>
-                                                <ul className="package-features">
-                                                    {pkg.enhancements.map((enhancement, i) => (
-                                                        <li key={i} style={{fontSize: '0.875rem'}}>{enhancement}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-
-                                        <button onClick={() => setCurrentPage('contact')} className="btn btn-primary btn-block">
-                                            Get a Quote
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Maintenance Plans Section */}
-                    <section className="services-section" style={{background: 'var(--color-background)'}}>
-                        <div className="container">
-                            <div className="section-header">
-                                <h2 className="section-title">⚙️ Monthly Maintenance Plans</h2>
-                                <p className="section-description">
-                                    Keep your digital presence running smoothly
-                                </p>
-                            </div>
-
-                            <div className="services-grid">
-                                {maintenancePlans.map((plan, index) => (
-                                    <div key={index} className={`service-card ${plan.highlighted ? 'pricing-card highlighted' : ''}`}>
-                                        {plan.highlighted && <div className="popular-badge">Best Value</div>}
-                                        <div className="service-icon">{plan.icon}</div>
-                                        <h3 className="service-title">{plan.name}</h3>
-                                        <div className="package-price" style={{fontSize: '2rem', margin: '1rem 0'}}>
-                                            {plan.price}
-                                        </div>
-                                        <p className="service-description">
-                                            {plan.description}
-                                        </p>
-                                        <button 
-                                            onClick={() => setCurrentPage('contact')} 
-                                            className={`btn ${plan.highlighted ? 'btn-primary' : 'btn-secondary'} btn-block`}
-                                        >
-                                            Learn More
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
+            </div>
+            <div id="gc-progress">
+                <div id="gc-progress-bar">
+                    <div class="gc-progress-dot" data-step="1"></div>
+                    <div class="gc-progress-dot" data-step="2"></div>
+                    <div class="gc-progress-dot" data-step="3"></div>
+                    <div class="gc-progress-dot" data-step="4"></div>
+                    <div class="gc-progress-dot" data-step="5"></div>
+                    <div class="gc-progress-dot" data-step="6"></div>
                 </div>
-            );
+            </div>
+            <div id="gc-messages"></div>
+            <div id="gc-input-area">
+                <input type="text" id="gc-input" placeholder="Type your message...">
+                <button id="gc-send">Send</button>
+                <button id="gc-voice">🎤</button>
+                <button id="gc-mute" class="gc-muted">🔇</button>
+            </div>
+        </div>
+        <button id="gc-bubble">💬</button>
+    </div>
+
+    <script>
+    (function() {
+        // Chatbot variables
+        var bubble = document.getElementById("gc-bubble");
+        var chatWindow = document.getElementById("gc-window");
+        var closeBtn = document.getElementById("gc-close");
+        var resetBtn = document.getElementById("gc-reset");
+        var messages = document.getElementById("gc-messages");
+        var input = document.getElementById("gc-input");
+        var sendBtn = document.getElementById("gc-send");
+        var voiceBtn = document.getElementById("gc-voice");
+        var muteBtn = document.getElementById("gc-mute");
+        var progress = document.getElementById("gc-progress");
+        
+        var isMuted = true;
+        var isListening = false;
+        var recognition = null;
+        
+        var bookingMode = false;
+        var bookingStep = 0;
+        var booking = {
+            service: "",
+            name: "",
+            email: "",
+            phone: "",
+            date: "",
+            dateDisplay: "",
+            time: "",
+            notes: "",
+            ref: ""
         };
 
-        // ===== ABOUT PAGE =====
-        const AboutPage = () => {
-            return (
-                <div className="about-page fade-in">
-                    <section className="services-hero">
-                        <div className="container">
-                            <h1 className="hero-title">
-                                We're <span className="gradient-text">Genfeel</span>
-                            </h1>
-                            <p className="hero-description">
-                                A team of designers, developers, and strategists who believe 
-                                technology should feel human.
-                            </p>
-                        </div>
-                    </section>
+        var services = [
+            { name: "Website - Starter", price: "£299", desc: "1-3 pages, responsive design" },
+            { name: "Website - Professional", price: "£749", desc: "5-8 pages, CMS, SEO", popular: true },
+            { name: "Website - Business", price: "£1,499", desc: "Dashboard, payments, portal" },
+            { name: "Mobile App", price: "From £499", desc: "iOS & Android development" },
+            { name: "AI Chatbot", price: "From £199", desc: "Smart chatbot for your site" },
+            { name: "Voice Agent", price: "From £249", desc: "Voice-powered assistant" },
+            { name: "General Consultation", price: "Free", desc: "Discuss your project needs" }
+        ];
 
-                    <section className="why-section">
-                        <div className="container">
-                            <div className="why-content">
-                                <div className="why-text">
-                                    <h2 className="section-title">Our Mission</h2>
-                                    <p className="why-description">
-                                        We exist to bridge the gap between technology and humanity. 
-                                        Every project we take on is an opportunity to create something 
-                                        that doesn't just work—it delights.
-                                    </p>
-                                    <p className="why-description">
-                                        We believe the best digital experiences are invisible. They feel 
-                                        natural, intuitive, and effortless. That's what we build.
-                                    </p>
-                                </div>
-                                
-                                <div className="why-visual">
-                                    <div className="visual-card glass">
-                                        <div className="visual-content">
-                                            <h4>🎨 Design First</h4>
-                                            <p>Every pixel matters. We obsess over the details.</p>
-                                        </div>
-                                    </div>
-                                    <div className="visual-card glass">
-                                        <div className="visual-content">
-                                            <h4>⚡ Performance Driven</h4>
-                                            <p>Fast, efficient, and optimized for all devices.</p>
-                                        </div>
-                                    </div>
-                                    <div className="visual-card glass">
-                                        <div className="visual-content">
-                                            <h4>🤝 Client Partnership</h4>
-                                            <p>Your success is our success. We're in this together.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+        var timeSlots = [
+            { time: "9:00 AM", available: true },
+            { time: "10:00 AM", available: true },
+            { time: "11:00 AM", available: true },
+            { time: "12:00 PM", available: false },
+            { time: "2:00 PM", available: true },
+            { time: "3:00 PM", available: true },
+            { time: "4:00 PM", available: true },
+            { time: "5:00 PM", available: true }
+        ];
 
-                    <section className="services-section">
-                        <div className="container">
-                            <div className="section-header">
-                                <h2 className="section-title">Our Values</h2>
-                            </div>
-                            <div className="services-grid">
-                                <div className="service-card">
-                                    <div className="service-icon">💡</div>
-                                    <h3 className="service-title">Innovation</h3>
-                                    <p className="service-description">
-                                        We stay ahead of the curve, always exploring new technologies 
-                                        and methodologies to deliver cutting-edge solutions.
-                                    </p>
-                                </div>
-                                <div className="service-card">
-                                    <div className="service-icon">🎯</div>
-                                    <h3 className="service-title">Quality</h3>
-                                    <p className="service-description">
-                                        We never compromise on quality. Every line of code, every design 
-                                        element is crafted with care and precision.
-                                    </p>
-                                </div>
-                                <div className="service-card">
-                                    <div className="service-icon">❤️</div>
-                                    <h3 className="service-title">Empathy</h3>
-                                    <p className="service-description">
-                                        We put ourselves in your users' shoes. Understanding their needs 
-                                        and pain points guides every decision we make.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            );
+        // Open chat
+        bubble.onclick = function() {
+            chatWindow.classList.add("gc-open");
+            bubble.style.display = "none";
         };
 
-        // ===== CONTACT PAGE =====
-        const ContactPage = () => {
-            const [formData, setFormData] = useState({
-                name: '',
-                email: '',
-                company: '',
-                phone: '',
-                service: '',
-                message: ''
+        // Close chat and reset
+        closeBtn.onclick = function() {
+            chatWindow.classList.remove("gc-open");
+            bubble.style.display = "flex";
+            
+            setTimeout(function() {
+                resetChat();
+            }, 300);
+        };
+
+        // Reset chat button
+        resetBtn.onclick = function() {
+            resetChat();
+        };
+
+        // Mute toggle
+        muteBtn.onclick = function() {
+            isMuted = !isMuted;
+            if (isMuted) {
+                muteBtn.textContent = "🔇";
+                muteBtn.classList.add("gc-muted");
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+            } else {
+                muteBtn.textContent = "🔊";
+                muteBtn.classList.remove("gc-muted");
+            }
+        };
+
+        // Reset chat function
+        function resetChat() {
+            messages.innerHTML = "";
+            bookingMode = false;
+            bookingStep = 0;
+            booking = { service: "", name: "", email: "", phone: "", date: "", dateDisplay: "", time: "", notes: "", ref: "" };
+            updateProgress(0);
+            clearExtras();
+            
+            addMsg("Hi! I'm Genfeel's assistant 👋\n\nHow can I help you today?", "bot");
+            setTimeout(function() {
+                addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]);
+            }, 400);
+        }
+
+        function addMsg(text, type) {
+            var div = document.createElement("div");
+            div.className = "gc-msg gc-msg-" + type;
+            div.innerHTML = text.replace(/\n/g, "<br>");
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function addQuickBtns(options) {
+            var container = document.createElement("div");
+            container.className = "gc-quick-btns";
+            options.forEach(function(opt) {
+                var btn = document.createElement("button");
+                btn.className = "gc-quick-btn";
+                btn.textContent = opt;
+                btn.onclick = function() {
+                    input.value = opt;
+                    sendMsg();
+                    container.remove();
+                };
+                container.appendChild(btn);
             });
-            const [loading, setLoading] = useState(false);
-            const [success, setSuccess] = useState(false);
-            const [error, setError] = useState('');
+            messages.appendChild(container);
+            messages.scrollTop = messages.scrollHeight;
+        }
 
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                setLoading(true);
-                setError('');
+        function addCancelBtn() {
+            var btn = document.createElement("button");
+            btn.className = "gc-cancel-btn";
+            btn.textContent = "✕ Cancel Booking";
+            btn.onclick = function() {
+                cancelBooking();
+            };
+            messages.appendChild(btn);
+            messages.scrollTop = messages.scrollHeight;
+        }
 
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 1500));
+        function showServices() {
+            services.forEach(function(s) {
+                var card = document.createElement("div");
+                card.className = "gc-service-card";
+                card.innerHTML = '<div class="gc-service-card-title">' + s.name + (s.popular ? ' ⭐' : '') + '</div><div class="gc-service-card-price">' + s.price + ' • ' + s.desc + '</div>';
+                card.onclick = function() {
+                    input.value = s.name;
+                    sendMsg();
+                };
+                messages.appendChild(card);
+            });
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function showDates() {
+            var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            var today = new Date();
+            var added = 0;
+            var current = new Date(today);
+            
+            while (added < 5) {
+                current.setDate(current.getDate() + 1);
+                var dayOfWeek = current.getDay();
+                if (dayOfWeek === 0 || dayOfWeek === 6) continue;
+                
+                var dayName = days[dayOfWeek];
+                var dateStr = current.getDate() + " " + months[current.getMonth()];
+                var fullDate = dayName + ", " + dateStr;
+                
+                (function(fd) {
+                    var btn = document.createElement("button");
+                    btn.className = "gc-date-btn";
+                    btn.innerHTML = '<span>' + dayName + '</span><span>' + dateStr + '</span>';
+                    btn.onclick = function() {
+                        booking.dateDisplay = fd;
+                        input.value = fd;
+                        sendMsg();
+                    };
+                    messages.appendChild(btn);
+                })(fullDate);
+                
+                added++;
+            }
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function showTimes() {
+            var grid = document.createElement("div");
+            grid.className = "gc-time-grid";
+            
+            timeSlots.forEach(function(slot) {
+                var btn = document.createElement("button");
+                btn.className = "gc-time-btn" + (slot.available ? "" : " gc-unavailable");
+                btn.textContent = slot.time;
+                
+                if (slot.available) {
+                    btn.onclick = function() {
+                        input.value = slot.time;
+                        sendMsg();
+                    };
+                }
+                grid.appendChild(btn);
+            });
+            
+            messages.appendChild(grid);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function showSummary() {
+            var summary = document.createElement("div");
+            summary.className = "gc-summary";
+            summary.innerHTML = '<div class="gc-summary-title">📋 Booking Summary</div>' +
+                '<div class="gc-summary-row"><span class="gc-summary-label">Service</span><span class="gc-summary-value">' + booking.service + '</span></div>' +
+                '<div class="gc-summary-row"><span class="gc-summary-label">Name</span><span class="gc-summary-value">' + booking.name + '</span></div>' +
+                '<div class="gc-summary-row"><span class="gc-summary-label">Email</span><span class="gc-summary-value">' + booking.email + '</span></div>' +
+                '<div class="gc-summary-row"><span class="gc-summary-label">Phone</span><span class="gc-summary-value">' + booking.phone + '</span></div>' +
+                '<div class="gc-summary-row"><span class="gc-summary-label">Date</span><span class="gc-summary-value">' + booking.dateDisplay + '</span></div>' +
+                '<div class="gc-summary-row"><span class="gc-summary-label">Time</span><span class="gc-summary-value">' + booking.time + ' (UK)</span></div>' +
+                (booking.notes && booking.notes.toLowerCase() !== "skip" ? '<div class="gc-summary-row"><span class="gc-summary-label">Notes</span><span class="gc-summary-value">' + booking.notes + '</span></div>' : '') +
+                '<div class="gc-ref-number">Reference: ' + booking.ref + '</div>';
+            
+            messages.appendChild(summary);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function updateProgress(step) {
+            progress.style.display = step > 0 ? "block" : "none";
+            var dots = document.querySelectorAll(".gc-progress-dot");
+            dots.forEach(function(dot, i) {
+                dot.classList.remove("gc-active", "gc-done");
+                if (i + 1 < step) {
+                    dot.classList.add("gc-done");
+                } else if (i + 1 === step) {
+                    dot.classList.add("gc-active");
+                }
+            });
+        }
+
+        function generateRef() {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var ref = "GF-";
+            for (var i = 0; i < 6; i++) {
+                ref += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return ref;
+        }
+
+        function isValidEmail(email) {
+            return email.indexOf("@") > 0 && email.indexOf(".") > 0;
+        }
+
+        function isValidPhone(phone) {
+            return phone.replace(/\D/g, "").length >= 10;
+        }
+
+        function clearExtras() {
+            var items = document.querySelectorAll(".gc-quick-btns, .gc-service-card, .gc-date-btn, .gc-time-grid, .gc-cancel-btn");
+            items.forEach(function(el) { el.remove(); });
+        }
+
+        function startBooking() {
+            bookingMode = true;
+            bookingStep = 1;
+            booking = { service: "", name: "", email: "", phone: "", date: "", dateDisplay: "", time: "", notes: "", ref: "" };
+            updateProgress(1);
+            
+            setTimeout(function() {
+                addMsg("Great! Let's book your consultation. 📅\n\nFirst, which service are you interested in?", "bot");
+                speak("Great! Let's book your consultation. Which service are you interested in?");
+                showServices();
+                addCancelBtn();
+            }, 500);
+        }
+
+        function cancelBooking() {
+            bookingMode = false;
+            bookingStep = 0;
+            updateProgress(0);
+            clearExtras();
+            addMsg("Booking cancelled. No worries! 👍\n\nIs there anything else I can help with?", "bot");
+            addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]);
+        }
+
+        function handleBooking(text) {
+            var msg = text.toLowerCase().trim();
+            
+            switch(bookingStep) {
+                case 1:
+                    booking.service = text;
+                    bookingStep = 2;
+                    updateProgress(2);
+                    setTimeout(function() {
+                        addMsg("Excellent choice! ✨\n\nWhat's your full name?", "bot");
+                        speak("Excellent choice! What's your full name?");
+                    }, 500);
+                    break;
                     
-                    setSuccess(true);
-                    setFormData({
-                        name: '',
-                        email: '',
-                        company: '',
-                        phone: '',
-                        service: '',
-                        message: ''
-                    });
-                } catch (err) {
-                    setError('Failed to send message. Please try again.');
-                }
-
-                setLoading(false);
-            };
-
-            return (
-                <div className="contact-page fade-in">
-                    <section className="contact-hero">
-                        <div className="container">
-                            <h1 className="hero-title">Let's <span className="gradient-text">Connect</span></h1>
-                            <p className="hero-description">
-                                Have a project in mind? We'd love to hear about it.
-                            </p>
-                        </div>
-                    </section>
-
-                    <div className="container">
-                        <div className="contact-container">
-                            <div className="contact-info">
-                                <div>
-                                    <h2>Get in Touch</h2>
-                                    <p className="why-description">
-                                        Whether you're ready to start your project or just want to learn more 
-                                        about what we do, we're here to help.
-                                    </p>
-                                </div>
-
-                                <div className="contact-info-item">
-                                    <div className="contact-icon">📧</div>
-                                    <div>
-                                        <h4>Email</h4>
-                                        <p className="why-description">hello@genfeel.co.uk</p>
-                                    </div>
-                                </div>
-
-                                <div className="contact-info-item">
-                                    <div className="contact-icon">📞</div>
-                                    <div>
-                                        <h4>Phone</h4>
-                                        <p className="why-description">+44 7383027802</p>
-                                    </div>
-                                </div>
-
-                                <div className="contact-info-item">
-                                    <div className="contact-icon">📍</div>
-                                    <div>
-                                        <h4>Location</h4>
-                                        <p className="why-description">London, UK</p>
-                                    </div>
-                                </div>
-
-                                <div className="contact-info-item">
-                                    <div className="contact-icon">⏰</div>
-                                    <div>
-                                        <h4>Business Hours</h4>
-                                        <p className="why-description">Mon - Fri: 9AM - 6PM PST</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <form className="contact-form" onSubmit={handleSubmit}>
-                                <h3>Send us a Message</h3>
-
-                                {success && (
-                                    <div className="success-message" style={{marginBottom: '1rem', padding: '1rem'}}>
-                                        ✅ Thank you! We'll get back to you within 24 hours.
-                                    </div>
-                                )}
-
-                                {error && (
-                                    <div className="error-message">
-                                        {error}
-                                    </div>
-                                )}
-
-                                <div className="form-group">
-                                    <label htmlFor="name">Full Name *</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        required
-                                        value={formData.name}
-                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                        placeholder="John Doe"
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="email">Email *</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        required
-                                        value={formData.email}
-                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                        placeholder="john@company.com"
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="company">Company</label>
-                                    <input
-                                        type="text"
-                                        id="company"
-                                        value={formData.company}
-                                        onChange={(e) => setFormData({...formData, company: e.target.value})}
-                                        placeholder="Your Company Inc."
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="phone">Phone</label>
-                                    <input
-                                        type="tel"
-                                        id="phone"
-                                        value={formData.phone}
-                                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                        placeholder="+1 (555) 123-4567"
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="service">Service Interested In</label>
-                                    <select
-                                        id="service"
-                                        value={formData.service}
-                                        onChange={(e) => setFormData({...formData, service: e.target.value})}
-                                    >
-                                        <option value="">Select a service</option>
-                                        <option value="starter">Starter Package (£299)</option>
-                                        <option value="professional">Professional Package (£749)</option>
-                                        <option value="business">Business Package (£1,499)</option>
-                                        <option value="maintenance">Maintenance Plans</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="message">Message *</label>
-                                    <textarea
-                                        id="message"
-                                        required
-                                        value={formData.message}
-                                        onChange={(e) => setFormData({...formData, message: e.target.value})}
-                                        placeholder="Tell us about your project..."
-                                    />
-                                </div>
-
-                                <button type="submit" disabled={loading} className="btn btn-primary btn-block">
-                                    {loading ? 'Sending...' : 'Send Message'}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // ===== GET STARTED PAGE =====
-        const GetStartedPage = () => {
-            const [selectedPackage, setSelectedPackage] = useState(null);
-            const [loading, setLoading] = useState(false);
-            const [error, setError] = useState('');
-            const [success, setSuccess] = useState(false);
-            const [formData, setFormData] = useState({
-                name: '',
-                email: '',
-                company: '',
-                phone: '',
-                selectedUpgrades: []
-            });
-
-            const packages = [
-                {
-                    id: 'starter',
-                    name: 'Starter',
-                    badge: '🟩',
-                    price: 299,
-                    description: 'For small local brands taking their first digital step',
-                    features: [
-                        '1–3 page modern website',
-                        'Responsive design for mobile & tablet',
-                        'Free domain setup & secure hosting (1 year)',
-                        'Basic SEO (titles, descriptions)',
-                        'Contact form & social links',
-                        'Email support (Mon–Fri)'
-                    ],
-                    upgrades: [
-                        { id: 'store', name: '🛍️ Online store', price: 149 },
-                        { id: 'booking', name: '📅 Booking system', price: 99 }
-                    ]
-                },
-                {
-                    id: 'professional',
-                    name: 'Professional',
-                    badge: '🟦',
-                    price: 749,
-                    description: 'For businesses ready to attract and convert',
-                    features: [
-                        'Everything in Starter, plus:',
-                        '5–8 custom pages',
-                        'High-definition visuals & animations',
-                        'Built-in CMS for easy editing',
-                        'Blog or portfolio section',
-                        'Local SEO optimization',
-                        'Google Analytics setup',
-                        '1-hour strategy consultation',
-                        'Two design revisions'
-                    ],
-                    addons: [
-                        { id: 'mobileapp', name: '📱 Mobile app version', price: 499 },
-                        { id: 'voiceagent', name: '🗣️ Voice agent', price: 249 },
-                        { id: 'chatbot', name: '💬 Chatbot assistant', price: 199 }
-                    ],
-                    popular: true
-                },
-                {
-                    id: 'business',
-                    name: 'Business',
-                    badge: '🟨',
-                    price: 1499,
-                    description: 'For growing brands that want automation and performance',
-                    features: [
-                        'Everything in Professional, plus:',
-                        'Backend system with dashboard & database',
-                        'Secure payment & order processing',
-                        'Member/client portal',
-                        'Advanced SEO (speed + schema)',
-                        'Monthly website health checks (3 months)',
-                        'Priority support (24-hour response)'
-                    ],
-                    enhancements: [
-                        { id: 'custommobile', name: '📱 Custom mobile app', price: 699 },
-                        { id: 'voiceagentpro', name: '🗣️ Voice agent', price: 299 },
-                        { id: 'aichatbot', name: '🤖 AI chatbot', price: 349 }
-                    ]
-                }
-            ];
-
-            const handleUpgradeToggle = (upgradeId, price) => {
-                setFormData(prev => {
-                    const isSelected = prev.selectedUpgrades.some(u => u.id === upgradeId);
-                    if (isSelected) {
-                        return {
-                            ...prev,
-                            selectedUpgrades: prev.selectedUpgrades.filter(u => u.id !== upgradeId)
-                        };
-                    } else {
-                        return {
-                            ...prev,
-                            selectedUpgrades: [...prev.selectedUpgrades, { id: upgradeId, price }]
-                        };
+                case 2:
+                    if (text.trim().length < 2) {
+                        addMsg("Please enter your full name (at least 2 characters).", "bot");
+                        return;
                     }
-                });
-            };
+                    booking.name = text.trim();
+                    bookingStep = 3;
+                    updateProgress(3);
+                    setTimeout(function() {
+                        addMsg("Nice to meet you, " + booking.name.split(" ")[0] + "! 👋\n\nWhat's your email address?", "bot");
+                        speak("Nice to meet you! What's your email address?");
+                    }, 500);
+                    break;
+                    
+                case 3:
+                    if (!isValidEmail(text)) {
+                        addMsg("Please enter a valid email address (e.g., you@example.com).", "bot");
+                        return;
+                    }
+                    booking.email = text.trim().toLowerCase();
+                    bookingStep = 4;
+                    updateProgress(4);
+                    setTimeout(function() {
+                        addMsg("Got it! 📧\n\nWhat's your phone number?", "bot");
+                        speak("Got it! What's your phone number?");
+                    }, 500);
+                    break;
+                    
+                case 4:
+                    if (!isValidPhone(text)) {
+                        addMsg("Please enter a valid phone number (at least 10 digits).", "bot");
+                        return;
+                    }
+                    booking.phone = text.trim();
+                    bookingStep = 5;
+                    updateProgress(5);
+                    setTimeout(function() {
+                        addMsg("Perfect! 📱\n\nWhen would you like to schedule?\n\n(Mon-Fri, 9AM-6PM UK time)", "bot");
+                        speak("Perfect! When would you like to schedule?");
+                        showDates();
+                    }, 500);
+                    break;
+                    
+                case 5:
+                    if (!booking.dateDisplay) {
+                        booking.dateDisplay = text;
+                    }
+                    bookingStep = 6;
+                    updateProgress(6);
+                    setTimeout(function() {
+                        addMsg("Great! " + booking.dateDisplay + " it is! 📅\n\nWhat time works best?", "bot");
+                        speak("Great! What time works best for you?");
+                        showTimes();
+                    }, 500);
+                    break;
+                    
+                case 6:
+                    booking.time = text;
+                    bookingStep = 7;
+                    setTimeout(function() {
+                        addMsg("Almost done! 📝\n\nAnything specific you'd like to discuss?\n\n(Type your notes or 'skip' to continue)", "bot");
+                        speak("Almost done! Any notes, or say skip to continue.");
+                        addQuickBtns(["Skip", "New website", "Redesign", "E-commerce", "App idea", "Just exploring"]);
+                    }, 500);
+                    break;
+                    
+                case 7:
+                    booking.notes = msg === "skip" ? "" : text;
+                    booking.ref = generateRef();
+                    bookingStep = 0;
+                    bookingMode = false;
+                    updateProgress(0);
+                    
+                    setTimeout(function() {
+                        addMsg("🎉 Booking Confirmed!\n\nHere's your appointment summary:", "bot");
+                        showSummary();
+                        
+                        setTimeout(function() {
+                            addMsg("We've sent a confirmation to " + booking.email + "\n\nWe'll remind you 24 hours before.\n\nThank you for choosing Genfeel! 💜", "bot");
+                            speak("Booking confirmed! Your reference is " + booking.ref + ". Check your email for confirmation.");
+                            submitBooking();
+                            
+                            setTimeout(function() {
+                                addQuickBtns(["View Services", "Pricing", "Contact", "New Chat"]);
+                            }, 500);
+                        }, 500);
+                    }, 500);
+                    break;
+            }
+        }
 
-            const calculateTotal = () => {
-                const basePrice = selectedPackage?.price || 0;
-                const upgradesTotal = formData.selectedUpgrades.reduce((sum, u) => sum + u.price, 0);
-                return basePrice + upgradesTotal;
-            };
+        function submitBooking() {
+    console.log("🚀 Starting booking submission...");
+    
+    const bookingData = {
+        reference: booking.ref,
+        service: booking.service,
+        name: booking.name,
+        email: booking.email,
+        phone: booking.phone,
+        date: booking.dateDisplay,
+        time: booking.time,
+        timezone: "UK",
+        notes: booking.notes || "No notes",
+        source: "Genfeel Chatbot",
+        // Add this for FormSubmit
+        _subject: "📅 New Booking: " + booking.ref + " - " + booking.service,
+        _captcha: "false", // Disable captcha
+        _template: "table", // Use table template
+        _autoresponse: "Thank you for booking with Genfeel! We'll contact you soon.",
+        _next: "https://genfeel.co.uk/thank-you"
+    };
 
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                setLoading(true);
-                setError('');
+    console.log("📤 Sending booking to Zapier:", bookingData);
 
-                try {
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    setSuccess(true);
-                } catch (err) {
-                    setError('Failed to process request. Please try again.');
+    // 1. First try Zapier - YOUR URL IS HERE
+    fetch("https://hooks.zapier.com/hooks/catch/26098855/uqos5cs/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bookingData)
+    })
+    .then(response => {
+        console.log("✅ Zapier response status:", response.status, response.statusText);
+        
+        if (response.ok) {
+            return response.text().then(text => {
+                console.log("✅ Zapier response body:", text);
+                return { success: true, data: text };
+            });
+        } else {
+            return response.text().then(text => {
+                console.log("❌ Zapier error response:", text);
+                throw new Error('Zapier failed: ' + text);
+            });
+        }
+    })
+    .then(result => {
+        console.log("✅ Booking sent to Zapier successfully");
+        
+        // 2. Send to FormSubmit for customer email
+        const formData = new FormData();
+        formData.append('_subject', '📅 New Booking: ' + booking.ref + ' - ' + booking.service);
+        formData.append('reference', booking.ref);
+        formData.append('service', booking.service);
+        formData.append('name', booking.name);
+        formData.append('email', booking.email);
+        formData.append('phone', booking.phone);
+        formData.append('date', booking.dateDisplay);
+        formData.append('time', booking.time + ' (UK)');
+        formData.append('notes', booking.notes || 'No notes');
+        formData.append('source', 'Genfeel Chatbot');
+        formData.append('_captcha', 'false');
+        formData.append('_replyto', booking.email);
+        formData.append('_cc', 'hello@genfeel.co.uk');
+        
+        fetch('https://formsubmit.co/ajax/hello@genfeel.co.uk', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('✅ FormSubmit success:', data);
+            setTimeout(() => {
+                addMsg(`📧 <strong>Confirmation email sent to ${booking.email}</strong><br>You should receive it within a few minutes.`, "bot");
+            }, 1000);
+        })
+        .catch(error => {
+            console.log('⚠️ FormSubmit failed:', error);
+            setTimeout(() => {
+                addMsg(`📧 <strong>Booking confirmed!</strong><br>Reference: ${booking.ref}<br>Your booking is saved. We'll contact you at ${booking.email}`, "bot");
+            }, 1000);
+        });
+    })
+    .catch(error => {
+        console.error("❌ Zapier submission failed:", error);
+        
+        // 3. Fallback: Try FormSubmit directly
+        console.log("🔄 Trying FormSubmit as fallback...");
+        
+        const form = document.createElement('form');
+        form.style.display = 'none';
+        form.method = 'POST';
+        form.action = 'https://formsubmit.co/hello@genfeel.co.uk';
+        
+        const fields = {
+            '_subject': '📅 New Booking: ' + booking.ref + ' - ' + booking.service,
+            'reference': booking.ref,
+            'service': booking.service,
+            'name': booking.name,
+            'email': booking.email,
+            'phone': booking.phone,
+            'date': booking.dateDisplay,
+            'time': booking.time + ' (UK)',
+            'notes': booking.notes || 'No notes',
+            'source': 'Genfeel Chatbot (Fallback)',
+            '_captcha': 'false',
+            '_replyto': booking.email,
+            '_cc': 'hello@genfeel.co.uk'
+        };
+        
+        for (const key in fields) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = fields[key];
+            form.appendChild(input);
+        }
+        
+        document.body.appendChild(form);
+        form.submit();
+        
+        console.log('✅ Form submitted via hidden form');
+        
+        setTimeout(() => {
+            if (form.parentNode) form.parentNode.removeChild(form);
+        }, 3000);
+        
+        setTimeout(() => {
+            addMsg(`📧 <strong>Booking received!</strong><br>Reference: ${booking.ref}<br>We'll send confirmation to ${booking.email} shortly.`, "bot");
+        }, 1000);
+    });
+}
+        function speak(text) {
+            if (isMuted) return;
+            if (!window.speechSynthesis) return;
+            
+            window.speechSynthesis.cancel();
+            
+            var clean = text
+                .replace(/\n/g, ". ")
+                .replace(/[✓✅❤️💜👋🎉📅📱💬🌐🟩🟦🟨📦💰🛠️⚙️•📧📞📍⏰🎯💡🎨⚡🤝📋👤💳🛍️📝🔍📊🤖🗣️⭐📈🚀✨]/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
+            
+            var utter = new SpeechSynthesisUtterance(clean.substring(0, 250));
+            
+            var voices = window.speechSynthesis.getVoices();
+            var preferredVoices = ["Google UK English Female", "Google UK English Male", "Microsoft Libby", "Samantha", "Karen", "Daniel"];
+            var selectedVoice = null;
+            
+            for (var i = 0; i < preferredVoices.length; i++) {
+                for (var j = 0; j < voices.length; j++) {
+                    if (voices[j].name.indexOf(preferredVoices[i]) >= 0) {
+                        selectedVoice = voices[j];
+                        break;
+                    }
                 }
+                if (selectedVoice) break;
+            }
+            
+            if (!selectedVoice) {
+                for (var k = 0; k < voices.length; k++) {
+                    if (voices[k].lang.indexOf("en-GB") >= 0 || voices[k].lang.indexOf("en-US") >= 0) {
+                        selectedVoice = voices[k];
+                        break;
+                    }
+                }
+            }
+            
+            if (selectedVoice) utter.voice = selectedVoice;
+            
+            utter.lang = "en-GB";
+            utter.rate = 0.95;
+            utter.pitch = 1.05;
+            utter.volume = 0.9;
+            
+            window.speechSynthesis.speak(utter);
+        }
 
-                setLoading(false);
+        if (window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = function() {
+                window.speechSynthesis.getVoices();
             };
+            window.speechSynthesis.getVoices();
+        }
 
-            if (success) {
-                return (
-                    <div className="get-started-page fade-in">
-                        <div className="container" style={{paddingTop: '120px', paddingBottom: '120px'}}>
-                            <div className="success-message">
-                                <div className="success-icon">✅</div>
-                                <h3>Request Received!</h3>
-                                <p>Thank you for choosing Genfeel. We'll be in touch within 24 hours to discuss your project and next steps.</p>
-                                <p style={{marginTop: '1rem', color: 'var(--color-text-secondary)'}}>
-                                    A confirmation email has been sent to {formData.email}
-                                </p>
-                                <button 
-                                    onClick={() => {
-                                        setSuccess(false);
-                                        setSelectedPackage(null);
-                                        setFormData({name: '', email: '', company: '', phone: '', selectedUpgrades: []});
-                                    }} 
-                                    className="btn btn-primary"
-                                    style={{marginTop: '2rem'}}
-                                >
-                                    Back to Packages
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
+        function getReply(msg) {
+            var m = msg.toLowerCase();
+
+            // Handle "New Chat" quick button
+            if (m === "new chat") {
+                resetChat();
+                return null;
             }
 
-            return (
-                <div className="get-started-page fade-in">
-                    <div className="container">
-                        <div className="get-started-header">
-                            <h1>Let's Build Something Amazing</h1>
-                            <p>Choose your package and customize with add-ons</p>
-                        </div>
+            if (m.includes("hello") || m.includes("hi") || m.includes("hey")) {
+                setTimeout(function() { addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]); }, 500);
+                return "Hey there! 👋 Welcome to Genfeel — tech with a heartbeat.\n\nHow can I help you today?";
+            }
 
-                        {!selectedPackage ? (
-                            <div className="package-selection">
-                                <div className="packages-grid">
-                                    {packages.map((pkg) => (
-                                        <div
-                                            key={pkg.id}
-                                            className={`pricing-card ${pkg.popular ? 'highlighted' : ''}`}
-                                            onClick={() => setSelectedPackage(pkg)}
-                                        >
-                                            {pkg.popular && <div className="popular-badge">Most Popular</div>}
-                                            <div style={{fontSize: '2rem', marginBottom: '0.5rem'}}>{pkg.badge}</div>
-                                            <h3 className="package-name">{pkg.name}</h3>
-                                            <div className="package-price">£{pkg.price}</div>
-                                            <p className="package-description">{pkg.description}</p>
-                                            <ul className="package-features">
-                                                {pkg.features.slice(0, 4).map((feature, i) => (
-                                                    <li key={i}>{feature}</li>
-                                                ))}
-                                            </ul>
-                                            <button className="btn btn-primary btn-block">
-                                                Select Package
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ) : (
-<div className="checkout-section">
-                                <button
-                                    className="back-button"
-                                    onClick={() => {
-                                        setSelectedPackage(null);
-                                        setFormData({name: '', email: '', company: '', phone: '', selectedUpgrades: []});
-                                    }}
-                                >
-                                    ← Back to packages
-                                </button>
+            if (m.includes("service") || m === "view services") {
+                setTimeout(function() { addQuickBtns(["Websites", "Mobile Apps", "AI Chatbots", "Pricing"]); }, 500);
+                return "We offer:\n\n🌐 Website Development — from £299\n📱 Mobile Apps — from £499\n💬 Chatbot and Voice Agent AI — from £199\n\nWhich interests you?";
+            }
 
-                                <div className="checkout-grid">
-                                    <div className="order-summary">
-                                        <h2>Order Summary</h2>
-                                        <div className="summary-item">
-                                            <h3>{selectedPackage.badge} {selectedPackage.name} Package</h3>
-                                            <p style={{color: 'var(--color-text-secondary)', marginTop: '0.5rem'}}>
-                                                {selectedPackage.description}
-                                            </p>
-                                            <div className="summary-row" style={{marginTop: '1rem'}}>
-                                                <span>Base Package</span>
-                                                <span>£{selectedPackage.price}</span>
-                                            </div>
-                                        </div>
+            if (m.includes("price") || m.includes("cost") || m === "pricing") {
+                setTimeout(function() { addQuickBtns(["Starter £299", "Professional £749", "Business £1499", "Book Consultation"]); }, 500);
+                return "💰 Our Pricing:\n\n🟩 Starter: £299\n🟦 Professional: £749 ⭐\n🟨 Business: £1,499\n\n📱 Apps: from £499\n💬 Chatbots: from £199\n🗣️ Voice Agents: from £249";
+            }
 
-                                        {/* Show available upgrades/addons */}
-                                        {(selectedPackage.upgrades || selectedPackage.addons || selectedPackage.enhancements) && (
-                                            <div className="summary-item">
-                                                <h4 style={{marginBottom: '1rem', color: 'var(--color-primary-light)'}}>
-                                                    Available Add-ons:
-                                                </h4>
-                                                <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem'}}>
-                                                    {(selectedPackage.upgrades || selectedPackage.addons || selectedPackage.enhancements)?.map((addon) => (
-                                                        <label 
-                                                            key={addon.id} 
-                                                            style={{
-                                                                display: 'flex', 
-                                                                alignItems: 'center', 
-                                                                gap: '0.75rem',
-                                                                padding: '0.75rem',
-                                                                background: formData.selectedUpgrades.some(u => u.id === addon.id) 
-                                                                    ? 'rgba(99, 102, 241, 0.1)' 
-                                                                    : 'rgba(255,255,255,0.03)',
-                                                                borderRadius: 'var(--radius-sm)',
-                                                                border: '1px solid ' + (formData.selectedUpgrades.some(u => u.id === addon.id) 
-                                                                    ? 'var(--color-primary)' 
-                                                                    : 'rgba(255,255,255,0.1)'),
-                                                                cursor: 'pointer',
-                                                                transition: 'all 0.2s'
-                                                            }}
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={formData.selectedUpgrades.some(u => u.id === addon.id)}
-                                                                onChange={() => handleUpgradeToggle(addon.id, addon.price)}
-                                                                style={{cursor: 'pointer'}}
-                                                            />
-                                                            <span style={{flex: 1, fontSize: '0.875rem'}}>
-                                                                {addon.name}
-                                                            </span>
-                                                            <span style={{fontWeight: 'bold', color: 'var(--color-primary-light)'}}>
-                                                                +£{addon.price}
-                                                            </span>
-                                                        </label>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
+            if (m.includes("website")) {
+                setTimeout(function() { addQuickBtns(["Starter £299", "Professional £749", "Business £1499", "Book Consultation"]); }, 500);
+                return "🌐 Website Packages:\n\n🟩 Starter — £299\n1-3 pages, responsive, hosting\n\n🟦 Professional — £749 ⭐\n5-8 pages, CMS, blog, SEO\n\n🟨 Business — £1,499\nDashboard, payments, portal";
+            }
 
-                                        {/* Show selected upgrades */}
-                                        {formData.selectedUpgrades.length > 0 && (
-                                            <div className="summary-item">
-                                                <h4 style={{marginBottom: '0.75rem'}}>Selected Add-ons:</h4>
-                                                {formData.selectedUpgrades.map((upgrade) => {
-                                                    const upgradeData = [...(selectedPackage.upgrades || []), 
-                                                                         ...(selectedPackage.addons || []), 
-                                                                         ...(selectedPackage.enhancements || [])]
-                                                        .find(u => u.id === upgrade.id);
-                                                    return (
-                                                        <div key={upgrade.id} className="summary-row">
-                                                            <span style={{fontSize: '0.875rem'}}>{upgradeData?.name}</span>
-                                                            <span>£{upgrade.price}</span>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        )}
+            if (m.includes("starter")) {
+                setTimeout(function() { addQuickBtns(["Book Consultation", "Professional Package"]); }, 500);
+                return "🟩 STARTER — £299\n\n✓ 1-3 page website\n✓ Responsive design\n✓ Free domain & hosting (1yr)\n✓ Basic SEO\n✓ Contact form\n✓ Email support\n\nAdd-ons:\n🛍️ Online store: +£149\n📅 Booking: +£99";
+            }
 
-                                        <div className="summary-total">
-                                            <div className="summary-row" style={{fontWeight: 'bold', fontSize: '1.5rem', borderTop: '2px solid rgba(255,255,255,0.2)', paddingTop: '1rem'}}>
-                                                <span>Total</span>
-                                                <span className="gradient-text">£{calculateTotal()}</span>
-                                            </div>
-                                        </div>
-                                    </div>
+            if (m.includes("professional")) {
+                setTimeout(function() { addQuickBtns(["Book Consultation", "Business Package"]); }, 500);
+                return "🟦 PROFESSIONAL — £749 ⭐\n\nEverything in Starter, plus:\n✓ 5-8 custom pages\n✓ Animations\n✓ CMS for easy editing\n✓ Blog section\n✓ Local SEO\n✓ Google Analytics\n✓ 1-hour strategy call\n✓ 2 revisions\n\nAdd-ons:\n📱 Mobile app: +£499\n💬 Chatbot: +£199";
+            }
 
-                                    <form onSubmit={handleSubmit} className="checkout-form">
-                                        <div className="form-section">
-                                            <h3>Your Information</h3>
-                                            
-                                            <div className="form-group">
-                                                <label htmlFor="name">Full Name *</label>
-                                                <input
-                                                    type="text"
-                                                    id="name"
-                                                    required
-                                                    value={formData.name}
-                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                    placeholder="John Doe"
-                                                />
-                                            </div>
+            if (m.includes("business")) {
+                setTimeout(function() { addQuickBtns(["Book Consultation", "Compare Packages"]); }, 500);
+                return "🟨 BUSINESS — £1,499\n\nEverything in Professional, plus:\n✓ Backend dashboard\n✓ Payment processing\n✓ Client portal\n✓ Advanced SEO\n✓ 3 months health checks\n✓ Priority support\n\nAdd-ons:\n📱 Custom app: +£699\n🤖 AI chatbot: +£349";
+            }
 
-                                            <div className="form-group">
-                                                <label htmlFor="email">Email *</label>
-                                                <input
-                                                    type="email"
-                                                    id="email"
-                                                    required
-                                                    value={formData.email}
-                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                                    placeholder="john@company.com"
-                                                />
-                                            </div>
+            if (m.includes("app") || m.includes("mobile")) {
+                setTimeout(function() { addQuickBtns(["Book Consultation", "View Pricing"]); }, 500);
+                return "📱 Mobile Apps\n\n✓ iOS & Android\n✓ Native performance\n✓ Push notifications\n✓ App store optimization\n\nPricing: from £499";
+            }
 
-                                            <div className="form-group">
-                                                <label htmlFor="company">Company</label>
-                                                <input
-                                                    type="text"
-                                                    id="company"
-                                                    value={formData.company}
-                                                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                                    placeholder="Your Company Inc."
-                                                />
-                                            </div>
+            if (m.includes("chatbot") || m.includes("ai") || m.includes("voice")) {
+                setTimeout(function() { addQuickBtns(["Book Consultation", "View Pricing"]); }, 500);
+                return "💬 Chatbot and Voice Agent AI\n\n🤖 Chatbots — from £199\n🗣️ Voice Agents — from £249\n\n✓ Natural language\n✓ Brand voice training\n✓ 24/7 availability\n✓ Analytics included";
+            }
 
-                                            <div className="form-group">
-                                                <label htmlFor="phone">Phone *</label>
-                                                <input
-                                                    type="tel"
-                                                    id="phone"
-                                                    required
-                                                    value={formData.phone}
-                                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                                    placeholder="+44 7XXX XXXXXX"
-                                                />
-                                            </div>
-                                        </div>
+            if (m.includes("contact") || m.includes("email") || m.includes("phone")) {
+                setTimeout(function() { addQuickBtns(["Book Consultation", "View Services"]); }, 500);
+                return "📞 Contact Us\n\n📧 hello@genfeel.co.uk\n📞 +44 7383 027802\n📍 London, UK\n⏰ Mon-Fri, 9AM-6PM\n\nOr book a consultation right now!";
+            }
 
-                                        <div className="form-section">
-                                            <h3>Project Details</h3>
-                                            
-                                            <div className="form-group">
-                                                <label htmlFor="projectDetails">Tell us about your project *</label>
-                                                <textarea
-                                                    id="projectDetails"
-                                                    required
-                                                    rows="4"
-                                                    placeholder="What are your goals? Any specific features or requirements?"
-                                                    style={{
-                                                        width: '100%',
-                                                        padding: '0.75rem 1rem',
-                                                        background: 'rgba(255, 255, 255, 0.05)',
-                                                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                                                        borderRadius: 'var(--radius-sm)',
-                                                        color: 'var(--color-text-primary)',
-                                                        fontFamily: 'var(--font-primary)',
-                                                        resize: 'vertical'
-                                                    }}
-                                                />
-                                            </div>
+            if (m.includes("book") || m.includes("appointment") || m.includes("consultation") || m.includes("schedule")) {
+                startBooking();
+                return null;
+            }
 
-                                            <div style={{
-                                                padding: '1rem', 
-                                                background: 'rgba(99, 102, 241, 0.1)', 
-                                                borderRadius: 'var(--radius-sm)', 
-                                                marginBottom: '1rem',
-                                                fontSize: '0.875rem',
-                                                lineHeight: '1.6'
-                                            }}>
-                                                <strong>📋 Next Steps:</strong>
-                                                <ol style={{marginTop: '0.5rem', marginLeft: '1.25rem'}}>
-                                                    <li>Submit this form</li>
-                                                    <li>We'll review your requirements</li>
-                                                    <li>Schedule a consultation call</li>
-                                                    <li>Receive a detailed proposal</li>
-                                                    <li>Start building!</li>
-                                                </ol>
-                                            </div>
+            if (m.includes("about") || m.includes("genfeel")) {
+                setTimeout(function() { addQuickBtns(["View Services", "Book Consultation"]); }, 500);
+                return "Genfeel creates digital experiences that feel human.\n\n✅ 50+ Projects\n✅ 30+ Happy Clients\n✅ 98% Satisfaction\n\nOur motto: Tech with a heartbeat 💜";
+            }
 
-                                            {error && (
-                                                <div className="error-message">
-                                                    {error}
-                                                </div>
-                                            )}
+            if (m.includes("maintenance") || m.includes("support")) {
+                setTimeout(function() { addQuickBtns(["Book Consultation", "View Pricing"]); }, 500);
+                return "⚙️ Maintenance Plans\n\n⚡ Essential: £49/mo\n📈 Growth: £99/mo\n🚀 Enterprise: £199/mo\n\nAll include hosting, backups & security!";
+            }
 
-                                            <button
-                                                type="submit"
-                                                disabled={loading}
-                                                className="btn btn-primary btn-lg btn-block"
-                                            >
-                                                {loading ? 'Submitting...' : `Submit Request - £${calculateTotal()}`}
-                                            </button>
+            if (m.includes("thank") || m.includes("bye") || m.includes("goodbye")) {
+                setTimeout(function() {
+                    addMsg("💬 Chat will reset in 5 seconds...", "system");
+                    setTimeout(function() {
+                        resetChat();
+                    }, 5000);
+                }, 2000);
+                return "You're welcome! 💜\n\n📧 hello@genfeel.co.uk\n📞 +44 7383 027802\n\nHave a great day! 👋";
+            }
 
-                                            <p className="payment-notice">
-                                                💡 No payment required now. We'll discuss payment terms during our consultation.
-                                            </p>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
-        };
+            setTimeout(function() { addQuickBtns(["Services", "Pricing", "Book Consultation", "Contact"]); }, 500);
+            return "Thanks for your message! I can help with:\n• Services & packages\n• Pricing\n• Booking consultations\n\nWhat would you like to know?";
+        }
 
-        // ===== FOOTER COMPONENT =====
-        const Footer = ({ setCurrentPage }) => {
-            return (
-                <footer className="footer">
-                    <div className="footer-container container">
-                        <div className="footer-grid">
-                            <div className="footer-section">
-                                <div className="footer-logo">
-                                    <span className="logo-icon">G</span>
-                                    <span className="logo-text">Genfeel</span>
-                                </div>
-                                <p className="footer-description">
-                                    Creating digital experiences that people enjoy using. Tech with a heartbeat.
-                                </p>
-                                <div className="social-links">
-                                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Instagram">
-                                        <i className="fab fa-instagram"></i>
-                                    </a>
-                                    <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="social-link" title="TikTok">
-                                        <i className="fab fa-tiktok"></i>
-                                    </a>
-                                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Facebook">
-                                        <i className="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-link" title="X (Twitter)">
-                                        <i className="fab fa-x-x"></i>
-                                    </a>
-                                </div>
-                            </div>
+        function sendMsg() {
+            var text = input.value.trim();
+            if (!text) return;
 
-                            <div className="footer-section">
-                                <h4 className="footer-title">Services</h4>
-                                <ul className="footer-links">
-                                    <li><a onClick={() => setCurrentPage('services')}>Websites</a></li>
-                                    <li><a onClick={() => setCurrentPage('services')}>Mobile Apps</a></li>
-                                    <li><a onClick={() => setCurrentPage('services')}>Chatbot and Voice Agent AI</a></li>
-                                    <li><a onClick={() => setCurrentPage('services')}>Maintenance Plans</a></li>
-                                </ul>
-                            </div>
+            addMsg(text, "user");
+            input.value = "";
+            clearExtras();
 
-                            <div className="footer-section">
-                                <h4 className="footer-title">Company</h4>
-                                <ul className="footer-links">
-                                    <li><a onClick={() => setCurrentPage('about')}>About Us</a></li>
-                                    <li><a onClick={() => setCurrentPage('services')}>Our Services</a></li>
-                                    <li><a onClick={() => setCurrentPage('contact')}>Contact</a></li>
-                                    <li><a onClick={() => setCurrentPage('get-started')}>Get Started</a></li>
-                                </ul>
-                            </div>
+            if (bookingMode) {
+                handleBooking(text);
+                return;
+            }
 
-                            <div className="footer-section">
-                                <h4 className="footer-title">Stay Updated</h4>
-                                <p className="footer-description">
-                                    Get the latest updates on digital trends and our work.
-                                </p>
-                                <div className="social-links" style={{marginTop: '1rem'}}>
-                                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Follow us on Instagram">
-                                        <i className="fab fa-instagram"></i>
-                                    </a>
-                                    <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Follow us on TikTok">
-                                        <i className="fab fa-tiktok"></i>
-                                    </a>
-                                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Like us on Facebook">
-                                        <i className="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-link" title="Follow us on X">
-                                        <i className="fab fa-x-x"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="footer-bottom">
-                            <p>&copy; 2026 Genfeel. All rights reserved.</p>
-                            <div className="footer-bottom-links">
-                                <a style={{cursor: 'pointer'}}>Privacy Policy</a>
-                                <a style={{cursor: 'pointer'}}>Terms of Service</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            );
-        };
-
-        // ===== MAIN APP COMPONENT =====
-        const App = () => {
-            const [currentPage, setCurrentPage] = useState('home');
-
-            return (
-                <div className="app">
-                    <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-                    
-                    {currentPage === 'home' && <HomePage setCurrentPage={setCurrentPage} />}
-                    {currentPage === 'services' && <ServicesPage setCurrentPage={setCurrentPage} />}
-                    {currentPage === 'about' && <AboutPage />}
-                    {currentPage === 'contact' && <ContactPage />}
-                    {currentPage === 'get-started' && <GetStartedPage />}
-                    
-                    <Footer setCurrentPage={setCurrentPage} />
-                </div>
-            );
-        };
-
-        // ===== RENDER APP =====
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
-<!-- Hide loading screen after React loads (ADD THIS) -->
-    <script>
-        window.addEventListener('load', function() {
             setTimeout(function() {
-                const loadingScreen = document.getElementById('loading-screen');
-                if (loadingScreen) {
-                    loadingScreen.style.display = 'none';
+                var reply = getReply(text);
+                if (reply) {
+                    addMsg(reply, "bot");
+                    speak(reply);
                 }
             }, 500);
-        });
-</script>
-<!-- ===== GENFEEL CHATBOT - SELF CONTAINED ===== -->
-<!-- ===== GENFEEL CHATBOT WITH FULL BOOKING SYSTEM ===== -->
-<div id="gc-widget">
+        }
+
+        sendBtn.onclick = sendMsg;
+        input.onkeypress = function(e) {
+            if (e.key === "Enter") sendMsg();
+        };
+
+        if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+            var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SR();
+            recognition.lang = "en-GB";
+
+            recognition.onresult = function(e) {
+                input.value = e.results[0][0].transcript;
+                sendMsg();
+            };
+
+            recognition.onend = function() {
+                isListening = false;
+                voiceBtn.textContent = "🎤";
+                voiceBtn.classList.remove("gc-listening");
+            };
+        }
+
+        voiceBtn.onclick = function() {
+            if (!recognition) {
+                alert("Voice not supported. Use Chrome.");
+                return;
+            }
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+                isListening = true;
+                voiceBtn.textContent = "⏹️";
+                voiceBtn.classList.add("gc-listening");
+            }
+        };
+
+        // Initial welcome message
+        setTimeout(function() {
+            addMsg("Hi! I'm Genfeel's assistant 👋\n\nHow can I help you today?", "bot");
+            setTimeout(function() {
+                addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]);
+            }, 400);
+        }, 600);
+    })();
+    </script>
+
     <style>
         #gc-widget {
             position: fixed;
@@ -2819,667 +2245,16 @@
         }
     </style>
 
-    <div id="gc-window">
-        <div id="gc-header">
-            <span id="gc-header-title">💬 Genfeel Assistant</span>
-            <div id="gc-header-buttons">
-                <button id="gc-reset" title="New Chat">🔄</button>
-                <button id="gc-close" title="Close">✕</button>
-            </div>
-        </div>
-        <div id="gc-progress">
-            <div id="gc-progress-bar">
-                <div class="gc-progress-dot" data-step="1"></div>
-                <div class="gc-progress-dot" data-step="2"></div>
-                <div class="gc-progress-dot" data-step="3"></div>
-                <div class="gc-progress-dot" data-step="4"></div>
-                <div class="gc-progress-dot" data-step="5"></div>
-                <div class="gc-progress-dot" data-step="6"></div>
-            </div>
-        </div>
-        <div id="gc-messages"></div>
-        <div id="gc-input-area">
-            <input type="text" id="gc-input" placeholder="Type your message...">
-            <button id="gc-send">Send</button>
-            <button id="gc-voice">🎤</button>
-            <button id="gc-mute" class="gc-muted">🔇</button>
-        </div>
-    </div>
-    <button id="gc-bubble">💬</button>
-</div>
-
-<script>
-(function() {
-    var bubble = document.getElementById("gc-bubble");
-    var chatWindow = document.getElementById("gc-window");
-    var closeBtn = document.getElementById("gc-close");
-    var resetBtn = document.getElementById("gc-reset");
-    var messages = document.getElementById("gc-messages");
-    var input = document.getElementById("gc-input");
-    var sendBtn = document.getElementById("gc-send");
-    var voiceBtn = document.getElementById("gc-voice");
-    var muteBtn = document.getElementById("gc-mute");
-    var progress = document.getElementById("gc-progress");
-    
-    var isMuted = true;
-    var isListening = false;
-    var recognition = null;
-    
-    var bookingMode = false;
-    var bookingStep = 0;
-    var booking = {
-        service: "",
-        name: "",
-        email: "",
-        phone: "",
-        date: "",
-        dateDisplay: "",
-        time: "",
-        notes: "",
-        ref: ""
-    };
-
-    var services = [
-        { name: "Website - Starter", price: "£299", desc: "1-3 pages, responsive design" },
-        { name: "Website - Professional", price: "£749", desc: "5-8 pages, CMS, SEO", popular: true },
-        { name: "Website - Business", price: "£1,499", desc: "Dashboard, payments, portal" },
-        { name: "Mobile App", price: "From £499", desc: "iOS & Android development" },
-        { name: "AI Chatbot", price: "From £199", desc: "Smart chatbot for your site" },
-        { name: "Voice Agent", price: "From £249", desc: "Voice-powered assistant" },
-        { name: "General Consultation", price: "Free", desc: "Discuss your project needs" }
-    ];
-
-    var timeSlots = [
-        { time: "9:00 AM", available: true },
-        { time: "10:00 AM", available: true },
-        { time: "11:00 AM", available: true },
-        { time: "12:00 PM", available: false },
-        { time: "2:00 PM", available: true },
-        { time: "3:00 PM", available: true },
-        { time: "4:00 PM", available: true },
-        { time: "5:00 PM", available: true }
-    ];
-
-    // Open chat
-    bubble.onclick = function() {
-        chatWindow.classList.add("gc-open");
-        bubble.style.display = "none";
-    };
-
-    // Close chat and reset
-    closeBtn.onclick = function() {
-        chatWindow.classList.remove("gc-open");
-        bubble.style.display = "flex";
-        
-        // Reset chat after closing
-        setTimeout(function() {
-            resetChat();
-        }, 300);
-    };
-
-    // Reset chat button
-    resetBtn.onclick = function() {
-        resetChat();
-    };
-
-    // Mute toggle
-    muteBtn.onclick = function() {
-        isMuted = !isMuted;
-        if (isMuted) {
-            muteBtn.textContent = "🔇";
-            muteBtn.classList.add("gc-muted");
-            if (window.speechSynthesis) window.speechSynthesis.cancel();
-        } else {
-            muteBtn.textContent = "🔊";
-            muteBtn.classList.remove("gc-muted");
-        }
-    };
-
-    // Reset chat function
-    function resetChat() {
-        messages.innerHTML = "";
-        bookingMode = false;
-        bookingStep = 0;
-        booking = { service: "", name: "", email: "", phone: "", date: "", dateDisplay: "", time: "", notes: "", ref: "" };
-        updateProgress(0);
-        clearExtras();
-        
-        addMsg("Hi! I'm Genfeel's assistant 👋\n\nHow can I help you today?", "bot");
-        setTimeout(function() {
-            addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]);
-        }, 400);
-    }
-
-    function addMsg(text, type) {
-        var div = document.createElement("div");
-        div.className = "gc-msg gc-msg-" + type;
-        div.innerHTML = text.replace(/\n/g, "<br>");
-        messages.appendChild(div);
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    function addQuickBtns(options) {
-        var container = document.createElement("div");
-        container.className = "gc-quick-btns";
-        options.forEach(function(opt) {
-            var btn = document.createElement("button");
-            btn.className = "gc-quick-btn";
-            btn.textContent = opt;
-            btn.onclick = function() {
-                input.value = opt;
-                sendMsg();
-                container.remove();
-            };
-            container.appendChild(btn);
-        });
-        messages.appendChild(container);
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    function addCancelBtn() {
-        var btn = document.createElement("button");
-        btn.className = "gc-cancel-btn";
-        btn.textContent = "✕ Cancel Booking";
-        btn.onclick = function() {
-            cancelBooking();
-        };
-        messages.appendChild(btn);
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    function showServices() {
-        services.forEach(function(s) {
-            var card = document.createElement("div");
-            card.className = "gc-service-card";
-            card.innerHTML = '<div class="gc-service-card-title">' + s.name + (s.popular ? ' ⭐' : '') + '</div><div class="gc-service-card-price">' + s.price + ' • ' + s.desc + '</div>';
-            card.onclick = function() {
-                input.value = s.name;
-                sendMsg();
-            };
-            messages.appendChild(card);
-        });
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    function showDates() {
-        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        var today = new Date();
-        var added = 0;
-        var current = new Date(today);
-        
-        while (added < 5) {
-            current.setDate(current.getDate() + 1);
-            var dayOfWeek = current.getDay();
-            if (dayOfWeek === 0 || dayOfWeek === 6) continue;
-            
-            var dayName = days[dayOfWeek];
-            var dateStr = current.getDate() + " " + months[current.getMonth()];
-            var fullDate = dayName + ", " + dateStr;
-            
-            (function(fd) {
-                var btn = document.createElement("button");
-                btn.className = "gc-date-btn";
-                btn.innerHTML = '<span>' + dayName + '</span><span>' + dateStr + '</span>';
-                btn.onclick = function() {
-                    booking.dateDisplay = fd;
-                    input.value = fd;
-                    sendMsg();
-                };
-                messages.appendChild(btn);
-            })(fullDate);
-            
-            added++;
-        }
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    function showTimes() {
-        var grid = document.createElement("div");
-        grid.className = "gc-time-grid";
-        
-        timeSlots.forEach(function(slot) {
-            var btn = document.createElement("button");
-            btn.className = "gc-time-btn" + (slot.available ? "" : " gc-unavailable");
-            btn.textContent = slot.time;
-            
-            if (slot.available) {
-                btn.onclick = function() {
-                    input.value = slot.time;
-                    sendMsg();
-                };
-            }
-            grid.appendChild(btn);
-        });
-        
-        messages.appendChild(grid);
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    function showSummary() {
-        var summary = document.createElement("div");
-        summary.className = "gc-summary";
-        summary.innerHTML = '<div class="gc-summary-title">📋 Booking Summary</div>' +
-            '<div class="gc-summary-row"><span class="gc-summary-label">Service</span><span class="gc-summary-value">' + booking.service + '</span></div>' +
-            '<div class="gc-summary-row"><span class="gc-summary-label">Name</span><span class="gc-summary-value">' + booking.name + '</span></div>' +
-            '<div class="gc-summary-row"><span class="gc-summary-label">Email</span><span class="gc-summary-value">' + booking.email + '</span></div>' +
-            '<div class="gc-summary-row"><span class="gc-summary-label">Phone</span><span class="gc-summary-value">' + booking.phone + '</span></div>' +
-            '<div class="gc-summary-row"><span class="gc-summary-label">Date</span><span class="gc-summary-value">' + booking.dateDisplay + '</span></div>' +
-            '<div class="gc-summary-row"><span class="gc-summary-label">Time</span><span class="gc-summary-value">' + booking.time + ' (UK)</span></div>' +
-            (booking.notes && booking.notes.toLowerCase() !== "skip" ? '<div class="gc-summary-row"><span class="gc-summary-label">Notes</span><span class="gc-summary-value">' + booking.notes + '</span></div>' : '') +
-            '<div class="gc-ref-number">Reference: ' + booking.ref + '</div>';
-        
-        messages.appendChild(summary);
-        messages.scrollTop = messages.scrollHeight;
-    }
-
-    function updateProgress(step) {
-        progress.style.display = step > 0 ? "block" : "none";
-        var dots = document.querySelectorAll(".gc-progress-dot");
-        dots.forEach(function(dot, i) {
-            dot.classList.remove("gc-active", "gc-done");
-            if (i + 1 < step) {
-                dot.classList.add("gc-done");
-            } else if (i + 1 === step) {
-                dot.classList.add("gc-active");
-            }
-        });
-    }
-
-    function generateRef() {
-        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var ref = "GF-";
-        for (var i = 0; i < 6; i++) {
-            ref += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return ref;
-    }
-
-    function isValidEmail(email) {
-        return email.indexOf("@") > 0 && email.indexOf(".") > 0;
-    }
-
-    function isValidPhone(phone) {
-        return phone.replace(/\D/g, "").length >= 10;
-    }
-
-    function clearExtras() {
-        var items = document.querySelectorAll(".gc-quick-btns, .gc-service-card, .gc-date-btn, .gc-time-grid, .gc-cancel-btn");
-        items.forEach(function(el) { el.remove(); });
-    }
-
-    function startBooking() {
-        bookingMode = true;
-        bookingStep = 1;
-        booking = { service: "", name: "", email: "", phone: "", date: "", dateDisplay: "", time: "", notes: "", ref: "" };
-        updateProgress(1);
-        
-        setTimeout(function() {
-            addMsg("Great! Let's book your consultation. 📅\n\nFirst, which service are you interested in?", "bot");
-            speak("Great! Let's book your consultation. Which service are you interested in?");
-            showServices();
-            addCancelBtn();
-        }, 500);
-    }
-
-    function cancelBooking() {
-        bookingMode = false;
-        bookingStep = 0;
-        updateProgress(0);
-        clearExtras();
-        addMsg("Booking cancelled. No worries! 👍\n\nIs there anything else I can help with?", "bot");
-        addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]);
-    }
-
-    function handleBooking(text) {
-        var msg = text.toLowerCase().trim();
-        
-        switch(bookingStep) {
-            case 1:
-                booking.service = text;
-                bookingStep = 2;
-                updateProgress(2);
-                setTimeout(function() {
-                    addMsg("Excellent choice! ✨\n\nWhat's your full name?", "bot");
-                    speak("Excellent choice! What's your full name?");
-                }, 500);
-                break;
-                
-            case 2:
-                if (text.trim().length < 2) {
-                    addMsg("Please enter your full name (at least 2 characters).", "bot");
-                    return;
-                }
-                booking.name = text.trim();
-                bookingStep = 3;
-                updateProgress(3);
-                setTimeout(function() {
-                    addMsg("Nice to meet you, " + booking.name.split(" ")[0] + "! 👋\n\nWhat's your email address?", "bot");
-                    speak("Nice to meet you! What's your email address?");
-                }, 500);
-                break;
-                
-            case 3:
-                if (!isValidEmail(text)) {
-                    addMsg("Please enter a valid email address (e.g., you@example.com).", "bot");
-                    return;
-                }
-                booking.email = text.trim().toLowerCase();
-                bookingStep = 4;
-                updateProgress(4);
-                setTimeout(function() {
-                    addMsg("Got it! 📧\n\nWhat's your phone number?", "bot");
-                    speak("Got it! What's your phone number?");
-                }, 500);
-                break;
-                
-            case 4:
-                if (!isValidPhone(text)) {
-                    addMsg("Please enter a valid phone number (at least 10 digits).", "bot");
-                    return;
-                }
-                booking.phone = text.trim();
-                bookingStep = 5;
-                updateProgress(5);
-                setTimeout(function() {
-                    addMsg("Perfect! 📱\n\nWhen would you like to schedule?\n\n(Mon-Fri, 9AM-6PM UK time)", "bot");
-                    speak("Perfect! When would you like to schedule?");
-                    showDates();
-                }, 500);
-                break;
-                
-            case 5:
-                if (!booking.dateDisplay) {
-                    booking.dateDisplay = text;
-                }
-                bookingStep = 6;
-                updateProgress(6);
-                setTimeout(function() {
-                    addMsg("Great! " + booking.dateDisplay + " it is! 📅\n\nWhat time works best?", "bot");
-                    speak("Great! What time works best for you?");
-                    showTimes();
-                }, 500);
-                break;
-                
-            case 6:
-                booking.time = text;
-                bookingStep = 7;
-                setTimeout(function() {
-                    addMsg("Almost done! 📝\n\nAnything specific you'd like to discuss?\n\n(Type your notes or 'skip' to continue)", "bot");
-                    speak("Almost done! Any notes, or say skip to continue.");
-                    addQuickBtns(["Skip", "New website", "Redesign", "E-commerce", "App idea", "Just exploring"]);
-                }, 500);
-                break;
-                
-            case 7:
-                booking.notes = msg === "skip" ? "" : text;
-                booking.ref = generateRef();
-                bookingStep = 0;
-                bookingMode = false;
-                updateProgress(0);
-                
-                setTimeout(function() {
-                    addMsg("🎉 Booking Confirmed!\n\nHere's your appointment summary:", "bot");
-                    showSummary();
-                    
-                    setTimeout(function() {
-                        addMsg("We've sent a confirmation to " + booking.email + "\n\nWe'll remind you 24 hours before.\n\nThank you for choosing Genfeel! 💜", "bot");
-                        speak("Booking confirmed! Your reference is " + booking.ref + ". Check your email for confirmation.");
-                        submitBooking();
-                        
-                        setTimeout(function() {
-                            addQuickBtns(["View Services", "Pricing", "Contact", "New Chat"]);
-                        }, 500);
-                    }, 500);
-                }, 500);
-                break;
-        }
-    }
-
-    function submitBooking() {
-        fetch("https://formsubmit.co/ajax/hello@genfeel.co.uk", {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                _subject: "📅 New Booking: " + booking.ref + " - " + booking.service,
-                reference: booking.ref,
-                service: booking.service,
-                name: booking.name,
-                email: booking.email,
-                phone: booking.phone,
-                date: booking.dateDisplay,
-                time: booking.time + " (UK)",
-                notes: booking.notes || "No notes",
-                source: "Chatbot"
-            })
-        })
-        .then(function(r) { return r.json(); })
-        .then(function(d) { console.log("Booking sent:", booking.ref); })
-        .catch(function(e) { console.log("Booking error:", e); });
-    }
-
-    function speak(text) {
-        if (isMuted) return;
-        if (!window.speechSynthesis) return;
-        
-        window.speechSynthesis.cancel();
-        
-        var clean = text
-            .replace(/\n/g, ". ")
-            .replace(/[✓✅❤️💜👋🎉📅📱💬🌐🟩🟦🟨📦💰🛠️⚙️•📧📞📍⏰🎯💡🎨⚡🤝📋👤💳🛍️📝🔍📊🤖🗣️⭐📈🚀✨]/g, "")
-            .replace(/\s+/g, " ")
-            .trim();
-        
-        var utter = new SpeechSynthesisUtterance(clean.substring(0, 250));
-        
-        var voices = window.speechSynthesis.getVoices();
-        var preferredVoices = ["Google UK English Female", "Google UK English Male", "Microsoft Libby", "Samantha", "Karen", "Daniel"];
-        var selectedVoice = null;
-        
-        for (var i = 0; i < preferredVoices.length; i++) {
-            for (var j = 0; j < voices.length; j++) {
-                if (voices[j].name.indexOf(preferredVoices[i]) >= 0) {
-                    selectedVoice = voices[j];
-                    break;
-                }
-            }
-            if (selectedVoice) break;
-        }
-        
-        if (!selectedVoice) {
-            for (var k = 0; k < voices.length; k++) {
-                if (voices[k].lang.indexOf("en-GB") >= 0 || voices[k].lang.indexOf("en-US") >= 0) {
-                    selectedVoice = voices[k];
-                    break;
-                }
-            }
-        }
-        
-        if (selectedVoice) utter.voice = selectedVoice;
-        
-        utter.lang = "en-GB";
-        utter.rate = 0.95;
-        utter.pitch = 1.05;
-        utter.volume = 0.9;
-        
-        window.speechSynthesis.speak(utter);
-    }
-
-    if (window.speechSynthesis) {
-        window.speechSynthesis.onvoiceschanged = function() {
-            window.speechSynthesis.getVoices();
-        };
-        window.speechSynthesis.getVoices();
-    }
-
-    function getReply(msg) {
-        var m = msg.toLowerCase();
-
-        // Handle "New Chat" quick button
-        if (m === "new chat") {
-            resetChat();
-            return null;
-        }
-
-        if (m.includes("hello") || m.includes("hi") || m.includes("hey")) {
-            setTimeout(function() { addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]); }, 500);
-            return "Hey there! 👋 Welcome to Genfeel — tech with a heartbeat.\n\nHow can I help you today?";
-        }
-
-        if (m.includes("service") || m === "view services") {
-            setTimeout(function() { addQuickBtns(["Websites", "Mobile Apps", "AI Chatbots", "Pricing"]); }, 500);
-            return "We offer:\n\n🌐 Website Development — from £299\n📱 Mobile Apps — from £499\n💬 Chatbot and Voice Agent AI — from £199\n\nWhich interests you?";
-        }
-
-        if (m.includes("price") || m.includes("cost") || m === "pricing") {
-            setTimeout(function() { addQuickBtns(["Starter £299", "Professional £749", "Business £1499", "Book Consultation"]); }, 500);
-            return "💰 Our Pricing:\n\n🟩 Starter: £299\n🟦 Professional: £749 ⭐\n🟨 Business: £1,499\n\n📱 Apps: from £499\n💬 Chatbots: from £199\n🗣️ Voice Agents: from £249";
-        }
-
-        if (m.includes("website")) {
-            setTimeout(function() { addQuickBtns(["Starter £299", "Professional £749", "Business £1499", "Book Consultation"]); }, 500);
-            return "🌐 Website Packages:\n\n🟩 Starter — £299\n1-3 pages, responsive, hosting\n\n🟦 Professional — £749 ⭐\n5-8 pages, CMS, blog, SEO\n\n🟨 Business — £1,499\nDashboard, payments, portal";
-        }
-
-        if (m.includes("starter")) {
-            setTimeout(function() { addQuickBtns(["Book Consultation", "Professional Package"]); }, 500);
-            return "🟩 STARTER — £299\n\n✓ 1-3 page website\n✓ Responsive design\n✓ Free domain & hosting (1yr)\n✓ Basic SEO\n✓ Contact form\n✓ Email support\n\nAdd-ons:\n🛍️ Online store: +£149\n📅 Booking: +£99";
-        }
-
-        if (m.includes("professional")) {
-            setTimeout(function() { addQuickBtns(["Book Consultation", "Business Package"]); }, 500);
-            return "🟦 PROFESSIONAL — £749 ⭐\n\nEverything in Starter, plus:\n✓ 5-8 custom pages\n✓ Animations\n✓ CMS for easy editing\n✓ Blog section\n✓ Local SEO\n✓ Google Analytics\n✓ 1-hour strategy call\n✓ 2 revisions\n\nAdd-ons:\n📱 Mobile app: +£499\n💬 Chatbot: +£199";
-        }
-
-        if (m.includes("business")) {
-            setTimeout(function() { addQuickBtns(["Book Consultation", "Compare Packages"]); }, 500);
-            return "🟨 BUSINESS — £1,499\n\nEverything in Professional, plus:\n✓ Backend dashboard\n✓ Payment processing\n✓ Client portal\n✓ Advanced SEO\n✓ 3 months health checks\n✓ Priority support\n\nAdd-ons:\n📱 Custom app: +£699\n🤖 AI chatbot: +£349";
-        }
-
-        if (m.includes("app") || m.includes("mobile")) {
-            setTimeout(function() { addQuickBtns(["Book Consultation", "View Pricing"]); }, 500);
-            return "📱 Mobile Apps\n\n✓ iOS & Android\n✓ Native performance\n✓ Push notifications\n✓ App store optimization\n\nPricing: from £499";
-        }
-
-        if (m.includes("chatbot") || m.includes("ai") || m.includes("voice")) {
-            setTimeout(function() { addQuickBtns(["Book Consultation", "View Pricing"]); }, 500);
-            return "💬 Chatbot and Voice Agent AI\n\n🤖 Chatbots — from £199\n🗣️ Voice Agents — from £249\n\n✓ Natural language\n✓ Brand voice training\n✓ 24/7 availability\n✓ Analytics included";
-        }
-
-        if (m.includes("contact") || m.includes("email") || m.includes("phone")) {
-            setTimeout(function() { addQuickBtns(["Book Consultation", "View Services"]); }, 500);
-            return "📞 Contact Us\n\n📧 hello@genfeel.co.uk\n📞 +44 7383 027802\n📍 London, UK\n⏰ Mon-Fri, 9AM-6PM\n\nOr book a consultation right now!";
-        }
-
-        if (m.includes("book") || m.includes("appointment") || m.includes("consultation") || m.includes("schedule")) {
-            startBooking();
-            return null;
-        }
-
-        if (m.includes("about") || m.includes("genfeel")) {
-            setTimeout(function() { addQuickBtns(["View Services", "Book Consultation"]); }, 500);
-            return "Genfeel creates digital experiences that feel human.\n\n✅ 50+ Projects\n✅ 30+ Happy Clients\n✅ 98% Satisfaction\n\nOur motto: Tech with a heartbeat 💜";
-        }
-
-        if (m.includes("maintenance") || m.includes("support")) {
-            setTimeout(function() { addQuickBtns(["Book Consultation", "View Pricing"]); }, 500);
-            return "⚙️ Maintenance Plans\n\n⚡ Essential: £49/mo\n📈 Growth: £99/mo\n🚀 Enterprise: £199/mo\n\nAll include hosting, backups & security!";
-        }
-
-        if (m.includes("thank") || m.includes("bye") || m.includes("goodbye")) {
+    <script>
+        // Hide loading screen when React loads
+        window.addEventListener('load', function() {
             setTimeout(function() {
-                addMsg("💬 Chat will reset in 5 seconds...", "system");
-                setTimeout(function() {
-                    resetChat();
-                }, 5000);
-            }, 2000);
-            return "You're welcome! 💜\n\n📧 hello@genfeel.co.uk\n📞 +44 7383 027802\n\nHave a great day! 👋";
-        }
-
-        setTimeout(function() { addQuickBtns(["Services", "Pricing", "Book Consultation", "Contact"]); }, 500);
-        return "Thanks for your message! I can help with:\n• Services & packages\n• Pricing\n• Booking consultations\n\nWhat would you like to know?";
-    }
-
-    function sendMsg() {
-        var text = input.value.trim();
-        if (!text) return;
-
-        addMsg(text, "user");
-        input.value = "";
-        clearExtras();
-
-        if (bookingMode) {
-            handleBooking(text);
-            return;
-        }
-
-        setTimeout(function() {
-            var reply = getReply(text);
-            if (reply) {
-                addMsg(reply, "bot");
-                speak(reply);
-            }
-        }, 500);
-    }
-
-    sendBtn.onclick = sendMsg;
-    input.onkeypress = function(e) {
-        if (e.key === "Enter") sendMsg();
-    };
-
-    if (window.SpeechRecognition || window.webkitSpeechRecognition) {
-        var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SR();
-        recognition.lang = "en-GB";
-
-        recognition.onresult = function(e) {
-            input.value = e.results[0][0].transcript;
-            sendMsg();
-        };
-
-        recognition.onend = function() {
-            isListening = false;
-            voiceBtn.textContent = "🎤";
-            voiceBtn.classList.remove("gc-listening");
-        };
-    }
-
-    voiceBtn.onclick = function() {
-        if (!recognition) {
-            alert("Voice not supported. Use Chrome.");
-            return;
-        }
-        if (isListening) {
-            recognition.stop();
-        } else {
-            recognition.start();
-            isListening = true;
-            voiceBtn.textContent = "⏹️";
-            voiceBtn.classList.add("gc-listening");
-        }
-    };
-
-    // Initial welcome message
-    setTimeout(function() {
-        addMsg("Hi! I'm Genfeel's assistant 👋\n\nHow can I help you today?", "bot");
-        setTimeout(function() {
-            addQuickBtns(["View Services", "Pricing", "Book Consultation", "Contact"]);
-        }, 400);
-    }, 600);
-})();
-</script>
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'none';
+                }
+            }, 100);
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
