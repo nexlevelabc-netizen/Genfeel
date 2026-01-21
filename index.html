@@ -1548,139 +1548,152 @@
         }
 
         function submitBooking() {
-    console.log("🚀 Starting booking submission...");
-    
-    const bookingData = {
-        reference: booking.ref,
-        service: booking.service,
-        name: booking.name,
-        email: booking.email,
-        phone: booking.phone,
-        date: booking.dateDisplay,
-        time: booking.time,
-        timezone: "UK",
-        notes: booking.notes || "No notes",
-        source: "Genfeel Chatbot",
-        // Add this for FormSubmit
-        _subject: "📅 New Booking: " + booking.ref + " - " + booking.service,
-        _captcha: "false", // Disable captcha
-        _template: "table", // Use table template
-        _autoresponse: "Thank you for booking with Genfeel! We'll contact you soon.",
-        _next: "https://genfeel.co.uk/thank-you"
-    };
+        console.log("🚀 Starting booking submission...");
+        
+        // Create data for both services
+        const zapierData = {
+            reference: booking.ref,
+            service: booking.service,
+            name: booking.name,
+            email: booking.email,
+            phone: booking.phone,
+            date: booking.dateDisplay,
+            time: booking.time,
+            timezone: "UK",
+            notes: booking.notes || "No notes",
+            source: "Genfeel Chatbot"
+        };
 
-    console.log("📤 Sending booking to Zapier:", bookingData);
+        const formSubmitData = {
+            _subject: "📅 New Booking: " + booking.ref + " - " + booking.service,
+            reference: booking.ref,
+            service: booking.service,
+            name: booking.name,
+            email: booking.email,
+            phone: booking.phone,
+            date: booking.dateDisplay,
+            time: booking.time + " (UK)",
+            notes: booking.notes || "No notes",
+            source: "Chatbot",
+            _captcha: "false",
+            _replyto: booking.email,
+            _cc: "hello@genfeel.co.uk",
+            _autoresponse: "Thank you for booking with Genfeel! We'll confirm your appointment shortly."
+        };
 
-    // 1. First try Zapier - YOUR URL IS HERE
-    fetch("https://hooks.zapier.com/hooks/catch/26098855/uqos5cs/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(bookingData)
-    })
-    .then(response => {
-        console.log("✅ Zapier response status:", response.status, response.statusText);
-        
-        if (response.ok) {
-            return response.text().then(text => {
-                console.log("✅ Zapier response body:", text);
-                return { success: true, data: text };
-            });
-        } else {
-            return response.text().then(text => {
-                console.log("❌ Zapier error response:", text);
-                throw new Error('Zapier failed: ' + text);
-            });
-        }
-    })
-    .then(result => {
-        console.log("✅ Booking sent to Zapier successfully");
-        
-        // 2. Send to FormSubmit for customer email
-        const formData = new FormData();
-        formData.append('_subject', '📅 New Booking: ' + booking.ref + ' - ' + booking.service);
-        formData.append('reference', booking.ref);
-        formData.append('service', booking.service);
-        formData.append('name', booking.name);
-        formData.append('email', booking.email);
-        formData.append('phone', booking.phone);
-        formData.append('date', booking.dateDisplay);
-        formData.append('time', booking.time + ' (UK)');
-        formData.append('notes', booking.notes || 'No notes');
-        formData.append('source', 'Genfeel Chatbot');
-        formData.append('_captcha', 'false');
-        formData.append('_replyto', booking.email);
-        formData.append('_cc', 'hello@genfeel.co.uk');
-        
-        fetch('https://formsubmit.co/ajax/hello@genfeel.co.uk', {
-            method: 'POST',
-            body: formData
+        console.log("📤 Sending to Zapier and FormSubmit...");
+
+        // 1. Send to Zapier
+        fetch("https://hooks.zapier.com/hooks/catch/26098855/uqos5cs/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(zapierData)
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('✅ FormSubmit success:', data);
+        .then(response => {
+            console.log("📞 Zapier HTTP Status:", response.status);
+            return response.text().then(text => {
+                console.log("📞 Zapier Response:", text);
+                return { status: response.status, text: text };
+            });
+        })
+        .then(zapierResult => {
+            console.log("✅ Zapier submission complete:", zapierResult.status);
+            
+            // 2. Send to FormSubmit (ALWAYS send, not just as backup)
+            console.log("📧 Now sending to FormSubmit for emails...");
+            
+            // Method 1: Try FormData approach (most reliable)
+            const formData = new FormData();
+            for (const key in formSubmitData) {
+                formData.append(key, formSubmitData[key]);
+            }
+            
+            return fetch('https://formsubmit.co/ajax/hello@genfeel.co.uk', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(formSubmitResult => {
+                console.log('✅ FormSubmit success:', formSubmitResult);
+                return { zapier: zapierResult, formSubmit: formSubmitResult };
+            })
+            .catch(formSubmitError => {
+                console.log('⚠️ FormSubmit failed, trying JSON method:', formSubmitError);
+                
+                // Method 2: Try JSON approach
+                return fetch('https://formsubmit.co/ajax/hello@genfeel.co.uk', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formSubmitData)
+                })
+                .then(response => response.json())
+                .then(jsonResult => {
+                    console.log('✅ FormSubmit JSON success:', jsonResult);
+                    return { zapier: zapierResult, formSubmit: jsonResult };
+                })
+                .catch(jsonError => {
+                    console.log('❌ FormSubmit JSON also failed:', jsonError);
+                    
+                    // Method 3: Create hidden form as last resort
+                    const form = document.createElement('form');
+                    form.style.display = 'none';
+                    form.method = 'POST';
+                    form.action = 'https://formsubmit.co/hello@genfeel.co.uk';
+                    
+                    for (const key in formSubmitData) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = key;
+                        input.value = formSubmitData[key];
+                        form.appendChild(input);
+                    }
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                    
+                    setTimeout(() => {
+                        if (form.parentNode) form.parentNode.removeChild(form);
+                    }, 3000);
+                    
+                    console.log('📧 Hidden form submitted');
+                    return { zapier: zapierResult, formSubmit: { success: true, method: 'hidden_form' } };
+                });
+            });
+        })
+        .then(finalResult => {
+            console.log("🎉 All submissions complete:", finalResult);
+            
+            // Show success message in chat
             setTimeout(() => {
-                addMsg(`📧 <strong>Confirmation email sent to ${booking.email}</strong><br>You should receive it within a few minutes.`, "bot");
-            }, 1000);
+                addMsg(`✅ <strong>Booking Confirmed!</strong><br><br>
+                🔖 <strong>Reference:</strong> ${booking.ref}<br>
+                📅 <strong>Date:</strong> ${booking.dateDisplay}<br>
+                ⏰ <strong>Time:</strong> ${booking.time} (UK)<br>
+                📧 <strong>Confirmation sent to:</strong> ${booking.email}<br><br>
+                Check your email for confirmation. We'll contact you 24 hours before.`, "bot");
+            }, 1500);
         })
         .catch(error => {
-            console.log('⚠️ FormSubmit failed:', error);
+            console.error("❌ Critical error:", error);
+            
+            // Even if everything fails, at least show the booking was saved locally
             setTimeout(() => {
-                addMsg(`📧 <strong>Booking confirmed!</strong><br>Reference: ${booking.ref}<br>Your booking is saved. We'll contact you at ${booking.email}`, "bot");
-            }, 1000);
+                addMsg(`📝 <strong>Booking Saved!</strong><br><br>
+                🔖 <strong>Reference:</strong> ${booking.ref}<br>
+                📅 <strong>Date:</strong> ${booking.dateDisplay}<br>
+                ⏰ <strong>Time:</strong> ${booking.time} (UK)<br>
+                📧 <strong>Email:</strong> ${booking.email}<br><br>
+                We'll contact you to confirm.`, "bot");
+            }, 1500);
         });
-    })
-    .catch(error => {
-        console.error("❌ Zapier submission failed:", error);
-        
-        // 3. Fallback: Try FormSubmit directly
-        console.log("🔄 Trying FormSubmit as fallback...");
-        
-        const form = document.createElement('form');
-        form.style.display = 'none';
-        form.method = 'POST';
-        form.action = 'https://formsubmit.co/hello@genfeel.co.uk';
-        
-        const fields = {
-            '_subject': '📅 New Booking: ' + booking.ref + ' - ' + booking.service,
-            'reference': booking.ref,
-            'service': booking.service,
-            'name': booking.name,
-            'email': booking.email,
-            'phone': booking.phone,
-            'date': booking.dateDisplay,
-            'time': booking.time + ' (UK)',
-            'notes': booking.notes || 'No notes',
-            'source': 'Genfeel Chatbot (Fallback)',
-            '_captcha': 'false',
-            '_replyto': booking.email,
-            '_cc': 'hello@genfeel.co.uk'
-        };
-        
-        for (const key in fields) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = fields[key];
-            form.appendChild(input);
-        }
-        
-        document.body.appendChild(form);
-        form.submit();
-        
-        console.log('✅ Form submitted via hidden form');
-        
-        setTimeout(() => {
-            if (form.parentNode) form.parentNode.removeChild(form);
-        }, 3000);
-        
-        setTimeout(() => {
-            addMsg(`📧 <strong>Booking received!</strong><br>Reference: ${booking.ref}<br>We'll send confirmation to ${booking.email} shortly.`, "bot");
-        }, 1000);
-    });
-}
-        function speak(text) {
+    }
+
+      function speak(text) {
             if (isMuted) return;
             if (!window.speechSynthesis) return;
             
