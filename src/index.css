@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 97%;
+    --foreground: 216 40% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 216 40% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 216 40% 12%;
+    --primary: 216 40% 12%;
+    --primary-foreground: 40 33% 97%;
+    --secondary: 40 25% 94%;
+    --secondary-foreground: 216 40% 12%;
+    --muted: 40 25% 94%;
+    --muted-foreground: 216 10% 45%;
+    --accent: 239 84% 67%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 216 20% 90%;
+    --input: 216 20% 90%;
+    --ring: 239 84% 67%;
+    --radius: 0.625rem;
+
+    /* Genfeel Brand Colors */
+    --gf-indigo: #6366f1;
+    --gf-pink: #ec4899;
+    --gf-cyan: #06b6d4;
+    --gf-indigo-light: #818cf8;
+    --gf-cyan-light: #22d3ee;
+    --gf-gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    --gf-gradient-cyan: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
+    --gf-gradient-full: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #06b6d4 100%);
+    --gf-glow-indigo: 0 0 40px rgba(99, 102, 241, 0.25);
+    --gf-glow-pink: 0 0 40px rgba(236, 72, 153, 0.2);
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #faf8f3;
+    color: #121a27;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+  }
+}
+
+@layer components {
+  .gradient-hero-text {
+    background: var(--gf-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-cyan-text {
+    background: var(--gf-gradient-cyan);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-accent {
+    background: var(--gf-gradient);
+  }
+
+  .gradient-accent-cyan {
+    background: var(--gf-gradient-cyan);
+  }
+
+  .gradient-dark-overlay {
+    background: linear-gradient(180deg, transparent 0%, #121a27 100%);
+  }
+
+  .gradient-card-shine {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 50%);
+  }
+
+  .gradient-chat-header {
+    background: var(--gf-gradient);
+  }
+
+  .gradient-glow-indigo {
+    box-shadow: var(--gf-glow-indigo);
+  }
+
+  .gradient-glow-pink {
+    box-shadow: var(--gf-glow-pink);
+  }
+
+  .text-ink-light {
+    color: rgba(18, 26, 39, 0.6);
+  }
+
+  .text-ink-muted {
+    color: rgba(18, 26, 39, 0.35);
+  }
+
+  .text-white-muted {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .bg-ink-light {
+    background-color: rgba(18, 26, 39, 0.6);
+  }
+
+  .border-ink-light {
+    border-color: rgba(18, 26, 39, 0.12);
+  }
+
+  .container-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* Indigo/Pink/Cyan accent utilities */
+  .text-indigo {
+    color: var(--gf-indigo);
+  }
+
+  .text-pink {
+    color: var(--gf-pink);
+  }
+
+  .text-cyan {
+    color: var(--gf-cyan);
+  }
+
+  .bg-indigo {
+    background-color: var(--gf-indigo);
+  }
+
+  .bg-pink {
+    background-color: var(--gf-pink);
+  }
+
+  .bg-cyan {
+    background-color: var(--gf-cyan);
+  }
+
+  .bg-indigo-10 {
+    background-color: rgba(99, 102, 241, 0.1);
+  }
+
+  .border-indigo {
+    border-color: var(--gf-indigo);
+  }
+
+  /* Subtle gradient background accents for cream sections */
+  .gradient-accent-bg {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, rgba(236, 72, 153, 0.04) 50%, rgba(6, 182, 212, 0.03) 100%);
+  }
+
+  .gradient-accent-bg-strong {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.07) 50%, rgba(6, 182, 212, 0.05) 100%);
+  }
+
+  /* Icon circle with brand gradient */
+  .icon-gradient-circle {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(236, 72, 153, 0.08) 100%);
+    color: var(--gf-indigo);
+  }
+
+  /* Hover glow with brand colors */
+  .hover-glow-brand:hover {
+    box-shadow: 0 12px 48px rgba(99, 102, 241, 0.15), 0 0 40px rgba(236, 72, 153, 0.08);
+  }
+
+  /* Progress dot active */
+  .progress-dot-active {
+    background: var(--gf-gradient);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+  }
+
+  /* Accent link hover */
+  .link-accent-hover {
+    color: var(--gf-indigo);
+    transition: all 0.3s ease;
+  }
+  .link-accent-hover:hover {
+    color: var(--gf-pink);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
