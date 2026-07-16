@@ -1,21 +1,19 @@
 import ScrollReveal from '@/components/ScrollReveal';
 import { Link } from 'react-router-dom';
 
-const accentColor = '#6366f1';
 const gradientAccent = 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)';
 const borderGradient = 'linear-gradient(90deg, transparent, #6366f1, #ec4899, #06b6d4, transparent)';
-const checkColor = '#6366f1';
 
 /* ========== HERO ========== */
 function PricingHero() {
   return (
-    <section className="relative z-10 min-h-[50vh] flex items-center justify-center bg-ink">
+    <section className="relative z-10 min-h-[50vh] flex items-center bg-ink">
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: borderGradient }} />
-      <div className="text-center px-6 max-w-4xl mx-auto pt-20">
-        <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-white-muted mb-6">
+      <div className="container-content pt-24">
+        <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-white/70 mb-6">
           PRICING
         </p>
-        <h1 className="font-display text-4xl sm:text-6xl lg:text-[96px] font-medium text-white leading-tight">
+        <h1 className="font-display text-4xl sm:text-6xl lg:text-[96px] font-medium text-white max-w-4xl leading-tight">
           Transparent pricing, exceptional value
         </h1>
       </div>
@@ -32,32 +30,32 @@ const plans = [
 
 function PricingTiers() {
   return (
-    <section className="relative z-10 bg-cream py-section">
+    <section className="relative z-10 bg-matte py-section">
       <div className="container-content">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {plans.map((plan, i) => (
             <ScrollReveal key={plan.name} delay={i * 0.15}>
-              <div className={`rounded-card p-12 h-full flex flex-col transition-all duration-400 hover:-translate-y-1 ${plan.highlighted ? 'bg-ink text-white shadow-elevated' : 'bg-white shadow-card hover:shadow-elevated'}`}>
-                <p className={`font-body text-xs font-semibold uppercase tracking-[0.08em] mb-4 ${plan.highlighted ? 'text-[#ec4899]' : ''}`} style={plan.highlighted ? {} : { color: accentColor }}>
+              <div className={`rounded-card p-12 h-full flex flex-col transition-all duration-400 hover:-translate-y-1 border ${plan.highlighted ? 'bg-white shadow-elevated border-transparent' : 'bg-matte-card shadow-card border-white/[0.06]'}`}>
+                <p className={`font-body text-xs font-semibold uppercase tracking-[0.08em] mb-4 ${plan.highlighted ? 'text-[#6366f1]' : 'text-[#818cf8]'}`}>
                   {plan.name}
                 </p>
                 <div className="flex items-baseline gap-1 mb-3">
-                  <span className={`font-body text-2xl font-medium ${plan.highlighted ? 'text-white-muted' : 'text-ink-muted'}`}>{plan.price[0]}</span>
-                  <span className={`font-display text-[64px] font-medium leading-none ${plan.highlighted ? 'text-white' : 'text-ink'}`}>{plan.price.slice(1)}</span>
+                  <span className={`font-body text-2xl font-medium ${plan.highlighted ? 'text-[#0a0a0a]/60' : 'text-white/70'}`}>{plan.price[0]}</span>
+                  <span className={`font-display text-[64px] font-medium leading-none ${plan.highlighted ? 'text-[#0a0a0a]' : 'text-white'}`}>{plan.price.slice(1)}</span>
                 </div>
-                <p className={`font-body text-base mb-8 ${plan.highlighted ? 'text-white-muted' : 'text-ink-light'}`}>{plan.desc}</p>
-                <div className={`h-px w-full mb-8 ${plan.highlighted ? 'bg-white/10' : 'bg-ink/8'}`} />
+                <p className={`font-body text-base mb-8 ${plan.highlighted ? 'text-[#0a0a0a]/70' : 'text-white/80'}`}>{plan.desc}</p>
+                <div className={`h-px w-full mb-8 ${plan.highlighted ? 'bg-[#0a0a0a]/8' : 'bg-white/10'}`} />
                 <ul className="space-y-4 mb-10 flex-1">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-3">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={plan.highlighted ? '#ec4899' : checkColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={plan.highlighted ? '#6366f1' : '#818cf8'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
-                      <span className={`font-body text-[15px] ${plan.highlighted ? 'text-white-muted' : 'text-ink-light'}`}>{f}</span>
+                      <span className={`font-body text-[15px] ${plan.highlighted ? 'text-[#0a0a0a]/70' : 'text-white/80'}`}>{f}</span>
                     </li>
                   ))}
                 </ul>
-                <Link to="/get-started" className={`block text-center font-body text-base font-medium py-4 rounded-button transition-all duration-300 ${plan.highlighted ? 'bg-white text-ink hover:bg-cream' : 'bg-ink text-white hover:shadow-glow'}`} style={plan.highlighted ? {} : { background: gradientAccent }}>
+                <Link to="/get-started" className={`block text-center font-body text-base font-medium py-4 rounded-button transition-all duration-300 ${plan.highlighted ? 'bg-[#0a0a0a] text-white hover:bg-[#6366f1]' : 'text-white hover:shadow-glow'}`} style={plan.highlighted ? {} : { background: gradientAccent }}>
                   Get Started
                 </Link>
               </div>
@@ -72,12 +70,12 @@ function PricingTiers() {
 /* ========== CUSTOM PROJECTS ========== */
 function CustomProjectsCTA() {
   return (
-    <section className="relative z-10 bg-cream-dark py-20">
+    <section className="relative z-10 bg-matte-light py-20">
       <div className="container-content">
         <ScrollReveal>
-          <div className="max-w-3xl mx-auto bg-white rounded-card p-14 shadow-card text-center">
-            <h3 className="font-display text-4xl font-medium text-ink">Need something custom?</h3>
-            <p className="font-body text-[17px] text-ink-light mt-4 max-w-xl mx-auto leading-relaxed">
+          <div className="max-w-3xl bg-matte-card rounded-card p-14 shadow-card border border-white/[0.06]">
+            <h3 className="font-display text-4xl font-medium text-white">Need something custom?</h3>
+            <p className="font-body text-[17px] text-white/80 mt-4 max-w-xl leading-relaxed">
               Every business is unique. We tailor our services to match your specific requirements, timeline, and budget. Let's discuss your project.
             </p>
             <Link to="/contact" className="inline-block mt-8 font-body text-base font-medium px-9 py-4 rounded-button text-white hover:shadow-glow transition-all duration-300" style={{ background: gradientAccent }}>
@@ -104,23 +102,23 @@ const servicePrices = [
 
 function ServicePricesTable() {
   return (
-    <section className="relative z-10 bg-cream py-section">
+    <section className="relative z-10 bg-matte py-section">
       <div className="container-content">
         <ScrollReveal>
-          <h2 className="font-display text-4xl font-medium text-ink mb-12 text-center">Service pricing overview</h2>
+          <h2 className="font-display text-4xl font-medium text-white mb-12">Service pricing overview</h2>
         </ScrollReveal>
         <ScrollReveal delay={0.15}>
-          <div className="bg-white rounded-card shadow-card overflow-hidden max-w-3xl mx-auto">
-            <div className="grid grid-cols-3 gap-4 px-8 py-4 font-body text-sm font-semibold text-ink" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(236,72,153,0.03) 100%)' }}>
+          <div className="bg-matte-card rounded-card shadow-card overflow-hidden border border-white/[0.06]">
+            <div className="grid grid-cols-3 gap-4 px-8 py-4 font-body text-sm font-semibold text-white bg-matte-light">
               <span>Service</span>
               <span className="text-center">Starting From</span>
               <span className="text-center">Typical Range</span>
             </div>
             {servicePrices.map((s, i) => (
-              <div key={s.service} className={`grid grid-cols-3 gap-4 px-8 py-4 font-body text-[15px] ${i % 2 === 0 ? 'bg-white' : 'bg-cream/50'}`}>
-                <span className="text-ink">{s.service}</span>
-                <span className="text-center font-medium" style={{ color: accentColor }}>{s.from}</span>
-                <span className="text-center text-ink-light">{s.to}</span>
+              <div key={s.service} className={`grid grid-cols-3 gap-4 px-8 py-4 font-body text-[15px] ${i % 2 === 0 ? 'bg-matte-card' : 'bg-matte-light/50'}`}>
+                <span className="text-white">{s.service}</span>
+                <span className="text-center font-medium text-[#818cf8]">{s.from}</span>
+                <span className="text-center text-white/80">{s.to}</span>
               </div>
             ))}
           </div>

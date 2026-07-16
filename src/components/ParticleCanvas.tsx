@@ -23,7 +23,7 @@ export default function ParticleCanvas() {
       alpha: false,
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x121a27, 1);
+    renderer.setClearColor(0x0a0a0a, 1);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, 1, 1, 2000);

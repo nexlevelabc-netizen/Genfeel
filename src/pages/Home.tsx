@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -6,42 +6,113 @@ import ScrollReveal from '@/components/ScrollReveal';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ========== HERO ========== */
+/* ========== ROTATING TEXT HERO (Coderfy-style) ========== */
+const rotatingWords = [
+  'Websites',
+  'Mobile Apps',
+  'AI Solutions',
+  'CRM Systems',
+  'ERP Platforms',
+  'Automations',
+];
+
+function RotatingText() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % rotatingWords.length);
+        setIsAnimating(false);
+      }, 300);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="relative inline-flex items-center min-w-[280px] sm:min-w-[400px] lg:min-w-[600px]">
+      <span
+        className={`
+          inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-2.5 lg:py-3 rounded-pill
+          font-display text-3xl sm:text-5xl lg:text-[72px] xl:text-[80px] font-medium leading-[1.1] tracking-tight
+          transition-all duration-300
+          ${isAnimating ? 'opacity-0 translate-y-3 scale-95' : 'opacity-100 translate-y-0 scale-100'}
+        `}
+        style={{
+          background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.15), rgba(6,182,212,0.1))',
+          border: '1px solid rgba(255,255,255,0.12)',
+          color: '#ffffff',
+          textShadow: '0 0 40px rgba(99,102,241,0.3)',
+        }}
+      >
+        {rotatingWords[currentIndex]}
+      </span>
+    </span>
+  );
+}
+
 function HomeHero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-start pt-32 pb-20 z-10">
-      <div className="text-center px-6 max-w-4xl mx-auto mt-auto mb-auto">
-        <h1 className="font-display text-5xl sm:text-7xl lg:text-[120px] font-medium leading-[0.95] tracking-tight text-white mb-4">
-          Digital Made
-        </h1>
-        <h1
-          className="font-display text-5xl sm:text-7xl lg:text-[120px] font-medium leading-[0.95] tracking-tight mb-8"
-          style={{
-            background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #06b6d4 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}
-        >
-          Human
-        </h1>
-        <p className="font-body text-lg text-white-muted max-w-xl mx-auto mb-12">
-          We craft websites, mobile apps, and AI solutions that connect technology with people.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/get-started"
-            className="font-body text-base font-medium px-9 py-4 rounded-button text-white hover:-translate-y-0.5 transition-all duration-300"
-            style={{ background: 'linear-gradient(135deg, #6366f1, #ec4899)' }}
-          >
-            Start Your Project
-          </Link>
-          <Link
-            to="/portfolio"
-            className="font-body text-base font-medium px-9 py-4 rounded-button border border-white/30 text-white hover:border-white/60 hover:bg-white/5 transition-all duration-300"
-          >
-            View Our Work
-          </Link>
+    <section className="relative min-h-screen flex items-center pt-24 pb-20 z-10">
+      <div className="w-full">
+        <div className="flex flex-col lg:flex-row items-center lg:items-center">
+          {/* LEFT: Text content — flush left aligned with logo */}
+          <div className="flex-1 pl-6 lg:pl-10 xl:pl-14 text-left">
+            {/* Line 1: "We Build" */}
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-[80px] xl:text-[100px] font-medium leading-[1.1] tracking-tight text-white">
+              We Build
+            </h1>
+
+            {/* Line 2: Rotating word — with generous space above and below */}
+            <div className="my-4 lg:my-5">
+              <RotatingText />
+            </div>
+
+            {/* Line 3: Gradient tagline */}
+            <h2
+              className="font-display text-2xl sm:text-4xl lg:text-[38px] xl:text-[46px] font-medium leading-[1.5] tracking-tight pb-1"
+              style={{
+                background: 'linear-gradient(135deg, #818cf8 0%, #ec4899 50%, #22d3ee 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              That Connects Technology With People
+            </h2>
+
+            {/* Description */}
+            <p className="font-body text-lg text-white/80 max-w-lg mt-8 mb-10">
+              Premium digital solutions crafted with human-centered design. From concept to launch in weeks, not months.
+            </p>
+
+            {/* CTA Button */}
+            <Link
+              to="/get-started"
+              className="inline-block font-body text-base font-medium px-9 py-4 rounded-button text-white hover:-translate-y-0.5 transition-all duration-300 shadow-glow hover:shadow-[0_0_30px_rgba(99,102,241,0.4)]"
+              style={{ background: 'linear-gradient(135deg, #6366f1, #ec4899)' }}
+            >
+              Start Your Project
+            </Link>
+          </div>
+
+          {/* RIGHT: 3D Crystal Icon — pushed far right like Coderfy */}
+          <div className="flex-1 flex items-center justify-end pr-6 lg:pr-10 xl:pr-14">
+            <div className="relative w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] lg:w-[480px] lg:h-[480px] xl:w-[520px] xl:h-[520px] animate-float">
+              {/* Glow behind crystal */}
+              <div
+                className="absolute inset-0 rounded-full blur-3xl opacity-30 scale-75"
+                style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.4), rgba(236,72,153,0.2), transparent 70%)' }}
+              />
+              <img
+                src="./assets/hero-crystal.png"
+                alt="Genfeel 3D Crystal"
+                className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_60px_rgba(139,92,246,0.3)]"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -57,25 +128,42 @@ function HomeHero() {
 
 /* ========== TRUSTED BY ========== */
 const clientLogos = [
-  'NexLevel', '25th Avenue', 'B360', 'RaySoko', 'MyFitting', 'TechVenture',
+  { name: 'NexLevel', gradient: 'linear-gradient(135deg, #6366f1, #818cf8)' },
+  { name: '25th Avenue', gradient: 'linear-gradient(135deg, #ec4899, #f472b6)' },
+  { name: 'B360', gradient: 'linear-gradient(135deg, #06b6d4, #22d3ee)' },
+  { name: 'RaySoko', gradient: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' },
+  { name: 'MyFitting', gradient: 'linear-gradient(135deg, #f59e0b, #fbbf24)' },
+  { name: 'TechVenture', gradient: 'linear-gradient(135deg, #10b981, #34d399)' },
 ];
 
 function TrustedBy() {
   return (
-    <section className="relative z-10 bg-cream-dark py-16 overflow-hidden">
-      <div className="container-content">
-        <p className="font-body text-sm text-ink-muted text-center mb-9">
+    <section className="relative z-10 bg-matte-light py-16 overflow-hidden border-y border-white/[0.06]">
+      <div className="container-content mb-10">
+        <p className="font-body text-sm font-semibold uppercase tracking-[0.12em] text-white/75 text-center">
           Trusted by forward-thinking brands
         </p>
       </div>
       <div className="relative overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">
-          {[...clientLogos, ...clientLogos, ...clientLogos, ...clientLogos].map((name, i) => (
+          {[...clientLogos, ...clientLogos, ...clientLogos, ...clientLogos].map((client, i) => (
             <div
               key={i}
-              className="inline-flex items-center justify-center mx-12 opacity-30 hover:opacity-60 transition-opacity duration-300"
+              className="inline-flex items-center justify-center mx-5"
             >
-              <span className="font-display text-2xl text-ink tracking-wide">{name}</span>
+              <div
+                className="flex items-center gap-3 px-7 py-3.5 rounded-pill border border-white/[0.08] shadow-card hover:shadow-elevated hover:scale-105 transition-all duration-300 cursor-default"
+                style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))' }}
+              >
+                {/* Colored dot */}
+                <div
+                  className="w-3 h-3 rounded-full shrink-0"
+                  style={{ background: client.gradient }}
+                />
+                <span className="font-display text-xl sm:text-2xl font-medium text-white tracking-wide">
+                  {client.name}
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -126,16 +214,13 @@ const services = [
 
 function ServicesPreview() {
   return (
-    <section className="relative z-10 bg-cream py-section">
+    <section className="relative z-10 bg-matte py-section">
       <div className="container-content">
         <ScrollReveal>
-          <p
-            className="font-body text-xs font-semibold uppercase tracking-[0.08em] mb-4"
-            style={{ color: '#6366f1' }}
-          >
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-[#818cf8] mb-4">
             WHAT WE DO
           </p>
-          <h2 className="font-display text-4xl lg:text-[64px] font-medium text-ink max-w-2xl mb-12 leading-tight">
+          <h2 className="font-display text-4xl lg:text-[64px] font-medium text-white max-w-2xl mb-12 leading-tight">
             Technology that works for people
           </h2>
         </ScrollReveal>
@@ -143,23 +228,22 @@ function ServicesPreview() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((service, i) => (
             <ScrollReveal key={service.title} delay={i * 0.15}>
-              <div className="bg-white rounded-card p-12 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 group">
+              <div className="bg-matte-card rounded-card p-12 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 group border border-white/[0.06]">
                 <div
                   className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
-                  style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.08))', color: '#6366f1' }}
+                  style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}
                 >
                   {service.icon}
                 </div>
-                <h4 className="font-display text-[28px] font-medium text-ink mb-3">
+                <h4 className="font-display text-[28px] font-medium text-white mb-3">
                   {service.title}
                 </h4>
-                <p className="font-body text-base text-ink-light leading-relaxed mb-6">
+                <p className="font-body text-base text-white/80 leading-relaxed mb-6">
                   {service.desc}
                 </p>
                 <Link
                   to="/services"
-                  className="inline-flex items-center gap-2 font-body text-sm font-medium group-hover:gap-3 transition-all duration-300"
-                  style={{ color: '#6366f1' }}
+                  className="inline-flex items-center gap-2 font-body text-sm font-medium text-[#818cf8] group-hover:gap-3 transition-all duration-300"
                 >
                   Learn more
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -181,27 +265,27 @@ const featuredWork = [
     name: '25th Avenue',
     category: 'Housing Platform',
     desc: 'Supported accommodation platform connecting people with safe housing.',
-    image: '/assets/portfolio-25thavenue.jpg',
+    image: './assets/portfolio-25thavenue.jpg',
     link: 'https://www.25thavenue.org/',
   },
   {
     name: 'B360 Limited',
     category: 'Business Services',
     desc: 'Digital transformation for a modern business services company.',
-    image: '/assets/portfolio-b360.jpg',
+    image: './assets/portfolio-b360.jpg',
     link: 'https://www.b360ltd.com/',
   },
 ];
 
 function FeaturedWork() {
   return (
-    <section className="relative z-10 bg-cream-dark py-section">
+    <section className="relative z-10 bg-matte-light py-section">
       <div className="container-content">
         <ScrollReveal>
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] mb-4" style={{ color: '#6366f1' }}>
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-[#818cf8] mb-4">
             PORTFOLIO
           </p>
-          <h2 className="font-display text-4xl lg:text-[64px] font-medium text-ink mb-16 leading-tight">
+          <h2 className="font-display text-4xl lg:text-[64px] font-medium text-white mb-16 leading-tight">
             Work that speaks for itself
           </h2>
         </ScrollReveal>
@@ -213,20 +297,20 @@ function FeaturedWork() {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block relative rounded-card overflow-hidden group aspect-video"
+                className="block relative rounded-card overflow-hidden group aspect-video border border-white/[0.06]"
               >
                 <img
                   src={project.image}
                   alt={project.name}
                   className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-[1.03]"
                 />
-                <div className="absolute inset-0 gradient-dark-overlay" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-12">
-                  <span className="inline-block px-4 py-1.5 rounded-pill bg-white/15 text-white font-body text-xs font-medium mb-4">
+                  <span className="inline-block px-4 py-1.5 rounded-pill bg-white/15 text-white font-body text-xs font-medium mb-4 backdrop-blur-sm">
                     {project.category}
                   </span>
                   <h3 className="font-display text-4xl text-white mb-2">{project.name}</h3>
-                  <p className="font-body text-base text-white-muted max-w-md">{project.desc}</p>
+                  <p className="font-body text-base text-white/80 max-w-md">{project.desc}</p>
                 </div>
               </a>
             </ScrollReveal>
@@ -236,8 +320,7 @@ function FeaturedWork() {
         <div className="text-center mt-12">
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 font-body text-base font-medium hover:gap-3 transition-all duration-300"
-            style={{ color: '#6366f1' }}
+            className="inline-flex items-center gap-2 font-body text-base font-medium text-[#818cf8] hover:gap-3 transition-all duration-300"
           >
             View All Projects
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -295,17 +378,16 @@ function StatsSection() {
 
   return (
     <section ref={sectionRef} className="relative z-10 bg-ink py-24">
-      {/* Subtle gradient border top */}
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, #6366f1, #ec4899, #06b6d4, transparent)' }} />
       <div className="container-content">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
           {stats.map((stat, i) => (
-            <div key={stat.label} className="text-center relative">
+            <div key={stat.label} className="relative">
               {i > 0 && (
                 <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-10 bg-white/10" />
               )}
               <div
-                className="stat-number font-display text-5xl lg:text-[64px] font-medium text-white"
+                className="stat-number font-display text-5xl lg:text-[64px] font-medium"
                 data-value={stat.value}
                 style={{
                   background: 'linear-gradient(135deg, #818cf8, #ec4899)',
@@ -316,7 +398,7 @@ function StatsSection() {
               >
                 0{stat.suffix}
               </div>
-              <p className="font-body text-sm text-white-muted mt-2">{stat.label}</p>
+              <p className="font-body text-sm text-white/75 mt-2">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -367,13 +449,13 @@ const values = [
 
 function WhyGenfeel() {
   return (
-    <section className="relative z-10 bg-cream py-section">
+    <section className="relative z-10 bg-matte py-section">
       <div className="container-content">
         <ScrollReveal>
-          <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] mb-4" style={{ color: '#6366f1' }}>
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.08em] text-[#818cf8] mb-4">
             WHY GENFEEL
           </p>
-          <h2 className="font-display text-4xl lg:text-[64px] font-medium text-ink max-w-xl mb-16 leading-tight">
+          <h2 className="font-display text-4xl lg:text-[64px] font-medium text-white max-w-xl mb-16 leading-tight">
             We build partnerships, not just products
           </h2>
         </ScrollReveal>
@@ -381,17 +463,17 @@ function WhyGenfeel() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {values.map((value, i) => (
             <ScrollReveal key={value.title} delay={i * 0.15}>
-              <div className="bg-white rounded-card p-10 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400">
+              <div className="bg-matte-card rounded-card p-10 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 border border-white/[0.06]">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.08))', color: '#6366f1' }}
+                  style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}
                 >
                   {value.icon}
                 </div>
-                <h4 className="font-display text-[28px] font-medium text-ink mt-5 mb-2">
+                <h4 className="font-display text-[28px] font-medium text-white mt-5 mb-2">
                   {value.title}
                 </h4>
-                <p className="font-body text-[15px] text-ink-light leading-relaxed">
+                <p className="font-body text-[15px] text-white/80 leading-relaxed">
                   {value.desc}
                 </p>
               </div>
@@ -407,14 +489,13 @@ function WhyGenfeel() {
 function CTASection() {
   return (
     <section className="relative z-10 bg-ink py-section">
-      {/* Subtle gradient border top */}
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, #6366f1, #ec4899, #06b6d4, transparent)' }} />
-      <div className="container-content text-center">
+      <div className="container-content">
         <ScrollReveal>
-          <h2 className="font-display text-4xl lg:text-7xl font-medium text-white max-w-3xl mx-auto leading-tight">
+          <h2 className="font-display text-4xl lg:text-7xl font-medium text-white max-w-3xl leading-tight">
             Ready to bring your vision to life?
           </h2>
-          <p className="font-body text-lg text-white-muted mt-6 max-w-lg mx-auto">
+          <p className="font-body text-lg text-white/80 mt-6 max-w-lg">
             Let's discuss how Genfeel can help transform your digital presence.
           </p>
           <Link

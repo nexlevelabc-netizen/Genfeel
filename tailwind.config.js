@@ -5,11 +5,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        matte: '#0a0a0a',
+        'matte-light': '#111111',
+        'matte-card': '#1a1a1a',
+        'matte-border': 'rgba(255, 255, 255, 0.06)',
         cream: '#faf8f3',
         'cream-dark': '#f3efe6',
-        ink: '#121a27',
-        'ink-light': 'rgba(18, 26, 39, 0.6)',
-        'ink-muted': 'rgba(18, 26, 39, 0.35)',
+        ink: '#0a0a0a',
+        'ink-light': 'rgba(10, 10, 10, 0.6)',
+        'ink-muted': 'rgba(10, 10, 10, 0.35)',
         accent: '#6366f1',
         'accent-light': '#818cf8',
         'accent-pink': '#ec4899',
@@ -62,8 +66,8 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        card: '0 4px 24px rgba(18, 26, 39, 0.06)',
-        elevated: '0 12px 48px rgba(18, 26, 39, 0.1)',
+        card: '0 4px 24px rgba(0, 0, 0, 0.2)',
+        elevated: '0 12px 48px rgba(0, 0, 0, 0.35)',
         glow: '0 0 40px rgba(99, 102, 241, 0.2)',
         'glow-pink': '0 0 40px rgba(236, 72, 153, 0.15)',
         'glow-cyan': '0 0 40px rgba(6, 182, 212, 0.15)',

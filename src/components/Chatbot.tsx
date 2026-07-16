@@ -134,7 +134,7 @@ export default function Chatbot() {
             { label: 'Contact', action: () => handleQuickReply('Contact') },
           ]);
         } else {
-          addMessage('Thanks for your message! I can help with services, pricing, or booking a consultation. What would you like to know?', 'bot');
+          addMessage('Thanks for your message! I can help with services, pricing, booking a consultation, or contact information. What would you like to know?', 'bot');
           setQuickButtons([
             { label: 'View Services', action: () => handleQuickReply('View Services') },
             { label: 'Pricing', action: () => handleQuickReply('Pricing') },
@@ -197,14 +197,14 @@ export default function Chatbot() {
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-105 ${
           isOpen
-            ? 'bg-cream border border-ink/10 shadow-elevated'
+            ? 'bg-matte-card border border-white/10'
             : 'text-white'
         }`}
         style={isOpen ? {} : { background: 'linear-gradient(135deg, #6366f1, #ec4899)', boxShadow: '0 4px 24px rgba(99, 102, 241, 0.4)' }}
         aria-label="Toggle chat"
       >
         {isOpen ? (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#121a27" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
@@ -217,7 +217,7 @@ export default function Chatbot() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] bg-white rounded-card shadow-elevated overflow-hidden flex flex-col" style={{ maxHeight: '500px' }}>
+        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] rounded-card shadow-elevated overflow-hidden flex flex-col border border-white/[0.08]" style={{ maxHeight: '500px', background: '#111111' }}>
           {/* Header */}
           <div className="px-5 py-4 flex items-center justify-between text-white" style={{ background: 'linear-gradient(135deg, #6366f1, #ec4899)' }}>
             <div className="flex items-center gap-3">
@@ -228,16 +228,11 @@ export default function Chatbot() {
               </div>
               <div>
                 <p className="font-body text-sm font-semibold text-white">Genfeel Assistant</p>
-                <p className="font-body text-xs text-white/70">AI Powered</p>
+                <p className="font-body text-xs text-white/80">AI Powered</p>
               </div>
             </div>
             <button
-              onClick={() => {
-                setMessages([]);
-                setQuickButtons([]);
-                setShowServices(false);
-                setTimeout(getWelcomeMessage, 200);
-              }}
+              onClick={() => { setMessages([]); setQuickButtons([]); setShowServices(false); setTimeout(getWelcomeMessage, 200); }}
               className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
               title="New chat"
             >
@@ -249,19 +244,14 @@ export default function Chatbot() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-cream min-h-[280px] max-h-[340px]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[280px] max-h-[340px]" style={{ background: '#0a0a0a' }}>
             {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] px-4 py-3 rounded-2xl font-body text-sm leading-relaxed ${
-                    msg.type === 'user'
-                      ? 'bg-ink text-white rounded-br-sm'
-                      : 'bg-white text-ink shadow-card rounded-bl-sm'
-                  }`}
-                >
+              <div key={msg.id} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] px-4 py-3 rounded-2xl font-body text-sm leading-relaxed ${
+                  msg.type === 'user'
+                    ? 'bg-[#6366f1] text-white rounded-br-sm'
+                    : 'bg-matte-card text-white border border-white/[0.06] rounded-bl-sm'
+                }`}>
                   {msg.text}
                 </div>
               </div>
@@ -271,14 +261,10 @@ export default function Chatbot() {
             {showServices && (
               <div className="grid grid-cols-1 gap-2 mt-2">
                 {services.map((service) => (
-                  <button
-                    key={service.name}
-                    onClick={() => handleQuickReply(service.name)}
-                    className="text-left p-3 bg-white rounded-xl border border-ink/8 hover:border-[#6366f1] hover:bg-[#6366f1]/[0.04] transition-all duration-200"
-                  >
-                    <p className="font-body text-sm font-medium text-ink">{service.name}</p>
-                    <p className="font-body text-xs text-ink-light mt-0.5">{service.desc}</p>
-                    <p className="font-body text-xs text-[#6366f1] mt-1">{service.price}</p>
+                  <button key={service.name} onClick={() => handleQuickReply(service.name)} className="text-left p-3 bg-matte-card rounded-xl border border-white/[0.06] hover:border-[#6366f1] hover:bg-[#6366f1]/[0.06] transition-all duration-200">
+                    <p className="font-body text-sm font-medium text-white">{service.name}</p>
+                    <p className="font-body text-xs text-white/70 mt-0.5">{service.desc}</p>
+                    <p className="font-body text-xs text-[#818cf8] mt-1">{service.price}</p>
                   </button>
                 ))}
               </div>
@@ -288,11 +274,7 @@ export default function Chatbot() {
             {quickButtons.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {quickButtons.map((btn) => (
-                  <button
-                    key={btn.label}
-                    onClick={btn.action}
-                    className="px-4 py-2 bg-white border border-[#6366f1]/30 rounded-pill font-body text-xs font-medium text-[#6366f1] hover:bg-[#6366f1] hover:text-white transition-all duration-200"
-                  >
+                  <button key={btn.label} onClick={btn.action} className="px-4 py-2 bg-matte-card border border-[#6366f1]/30 rounded-pill font-body text-xs font-medium text-[#818cf8] hover:bg-[#6366f1] hover:text-white transition-all duration-200">
                     {btn.label}
                   </button>
                 ))}
@@ -302,14 +284,14 @@ export default function Chatbot() {
           </div>
 
           {/* Input */}
-          <div className="p-3 border-t border-ink/8 bg-white flex gap-2">
+          <div className="p-3 border-t border-white/[0.08] flex gap-2" style={{ background: '#111111' }}>
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Type a message..."
-              className="flex-1 px-4 py-2.5 bg-cream rounded-button font-body text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30"
+              className="flex-1 px-4 py-2.5 bg-matte-light rounded-button font-body text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 border border-white/10"
             />
             <button
               onClick={handleSend}
