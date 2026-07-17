@@ -69,7 +69,7 @@ function ValuesSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {values.map((v, i) => (
             <ScrollReveal key={v.num} delay={i * 0.15}>
-              <div className="bg-matte-card rounded-card p-12 shadow-card h-full border border-white/[0.06]">
+              <div className="bg-matte-card rounded-card p-12 shadow-card h-full border border-white/[0.10]">
                 <span className="font-display text-[80px] font-medium leading-none" style={{ color: 'rgba(99,102,241,0.2)' }}>{v.num}</span>
                 <h3 className="font-display text-[28px] font-medium text-white -mt-4 mb-3">{v.title}</h3>
                 <p className="font-body text-base text-white/80 leading-relaxed">{v.desc}</p>

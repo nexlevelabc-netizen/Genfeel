@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -228,7 +228,7 @@ function ServicesPreview() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((service, i) => (
             <ScrollReveal key={service.title} delay={i * 0.15}>
-              <div className="bg-matte-card rounded-card p-12 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 group border border-white/[0.06]">
+              <div className="bg-matte-card rounded-card p-12 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 group border border-white/[0.10]">
                 <div
                   className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
                   style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}
@@ -290,34 +290,43 @@ function FeaturedWork() {
           </h2>
         </ScrollReveal>
 
-        <div className="space-y-12">
+        <div className="space-y-16">
           {featuredWork.map((project, i) => (
             <ScrollReveal key={project.name} delay={i * 0.2}>
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block relative rounded-card overflow-hidden group aspect-video border border-white/[0.06]"
+                className={`flex flex-col lg:flex-row items-stretch rounded-card overflow-hidden group border border-white/[0.10] hover:border-white/[0.18] transition-all duration-400 ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
               >
-                <img
-                  src={project.image}
-                  alt={project.name}
-                  className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-[1.03]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-12">
-                  <span className="inline-block px-4 py-1.5 rounded-pill bg-white/15 text-white font-body text-xs font-medium mb-4 backdrop-blur-sm">
+                {/* Image — left side, fully visible */}
+                <div className="lg:w-3/5 overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-[1.03]"
+                  />
+                </div>
+                {/* Text — right side, clean no overlay */}
+                <div className="lg:w-2/5 flex flex-col justify-center p-10 lg:p-14 bg-matte-card">
+                  <span className="inline-block self-start px-4 py-1.5 rounded-pill bg-white/[0.08] text-[#818cf8] font-body text-xs font-medium mb-5 border border-white/[0.08]">
                     {project.category}
                   </span>
-                  <h3 className="font-display text-4xl text-white mb-2">{project.name}</h3>
-                  <p className="font-body text-base text-white/80 max-w-md">{project.desc}</p>
+                  <h3 className="font-display text-3xl lg:text-4xl text-white mb-4">{project.name}</h3>
+                  <p className="font-body text-base text-white/80 leading-relaxed mb-8">{project.desc}</p>
+                  <span className="inline-flex items-center gap-2 font-body text-sm font-medium text-[#818cf8] group-hover:gap-3 transition-all duration-300">
+                    View Project
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </span>
                 </div>
               </a>
             </ScrollReveal>
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="mt-14">
           <Link
             to="/portfolio"
             className="inline-flex items-center gap-2 font-body text-base font-medium text-[#818cf8] hover:gap-3 transition-all duration-300"
@@ -327,80 +336,6 @@ function FeaturedWork() {
               <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
             </svg>
           </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ========== STATS ========== */
-const stats = [
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 30, suffix: '+', label: 'Happy Clients' },
-  { value: 98, suffix: '%', label: 'Client Satisfaction' },
-  { value: 4, suffix: '+', label: 'Years of Excellence' },
-];
-
-function StatsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const statElements = section.querySelectorAll('.stat-number');
-
-    statElements.forEach((el) => {
-      const target = parseInt(el.getAttribute('data-value') || '0');
-      gsap.fromTo(
-        el,
-        { innerText: 0 },
-        {
-          innerText: target,
-          duration: 2,
-          ease: 'power2.out',
-          snap: { innerText: 1 },
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 80%',
-            once: true,
-          },
-        }
-      );
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === section) t.kill();
-      });
-    };
-  }, []);
-
-  return (
-    <section ref={sectionRef} className="relative z-10 bg-ink py-24">
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, #6366f1, #ec4899, #06b6d4, transparent)' }} />
-      <div className="container-content">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
-          {stats.map((stat, i) => (
-            <div key={stat.label} className="relative">
-              {i > 0 && (
-                <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-10 bg-white/10" />
-              )}
-              <div
-                className="stat-number font-display text-5xl lg:text-[64px] font-medium"
-                data-value={stat.value}
-                style={{
-                  background: 'linear-gradient(135deg, #818cf8, #ec4899)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                0{stat.suffix}
-              </div>
-              <p className="font-body text-sm text-white/75 mt-2">{stat.label}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -463,7 +398,7 @@ function WhyGenfeel() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {values.map((value, i) => (
             <ScrollReveal key={value.title} delay={i * 0.15}>
-              <div className="bg-matte-card rounded-card p-10 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 border border-white/[0.06]">
+              <div className="bg-matte-card rounded-card p-10 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 border border-white/[0.10]">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}
@@ -519,7 +454,6 @@ export default function Home() {
       <TrustedBy />
       <ServicesPreview />
       <FeaturedWork />
-      <StatsSection />
       <WhyGenfeel />
       <CTASection />
     </main>

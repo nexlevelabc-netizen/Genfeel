@@ -1,9 +1,4 @@
 import ScrollReveal from '@/components/ScrollReveal';
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const gradientAccent = 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)';
 const borderGradient = 'linear-gradient(90deg, transparent, #6366f1, #ec4899, #06b6d4, transparent)';
@@ -40,7 +35,7 @@ function PortfolioGrid() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {projects.map((project, i) => (
             <ScrollReveal key={project.name} delay={i * 0.15} scale={0.95}>
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="block relative rounded-card overflow-hidden group aspect-[4/3] border border-white/[0.06]">
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="block relative rounded-card overflow-hidden group aspect-[4/3] border border-white/[0.10]">
                 <img src={project.image} alt={project.name} className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-[1.03]" />
                 <div className="absolute inset-0 bg-[#0a0a0a]/0 group-hover:bg-[#0a0a0a]/85 transition-all duration-400 flex items-center justify-center">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-400 text-center">
@@ -56,50 +51,6 @@ function PortfolioGrid() {
                 </div>
               </a>
             </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ========== RESULTS BAR ========== */
-const metrics = [
-  { value: 4, label: 'Live Projects' },
-  { value: 15, suffix: '+', label: 'Technologies Used' },
-  { value: 100, suffix: '%', label: 'Client Retention' },
-  { value: 2, suffix: 'x', label: 'Average ROI for Clients' },
-];
-
-function ResultsBar() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const statElements = section.querySelectorAll('.metric-number');
-    statElements.forEach((el) => {
-      const target = parseInt(el.getAttribute('data-value') || '0');
-      gsap.fromTo(el, { innerText: 0 }, {
-        innerText: target, duration: 2, ease: 'power2.out', snap: { innerText: 1 },
-        scrollTrigger: { trigger: section, start: 'top 80%', once: true },
-      });
-    });
-    return () => { ScrollTrigger.getAll().forEach((t) => { if (t.trigger === section) t.kill(); }); };
-  }, []);
-
-  return (
-    <section ref={sectionRef} className="relative z-10 bg-ink py-20">
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: borderGradient }} />
-      <div className="container-content">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {metrics.map((m) => (
-            <div key={m.label} className="text-center">
-              <div className="metric-number font-display text-5xl lg:text-[56px] font-medium" data-value={m.value} style={{ background: gradientAccent, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                0{m.suffix || ''}
-              </div>
-              <p className="font-body text-sm text-white/75 mt-2">{m.label}</p>
-            </div>
           ))}
         </div>
       </div>
@@ -133,7 +84,6 @@ export default function Portfolio() {
     <main>
       <PortfolioHero />
       <PortfolioGrid />
-      <ResultsBar />
       <PortfolioCTA />
     </main>
   );

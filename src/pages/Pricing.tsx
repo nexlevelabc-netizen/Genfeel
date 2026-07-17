@@ -35,7 +35,7 @@ function PricingTiers() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {plans.map((plan, i) => (
             <ScrollReveal key={plan.name} delay={i * 0.15}>
-              <div className={`rounded-card p-12 h-full flex flex-col transition-all duration-400 hover:-translate-y-1 border ${plan.highlighted ? 'bg-white shadow-elevated border-transparent' : 'bg-matte-card shadow-card border-white/[0.06]'}`}>
+              <div className={`rounded-card p-12 h-full flex flex-col transition-all duration-400 hover:-translate-y-1 border ${plan.highlighted ? 'bg-white shadow-elevated border-transparent' : 'bg-matte-card shadow-card border-white/[0.10]'}`}>
                 <p className={`font-body text-xs font-semibold uppercase tracking-[0.08em] mb-4 ${plan.highlighted ? 'text-[#6366f1]' : 'text-[#818cf8]'}`}>
                   {plan.name}
                 </p>
@@ -73,7 +73,7 @@ function CustomProjectsCTA() {
     <section className="relative z-10 bg-matte-light py-20">
       <div className="container-content">
         <ScrollReveal>
-          <div className="max-w-3xl bg-matte-card rounded-card p-14 shadow-card border border-white/[0.06]">
+          <div className="max-w-3xl bg-matte-card rounded-card p-14 shadow-card border border-white/[0.10]">
             <h3 className="font-display text-4xl font-medium text-white">Need something custom?</h3>
             <p className="font-body text-[17px] text-white/80 mt-4 max-w-xl leading-relaxed">
               Every business is unique. We tailor our services to match your specific requirements, timeline, and budget. Let's discuss your project.
@@ -108,14 +108,14 @@ function ServicePricesTable() {
           <h2 className="font-display text-4xl font-medium text-white mb-12">Service pricing overview</h2>
         </ScrollReveal>
         <ScrollReveal delay={0.15}>
-          <div className="bg-matte-card rounded-card shadow-card overflow-hidden border border-white/[0.06]">
-            <div className="grid grid-cols-3 gap-4 px-8 py-4 font-body text-sm font-semibold text-white bg-matte-light">
+          <div className="bg-matte rounded-card shadow-card overflow-hidden border border-white/[0.10]">
+            <div className="grid grid-cols-3 gap-4 px-8 py-4 font-body text-sm font-semibold text-white" style={{ background: 'linear-gradient(135deg, #111111, #0e0e0e)' }}>
               <span>Service</span>
               <span className="text-center">Starting From</span>
               <span className="text-center">Typical Range</span>
             </div>
             {servicePrices.map((s, i) => (
-              <div key={s.service} className={`grid grid-cols-3 gap-4 px-8 py-4 font-body text-[15px] ${i % 2 === 0 ? 'bg-matte-card' : 'bg-matte-light/50'}`}>
+              <div key={s.service} className={`grid grid-cols-3 gap-4 px-8 py-4 font-body text-[15px] ${i % 2 === 0 ? 'bg-matte' : 'bg-[#0e0e0e]'}`}>
                 <span className="text-white">{s.service}</span>
                 <span className="text-center font-medium text-[#818cf8]">{s.from}</span>
                 <span className="text-center text-white/80">{s.to}</span>

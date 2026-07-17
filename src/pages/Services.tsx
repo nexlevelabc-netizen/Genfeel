@@ -43,7 +43,7 @@ function ServicesGrid() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {allServices.map((service, i) => (
             <ScrollReveal key={service.title} delay={i * 0.1}>
-              <div className="bg-matte-card rounded-card p-14 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 h-full border border-white/[0.06]">
+              <div className="bg-matte-card rounded-card p-14 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 h-full border border-white/[0.10]">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}>
                   {service.icon}
                 </div>

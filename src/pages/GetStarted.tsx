@@ -117,15 +117,15 @@ export default function GetStarted() {
                         <div className="space-y-5">
                           <div>
                             <label className="block font-body text-sm text-white/70 mb-2">Full Name *</label>
-                            <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full h-[52px] px-4 bg-matte-light border border-white/10 rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300" placeholder="John Smith" />
+                            <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full h-[52px] px-4 bg-matte-input border border-white/[0.10] rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300" placeholder="John Smith" />
                           </div>
                           <div>
                             <label className="block font-body text-sm text-white/70 mb-2">Email *</label>
-                            <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full h-[52px] px-4 bg-matte-light border border-white/10 rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300" placeholder="john@example.com" />
+                            <input type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full h-[52px] px-4 bg-matte-input border border-white/[0.10] rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300" placeholder="john@example.com" />
                           </div>
                           <div>
                             <label className="block font-body text-sm text-white/70 mb-2">Company (optional)</label>
-                            <input type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="w-full h-[52px] px-4 bg-matte-light border border-white/10 rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300" placeholder="Your company name" />
+                            <input type="text" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="w-full h-[52px] px-4 bg-matte-input border border-white/[0.10] rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300" placeholder="Your company name" />
                           </div>
                         </div>
                       </div>
@@ -154,7 +154,7 @@ export default function GetStarted() {
                           </div>
                           <div>
                             <label className="block font-body text-sm text-white/70 mb-2">Project Description</label>
-                            <textarea rows={4} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-4 py-3 bg-matte-light border border-white/10 rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300 resize-vertical" placeholder="Tell us about your goals, challenges, and what success looks like..." />
+                            <textarea rows={4} value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full px-4 py-3 bg-matte-input border border-white/[0.10] rounded-subtle font-body text-base text-white placeholder:text-white/50 focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_20px_rgba(99,102,241,0.15)] transition-all duration-300 resize-vertical" placeholder="Tell us about your goals, challenges, and what success looks like..." />
                           </div>
                         </div>
                       </div>
