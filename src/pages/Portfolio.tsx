@@ -22,6 +22,8 @@ function PortfolioHero() {
 
 /* ========== PROJECTS ========== */
 const projects = [
+  { name: 'Conquest Property', category: 'Property Development', image: './assets/portfolio-conquest.jpg', link: 'https://conquest-property.co.uk/' },
+  { name: 'Pinpoint Finance', category: 'Finance & Compliance', image: './assets/portfolio-pinpoint.jpg', link: 'https://nexlevelabc-netizen.github.io/pinpoint/' },
   { name: '25th Avenue', category: 'Housing Platform', image: './assets/portfolio-25thavenue.jpg', link: 'https://www.25thavenue.org/' },
   { name: 'RaySoko Art', category: 'Creative Portfolio', image: './assets/portfolio-raysoko.jpg', link: 'https://nexlevelabc-netizen.github.io/RAYSOKOART/#/' },
   { name: 'MyFitting', category: 'Fashion Tech App', image: './assets/portfolio-myfitting.jpg', link: 'https://nexlevelabc-netizen.github.io/Myfitting/' },

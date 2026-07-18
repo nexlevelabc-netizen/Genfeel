@@ -85,7 +85,7 @@ function HomeHero() {
 
             {/* Description */}
             <p className="font-body text-lg text-white/80 max-w-lg mt-8 mb-10">
-              Premium digital solutions crafted with human-centered design. From concept to launch in weeks, not months.
+              Premium digital solutions crafted with human centered design. From concept to launch in weeks, not months.
             </p>
 
             {/* CTA Button */}
@@ -128,42 +128,34 @@ function HomeHero() {
 
 /* ========== TRUSTED BY ========== */
 const clientLogos = [
-  { name: 'NexLevel', gradient: 'linear-gradient(135deg, #6366f1, #818cf8)' },
-  { name: '25th Avenue', gradient: 'linear-gradient(135deg, #ec4899, #f472b6)' },
-  { name: 'B360', gradient: 'linear-gradient(135deg, #06b6d4, #22d3ee)' },
-  { name: 'RaySoko', gradient: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' },
-  { name: 'MyFitting', gradient: 'linear-gradient(135deg, #f59e0b, #fbbf24)' },
-  { name: 'TechVenture', gradient: 'linear-gradient(135deg, #10b981, #34d399)' },
+  { name: '25th Avenue Housing', image: './assets/logo-25thavenue.png' },
+  { name: 'B360 Limited', image: './assets/logo-b360.png' },
+  { name: 'RaySoko Art', image: './assets/logo-raysoko.png' },
+  { name: 'Conquest Property', image: './assets/logo-conquest.png' },
+  { name: 'Pinpoint Finance', image: './assets/logo-pinpoint.png' },
 ];
 
 function TrustedBy() {
   return (
-    <section className="relative z-10 bg-matte-light py-16 overflow-hidden border-y border-white/[0.06]">
+    <section className="relative z-10 py-16 overflow-hidden border-y border-white/[0.06]" style={{ background: '#0a0a0a' }}>
       <div className="container-content mb-10">
-        <p className="font-body text-sm font-semibold uppercase tracking-[0.12em] text-white/75 text-center">
-          Trusted by forward-thinking brands
+        <p className="font-body text-sm font-semibold uppercase tracking-[0.12em] text-white/80 text-center">
+          Trusted by forward thinking brands
         </p>
       </div>
       <div className="relative overflow-hidden">
-        <div className="flex animate-marquee whitespace-nowrap">
+        <div className="flex animate-marquee whitespace-nowrap items-center">
           {[...clientLogos, ...clientLogos, ...clientLogos, ...clientLogos].map((client, i) => (
             <div
               key={i}
-              className="inline-flex items-center justify-center mx-5"
+              className="inline-flex items-center justify-center mx-8 lg:mx-12 flex-shrink-0"
             >
-              <div
-                className="flex items-center gap-3 px-7 py-3.5 rounded-pill border border-white/[0.08] shadow-card hover:shadow-elevated hover:scale-105 transition-all duration-300 cursor-default"
-                style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))' }}
-              >
-                {/* Colored dot */}
-                <div
-                  className="w-3 h-3 rounded-full shrink-0"
-                  style={{ background: client.gradient }}
-                />
-                <span className="font-display text-xl sm:text-2xl font-medium text-white tracking-wide">
-                  {client.name}
-                </span>
-              </div>
+              <img
+                src={client.image}
+                alt={client.name}
+                className="h-14 sm:h-16 lg:h-20 w-auto object-contain"
+                style={{ maxWidth: '180px', filter: 'brightness(1.3) contrast(1.05)' }}
+              />
             </div>
           ))}
         </div>
@@ -175,38 +167,22 @@ function TrustedBy() {
 /* ========== SERVICES PREVIEW ========== */
 const services = [
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
-      </svg>
-    ),
+    image: './assets/service-web.jpg',
     title: 'Web Development',
     desc: 'Custom websites and web applications built with modern technologies that scale with your business.',
   },
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" />
-      </svg>
-    ),
+    image: './assets/service-mobile.jpg',
     title: 'Mobile Apps',
     desc: 'Native and cross-platform iOS and Android apps designed for engagement and performance.',
   },
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a8 8 0 0 0-8 8c0 3.866 3.134 7 8 7s8-3.134 8-7a8 8 0 0 0-8-8z" /><path d="M9 13c1 1 2 1 3 0" /><path d="M9.5 9.5c.5-.5 1.5-.5 2 0" /><path d="M13.5 9.5c.5-.5 1.5-.5 2 0" />
-      </svg>
-    ),
+    image: './assets/service-chatbot.jpg',
     title: 'AI Solutions',
     desc: 'Intelligent chatbots, voice agents, and automation that transform how you interact with customers.',
   },
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" /><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-      </svg>
-    ),
+    image: './assets/service-crm.jpg',
     title: 'CRM & ERP Systems',
     desc: 'Streamlined business operations with custom CRM and ERP solutions tailored to your workflow.',
   },
@@ -229,11 +205,8 @@ function ServicesPreview() {
           {services.map((service, i) => (
             <ScrollReveal key={service.title} delay={i * 0.15}>
               <div className="bg-matte-card rounded-card p-12 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 group border border-white/[0.10]">
-                <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
-                  style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}
-                >
-                  {service.icon}
+                <div className="w-36 h-20 rounded-xl overflow-hidden mb-6" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))' }}>
+                  <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
                 </div>
                 <h4 className="font-display text-[28px] font-medium text-white mb-3">
                   {service.title}
@@ -262,18 +235,18 @@ function ServicesPreview() {
 /* ========== FEATURED WORK ========== */
 const featuredWork = [
   {
-    name: '25th Avenue',
-    category: 'Housing Platform',
-    desc: 'Supported accommodation platform connecting people with safe housing.',
-    image: './assets/portfolio-25thavenue.jpg',
-    link: 'https://www.25thavenue.org/',
+    name: 'Conquest Property',
+    category: 'Property Development',
+    desc: 'UK land acquisition, development finance, and property investment platform connecting landowners with investors.',
+    image: './assets/portfolio-conquest.jpg',
+    link: 'https://conquest-property.co.uk/',
   },
   {
-    name: 'B360 Limited',
-    category: 'Business Services',
-    desc: 'Digital transformation for a modern business services company.',
-    image: './assets/portfolio-b360.jpg',
-    link: 'https://www.b360ltd.com/',
+    name: 'Pinpoint Finance',
+    category: 'Finance & Compliance',
+    desc: 'Professional accounting, financial management and compliance services for charities and non-profits across England and Wales.',
+    image: './assets/portfolio-pinpoint.jpg',
+    link: 'https://nexlevelabc-netizen.github.io/pinpoint/',
   },
 ];
 
@@ -345,38 +318,22 @@ function FeaturedWork() {
 /* ========== WHY GENFEEL ========== */
 const values = [
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-      </svg>
-    ),
-    title: 'Human-Centered Design',
+    image: './assets/why-human-centered.jpg',
+    title: 'Human Centered Design',
     desc: 'Every solution starts with understanding your users. We design experiences that feel natural and intuitive.',
   },
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-      </svg>
-    ),
+    image: './assets/why-rapid-delivery.jpg',
     title: 'Rapid Delivery',
     desc: 'Our streamlined process means faster time-to-market without compromising on quality or attention to detail.',
   },
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-    title: 'Enterprise-Grade Quality',
+    image: './assets/why-enterprise.jpg',
+    title: 'Enterprise Grade Quality',
     desc: 'From startups to established businesses, we build with security, scalability, and performance in mind.',
   },
   {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-    ),
+    image: './assets/why-ongoing.jpg',
     title: 'Ongoing Partnership',
     desc: "We don't disappear after launch. Our team provides continuous support, updates, and strategic guidance.",
   },
@@ -399,11 +356,8 @@ function WhyGenfeel() {
           {values.map((value, i) => (
             <ScrollReveal key={value.title} delay={i * 0.15}>
               <div className="bg-matte-card rounded-card p-10 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 border border-white/[0.10]">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}
-                >
-                  {value.icon}
+                <div className="w-36 h-20 rounded-xl overflow-hidden mb-4" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))' }}>
+                  <img src={value.image} alt={value.title} className="w-full h-full object-cover" />
                 </div>
                 <h4 className="font-display text-[28px] font-medium text-white mt-5 mb-2">
                   {value.title}

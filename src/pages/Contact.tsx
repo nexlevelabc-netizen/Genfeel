@@ -44,10 +44,6 @@ function ContactFormSection() {
                   <a href="mailto:hello@genfeel.co.uk" className="font-body text-[17px] text-[#818cf8] hover:underline">hello@genfeel.co.uk</a>
                 </div>
                 <div>
-                  <p className="font-body text-sm text-white/70 mb-1">Phone</p>
-                  <a href="tel:+447383027802" className="font-body text-[17px] text-white/80">+44 7383 027802</a>
-                </div>
-                <div>
                   <p className="font-body text-sm text-white/70 mb-1">Location</p>
                   <p className="font-body text-[17px] text-white/80">London, United Kingdom</p>
                 </div>

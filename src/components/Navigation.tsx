@@ -42,13 +42,12 @@ export default function Navigation() {
         <div className="h-full flex items-center justify-between px-6 lg:px-10 xl:px-14">
           {/* Logo - pushed far left like Coderfy */}
           <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-            {/* Icon */}
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg" style={{ background: 'linear-gradient(135deg, #6366f1, #ec4899)' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-            </div>
+            {/* Genfeel Logo */}
+            <img
+              src="./assets/genfeel-logo.png"
+              alt="Genfeel"
+              className="w-14 h-14 rounded-lg object-contain"
+            />
             {/* Text */}
             <div className="flex flex-col leading-tight">
               <span className="font-display text-[22px] font-semibold tracking-tight text-white group-hover:text-white/90 transition-colors">

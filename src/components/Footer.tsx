@@ -27,12 +27,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6366f1, #ec4899)' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                </svg>
-              </div>
+              <img
+                src="./assets/genfeel-logo.png"
+                alt="Genfeel"
+                className="w-14 h-14 rounded-lg object-contain"
+              />
               <div className="flex flex-col leading-tight">
                 <span className="font-display text-xl font-semibold text-white tracking-tight">Genfeel</span>
                 <span className="font-body text-[9px] font-medium uppercase tracking-[0.12em] text-white/60 -mt-0.5">Digital Made Human</span>
@@ -97,9 +96,6 @@ export default function Footer() {
             <div className="space-y-3">
               <a href="mailto:hello@genfeel.co.uk" className="block font-body text-sm text-white/70 hover:text-[#818cf8] transition-colors duration-300">
                 hello@genfeel.co.uk
-              </a>
-              <a href="tel:+447383027802" className="block font-body text-sm text-white/70 hover:text-[#818cf8] transition-colors duration-300">
-                +44 7383 027802
               </a>
               <p className="font-body text-sm text-white/70">
                 London, United Kingdom

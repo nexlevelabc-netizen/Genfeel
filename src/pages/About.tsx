@@ -34,10 +34,10 @@ function MissionSection() {
           <div>
             <ScrollReveal delay={0.15}>
               <p className="font-body text-lg text-white/80 leading-relaxed">
-                Genfeel was founded with a simple belief: technology should serve people, not the other way around. We started as a small web development team and have grown into a full-service digital agency.
+                Genfeel was founded with a simple belief: technology should serve people, not the other way around. We started as a small web development team and have grown into a full service digital agency.
               </p>
               <p className="font-body text-lg text-white/80 leading-relaxed mt-6">
-                Today, we help businesses of all sizes navigate the digital landscape — from their first website to enterprise AI implementations. Our approach combines technical expertise with genuine care for the people who use our products.
+                Today, we help businesses of all sizes navigate the digital landscape  from their first website to enterprise AI implementations. Our approach combines technical expertise with genuine care for the people who use our products.
               </p>
               <p className="font-body text-base mt-8 font-medium" style={{ background: gradientAccent, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Tech with a heartbeat.
@@ -54,7 +54,7 @@ function MissionSection() {
 const values = [
   { num: '01', title: 'People First', desc: 'We design for humans, not metrics. Every decision we make starts with understanding the real people who will use our products.' },
   { num: '02', title: 'Technical Excellence', desc: 'We stay at the forefront of technology so our clients don\'t have to worry about it. Clean code, modern architecture, best practices.' },
-  { num: '03', title: 'Lasting Impact', desc: 'We build solutions that grow with your business. No quick fixes — just sustainable technology that delivers value for years.' },
+  { num: '03', title: 'Lasting Impact', desc: 'We build solutions that grow with your business. No quick fixes just sustainable technology that delivers value for years.' },
 ];
 
 function ValuesSection() {

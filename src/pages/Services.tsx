@@ -17,7 +17,7 @@ function ServicesHero() {
           Everything you need to grow digital
         </h1>
         <p className="font-body text-lg text-white/80 max-w-xl mt-6">
-          From websites to AI solutions, we provide end-to-end technology services that scale with your ambitions.
+          From websites to AI solutions, we provide end to end technology services that scale with your ambitions.
         </p>
       </div>
     </section>
@@ -26,14 +26,14 @@ function ServicesHero() {
 
 /* ========== SERVICES GRID ========== */
 const allServices = [
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>), title: 'Website Development', desc: 'Custom websites built with modern frameworks that load fast, rank well, and convert visitors into customers.', features: ['Responsive design', 'SEO optimization', 'CMS integration', 'Performance tuning'], price: 'From \u00a3299' },
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" /></svg>), title: 'Mobile Applications', desc: 'Native and cross-platform apps for iOS and Android that deliver seamless user experiences on every device.', features: ['Native performance', 'Push notifications', 'Offline support', 'App store optimization'], price: 'From \u00a3499' },
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 3.866 3.134 7 8 7s8-3.134 8-7a8 8 0 0 0-8-8z" /><path d="M9 13c1 1 2 1 3 0" /><path d="M9.5 9.5c.5-.5 1.5-.5 2 0" /><path d="M13.5 9.5c.5-.5 1.5-.5 2 0" /></svg>), title: 'AI Chatbots', desc: 'Intelligent conversational agents that engage your customers 24/7 with natural, human-like interactions.', features: ['Natural language processing', 'Multi-platform integration', 'Custom training', 'Analytics dashboard'], price: 'From \u00a3199' },
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /><line x1="8" y1="23" x2="16" y2="23" /></svg>), title: 'Voice Agent AI', desc: 'Voice-powered assistants that handle calls, bookings, and customer queries with natural speech synthesis.', features: ['Speech recognition', 'Voice synthesis', 'Call handling', 'CRM integration'], price: 'From \u00a3249' },
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>), title: 'CRM Systems', desc: 'Custom customer relationship management tools that streamline sales, marketing, and support workflows.', features: ['Contact management', 'Pipeline tracking', 'Automated workflows', 'Reporting & analytics'], price: 'From \u00a3599' },
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" /><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" /></svg>), title: 'ERP Solutions', desc: 'Enterprise resource planning systems that integrate finance, HR, inventory, and operations in one platform.', features: ['Financial management', 'Inventory tracking', 'HR integration', 'Real-time reporting'], price: 'From \u00a3999' },
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>), title: 'Process Automation', desc: 'Workflow automation that eliminates repetitive tasks and frees your team to focus on what matters.', features: ['Workflow design', 'Integration APIs', 'Error handling', 'Performance monitoring'], price: 'From \u00a3399' },
-  { icon: (<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>), title: 'AI Consulting', desc: 'Strategic guidance on implementing AI and automation technologies to drive business growth and efficiency.', features: ['AI readiness assessment', 'Strategy development', 'Vendor selection', 'Implementation roadmap'], price: 'From \u00a3499' },
+  { image: './assets/service-web.jpg', title: 'Website Development', desc: 'Custom websites built with modern frameworks that load fast, rank well, and convert visitors into customers.', features: ['Responsive design', 'SEO optimization', 'CMS integration', 'Performance tuning'], price: 'From \u00a3299' },
+  { image: './assets/service-mobile.jpg', title: 'Mobile Applications', desc: 'Native and cross platform apps for iOS and Android that deliver seamless user experiences on every device.', features: ['Native performance', 'Push notifications', 'Offline support', 'App store optimization'], price: 'From \u00a3499' },
+  { image: './assets/service-chatbot.jpg', title: 'AI Chatbots', desc: 'Intelligent conversational agents that engage your customers 24/7 with natural, human-like interactions.', features: ['Natural language processing', 'Multi-platform integration', 'Custom training', 'Analytics dashboard'], price: 'From \u00a3199' },
+  { image: './assets/service-voice.jpg', title: 'Voice Agent AI', desc: 'Voice powered assistants that handle calls, bookings, and customer queries with natural speech synthesis.', features: ['Speech recognition', 'Voice synthesis', 'Call handling', 'CRM integration'], price: 'From \u00a3249' },
+  { image: './assets/service-crm.jpg', title: 'CRM Systems', desc: 'Custom customer relationship management tools that streamline sales, marketing, and support workflows.', features: ['Contact management', 'Pipeline tracking', 'Automated workflows', 'Reporting & analytics'], price: 'From \u00a3599' },
+  { image: './assets/service-erp.jpg', title: 'ERP Solutions', desc: 'Enterprise resource planning systems that integrate finance, HR, inventory, and operations in one platform.', features: ['Financial management', 'Inventory tracking', 'HR integration', 'Real-time reporting'], price: 'From \u00a3999' },
+  { image: './assets/service-automation.jpg', title: 'Process Automation', desc: 'Workflow automation that eliminates repetitive tasks and frees your team to focus on what matters.', features: ['Workflow design', 'Integration APIs', 'Error handling', 'Performance monitoring'], price: 'From \u00a3399' },
+  { image: './assets/service-ai-consulting.jpg', title: 'AI Consulting', desc: 'Strategic guidance on implementing AI and automation technologies to drive business growth and efficiency.', features: ['AI readiness assessment', 'Strategy development', 'Vendor selection', 'Implementation roadmap'], price: 'From \u00a3499' },
 ];
 
 function ServicesGrid() {
@@ -44,8 +44,8 @@ function ServicesGrid() {
           {allServices.map((service, i) => (
             <ScrollReveal key={service.title} delay={i * 0.1}>
               <div className="bg-matte-card rounded-card p-14 shadow-card hover:shadow-elevated hover:-translate-y-1 transition-all duration-400 h-full border border-white/[0.10]">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))', color: '#818cf8' }}>
-                  {service.icon}
+                <div className="w-40 h-24 rounded-xl flex items-center justify-center mb-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1))' }}>
+                  <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
                 </div>
                 <h3 className="font-display text-[32px] font-medium text-white mb-4">
                   {service.title}
@@ -77,10 +77,10 @@ function ServicesGrid() {
 
 /* ========== PROCESS ========== */
 const steps = [
-  { num: '01', title: 'Discovery', desc: 'We understand your goals, users, and constraints through in-depth research and workshops.' },
+  { num: '01', title: 'Discovery', desc: 'We understand your goals, users, and constraints through in depth research and workshops.' },
   { num: '02', title: 'Design', desc: 'We create wireframes, prototypes, and visual designs that align with your brand and user needs.' },
-  { num: '03', title: 'Develop', desc: 'We build your solution using modern technologies with regular check-ins and iterative feedback.' },
-  { num: '04', title: 'Deliver', desc: 'We launch, monitor, and optimize \u2014 providing ongoing support to ensure long-term success.' },
+  { num: '03', title: 'Develop', desc: 'We build your solution using modern technologies with regular check ins and iterative feedback.' },
+  { num: '04', title: 'Deliver', desc: 'We launch, monitor, and optimize providing ongoing support to ensure long-term success.' },
 ];
 
 function ProcessTimeline() {
