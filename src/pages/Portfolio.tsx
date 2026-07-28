@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ScrollReveal from '@/components/ScrollReveal';
 
 const gradientAccent = 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)';
@@ -72,9 +73,9 @@ function PortfolioCTA() {
           <p className="font-body text-lg text-white/80 mt-6 max-w-lg">
             We'd love to add your project to our portfolio. Let's create something amazing together.
           </p>
-          <a href="/get-started" className="inline-block mt-10 font-body text-base font-medium px-10 py-4 rounded-button text-white hover:shadow-glow transition-all duration-300" style={{ background: gradientAccent }}>
+          <Link to="/get-started" className="inline-block mt-10 font-body text-base font-medium px-10 py-4 rounded-button text-white hover:shadow-glow transition-all duration-300" style={{ background: gradientAccent }}>
             Start Your Project
-          </a>
+          </Link>
         </ScrollReveal>
       </div>
     </section>

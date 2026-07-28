@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ScrollReveal from '@/components/ScrollReveal';
 
 const gradientAccent = 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)';
@@ -34,10 +35,10 @@ function MissionSection() {
           <div>
             <ScrollReveal delay={0.15}>
               <p className="font-body text-lg text-white/80 leading-relaxed">
-                Genfeel was founded with a simple belief: technology should serve people, not the other way around. We started as a small web development team and have grown into a full service digital agency.
+                Genfeel was founded with a simple belief: technology should serve people, not the other way around. We started as a small web development team and have grown into a full-service digital agency.
               </p>
               <p className="font-body text-lg text-white/80 leading-relaxed mt-6">
-                Today, we help businesses of all sizes navigate the digital landscape  from their first website to enterprise AI implementations. Our approach combines technical expertise with genuine care for the people who use our products.
+                Today, we help businesses of all sizes navigate the digital landscape from their first website to enterprise AI implementations. Our approach combines technical expertise with genuine care for the people who use our products.
               </p>
               <p className="font-body text-base mt-8 font-medium" style={{ background: gradientAccent, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Tech with a heartbeat.
@@ -95,9 +96,9 @@ function AboutCTA() {
           <p className="font-body text-lg text-white/80 mt-6 max-w-lg">
             We're always looking for new challenges and exciting collaborations.
           </p>
-          <a href="/contact" className="inline-block mt-10 font-body text-base font-medium px-10 py-4 rounded-button text-white hover:-translate-y-0.5 transition-all duration-300" style={{ background: gradientAccent }}>
+          <Link to="/contact" className="inline-block mt-10 font-body text-base font-medium px-10 py-4 rounded-button text-white hover:-translate-y-0.5 transition-all duration-300" style={{ background: gradientAccent }}>
             Get in Touch
-          </a>
+          </Link>
         </ScrollReveal>
       </div>
     </section>
