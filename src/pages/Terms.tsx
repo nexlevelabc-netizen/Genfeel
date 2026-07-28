@@ -101,7 +101,7 @@ function TermsContent() {
             <div>
               <h2 className="font-display text-2xl font-medium text-white mb-4">11. Contact</h2>
               <p className="font-body text-[17px] text-white/80 leading-relaxed">
-                For questions about these Terms of Service, please contact us at hello@genfeel.co.uk or call +44 7383 027802.
+                For questions about these Terms of Service, please contact us at hello@genfeel.co.uk.
               </p>
             </div>
           </div>

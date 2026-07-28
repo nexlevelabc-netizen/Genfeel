@@ -26,7 +26,7 @@ const quickReplies: Record<string, string> = {
   'View Services': 'Here are our services. Which one interests you?',
   'Pricing': 'Our pricing starts from \u00a3299 for websites. Would you like details on a specific service?',
   'Book Consultation': 'I\'d be happy to help you book a free consultation! What service are you interested in?',
-  'Contact': 'You can reach us at hello@genfeel.co.uk or +44 7383 027802. Or book a consultation right here!',
+  'Contact': 'You can reach us at hello@genfeel.co.uk. Or book a consultation right here!',
 };
 
 export default function Chatbot() {
@@ -127,7 +127,7 @@ export default function Chatbot() {
       } else {
         const selectedService = services.find(s => s.name === label);
         if (selectedService) {
-          addMessage(`Excellent choice! ${selectedService.name} (${selectedService.price}). To book a consultation, please email us at hello@genfeel.co.uk or call +44 7383 027802. Would you like to know anything else?`, 'bot');
+          addMessage(`Excellent choice! ${selectedService.name} (${selectedService.price}). To book a consultation, please email us at hello@genfeel.co.uk. Would you like to know anything else?`, 'bot');
           setQuickButtons([
             { label: 'View Services', action: () => handleQuickReply('View Services') },
             { label: 'Pricing', action: () => handleQuickReply('Pricing') },

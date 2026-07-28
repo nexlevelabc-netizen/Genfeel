@@ -85,7 +85,7 @@ function HomeHero() {
 
             {/* Description */}
             <p className="font-body text-lg text-white/80 max-w-lg mt-8 mb-10">
-              Premium digital solutions crafted with human centered design. From concept to launch in weeks, not months.
+              Premium digital solutions crafted with human-centered design. From concept to launch in weeks, not months.
             </p>
 
             {/* CTA Button */}
@@ -140,7 +140,7 @@ function TrustedBy() {
     <section className="relative z-10 py-16 overflow-hidden border-y border-white/[0.06]" style={{ background: '#0a0a0a' }}>
       <div className="container-content mb-10">
         <p className="font-body text-sm font-semibold uppercase tracking-[0.12em] text-white/80 text-center">
-          Trusted by forward thinking brands
+          Trusted by forward-thinking brands
         </p>
       </div>
       <div className="relative overflow-hidden">

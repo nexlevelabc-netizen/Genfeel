@@ -116,7 +116,7 @@ function PrivacyContent() {
             <div>
               <h2 className="font-display text-2xl font-medium text-white mb-4">10. Contact Us</h2>
               <p className="font-body text-[17px] text-white/80 leading-relaxed">
-                If you have any questions about this Privacy Policy or wish to exercise your data protection rights, please contact us at hello@genfeel.co.uk or call +44 7383 027802.
+                If you have any questions about this Privacy Policy or wish to exercise your data protection rights, please contact us at hello@genfeel.co.uk.
               </p>
             </div>
           </div>
